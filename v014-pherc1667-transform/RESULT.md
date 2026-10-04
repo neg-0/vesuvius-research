@@ -26,6 +26,13 @@ Follow-up to [villa #1843](https://github.com/ScrollPrize/villa/issues/1843). Pr
 Each row is one segment. The panels show the centre layer of the 2.399 µm reference, then the
 1.129 µm scan along the published mesh, then the 1.129 µm scan along the corrected mesh.
 
+## Verified with villa's own tools
+
+`vc_transform_geom` with the published matrix reproduces the published 1.129 µm meshes, and
+`vc_render_tifxyz` reproduces the published 1.129 µm surface volumes at NCC ≥ 0.996. Adding the refit
+as one extra `--affine` argument lifts the match to the 2.399 µm reference on all 6 segments: best NCC
+goes from 0.06–0.75 to 0.82–0.92. Details and figures are in [VERIFY.md](VERIFY.md).
+
 ## CT placement check (preregistered, PASS)
 
 Run `20261004T221746-af44d82947`. For each segment's densest labelled window, the central 8 × 16
