@@ -7,6 +7,7 @@ data were scored), a `RESULT.md`, and machine-readable payloads.
 
 | Folder | Question | Outcome |
 |---|---|---|
+| [`v014-pherc1667-transform/`](v014-pherc1667-transform/) | Does the published PHerc1667 1.129 µm → 2.399 µm matrix put the 1.129 µm meshes on the papyrus ([villa #1843](https://github.com/ScrollPrize/villa/issues/1843))? | No. Its own landmarks reject it (51.4 vs 0.93 voxels RMS for a refit). On all 6 labelled segments the refit mesh's CT matches the 2.399 µm reference (NCC 0.59–0.80 on 5) and the published mesh's does not. Only 1 of the 22 published transforms has this problem. |
 | [`v013-pherc0139-depth/`](v013-pherc0139-depth/) | Can a label-free depth choice recover ink where PHerc0139's March-2026 2.4 µm meshes sit off the inked surface ([villa #1912](https://github.com/ScrollPrize/villa/issues/1912))? | Mixed. A finer depth grid lifts the label-free mean AUC from 0.803 to 0.817 and the label-oracle ceiling from 0.810 to 0.841, but two aligned segments get worse. Every segment's best offset is on the same side of the mesh. |
 | [`v012-pherc0800-seating/`](v012-pherc0800-seating/) | Is PHerc.0800 segment `20251028225813` seated on the eligible 8.64 µm volume (sampled seating score)? | No. It scores 4.07 against a threshold of 15; the cloud port reproduces the earlier segment's 6.6608 exactly. |
 
@@ -17,7 +18,7 @@ data were scored), a `RESULT.md`, and machine-readable payloads.
 - Ink model: [`scrollprize/ink_canonical_2um`](https://huggingface.co/scrollprize/ink_canonical_2um)
   @ `075855bc`, run through
   [ScrollPrize/villa](https://github.com/ScrollPrize/villa) `ink-detection/optimized_inference`.
-- V-013 builds on the benchmark and code of
+- V-013 and V-014 build on the benchmark and code of
   [TAUIL-Abd-Elilah/cross-scan-ink-transfer](https://github.com/TAUIL-Abd-Elilah/cross-scan-ink-transfer)
   @ `df9db2f` (MIT). That code is fetched at its pinned commit by
   `setup_local.sh`, not copied here; our only change to it is letting

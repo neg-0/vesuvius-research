@@ -1,0 +1,443 @@
+{
+ "volumes_scanned": 67,
+ "transforms": [
+  {
+   "key": "PHerc0009B/volumes/20250521125136-8.640um-1.2m-116keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.401um_77keV_0.35m_PHerc_0009B_TA3_0001_masked",
+   "n_landmarks": 6,
+   "singular_values": [
+    3.6104765511964674,
+    3.5997291873357424,
+    3.5953219070947084
+   ],
+   "pub_rms": 9.43441719514157,
+   "pub_max": 17.685731436198388,
+   "lsq_rms": 9.434417195141766,
+   "lsq_singular_values": [
+    3.6104765511964643,
+    3.599729187335735,
+    3.5953219070947116
+   ],
+   "lsq_loo_rms": 78.64023742606956,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0139/volumes/20250820105138-2.403um-0.2m-77keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_4.681um_113keV_1.2m_binmean_2_PHerc_0139_TA_0001_masked",
+   "n_landmarks": 8,
+   "singular_values": [
+    0.2570166999085968,
+    0.25619666963066673,
+    0.2558791558634229
+   ],
+   "pub_rms": 2.704622494750574,
+   "pub_max": 5.153809099395357,
+   "lsq_rms": 2.7046224947504967,
+   "lsq_singular_values": [
+    0.25701669990859677,
+    0.2561966696306667,
+    0.255879155863423
+   ],
+   "lsq_loo_rms": 6.669208662523551,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0139/volumes/20250822062710-2.403um-0.2m-77keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_4.681um_113keV_1.2m_binmean_2_PHerc_0139_TA_0001_masked",
+   "n_landmarks": 7,
+   "singular_values": [
+    0.256712265528327,
+    0.25659096526449227,
+    0.2564901707494759
+   ],
+   "pub_rms": 1.000290366399309,
+   "pub_max": 1.4107377148457598,
+   "lsq_rms": 1.00029036639968,
+   "lsq_singular_values": [
+    0.2567122655283272,
+    0.25659096526449254,
+    0.25649017074947644
+   ],
+   "lsq_loo_rms": 3.2756707078442417,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0139/volumes/20260102150214-2.399um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_4.681um_113keV_1.2m_binmean_2_PHerc_0139_TA_0001_masked",
+   "n_landmarks": 14,
+   "singular_values": [
+    0.25722456419640344,
+    0.2570926864726551,
+    0.2569334614116171
+   ],
+   "pub_rms": 2.590413530256645,
+   "pub_max": 5.358546205967643,
+   "lsq_rms": 2.590413530256332,
+   "lsq_singular_values": [
+    0.25722456419640394,
+    0.2570926864726548,
+    0.2569334614116168
+   ],
+   "lsq_loo_rms": 3.477471332264117,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0139/volumes/20260413113053-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_0139_TA3_0001_masked",
+   "n_landmarks": 12,
+   "singular_values": [
+    0.47014724904514144,
+    0.4700654037107406,
+    0.4699883495046669
+   ],
+   "pub_rms": 1.1569093710099492,
+   "pub_max": 1.9546906302355174,
+   "lsq_rms": 1.1569093710100007,
+   "lsq_singular_values": [
+    0.47014724904513894,
+    0.4700654037107412,
+    0.46998834950466695
+   ],
+   "lsq_loo_rms": 1.6785247989991674,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0332/volumes/20251211183505-2.399um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "PHerc0332-20231117143551_masked",
+   "n_landmarks": 6,
+   "singular_values": [
+    0.30660662088138085,
+    0.3051921283316959,
+    0.30464028749512484
+   ],
+   "pub_rms": 13.03563452139648,
+   "pub_max": 16.9256767395706,
+   "lsq_rms": 13.035634521396512,
+   "lsq_singular_values": [
+    0.3066066208813826,
+    0.30519212833169296,
+    0.304640287495124
+   ],
+   "lsq_loo_rms": 128.80373873720401,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0343P/volumes/20250521134555-8.640um-1.2m-116keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.215um_0.4m_111keV_PHerc0343P_TA_0001_masked",
+   "n_landmarks": 5,
+   "singular_values": [
+    3.901467284570084,
+    3.9006767688086708,
+    3.897235006305605
+   ],
+   "pub_rms": 1.0459700741471547,
+   "pub_max": 1.6098969807986596,
+   "lsq_rms": 1.0459700741469373,
+   "lsq_singular_values": [
+    3.901467284570085,
+    3.9006767688086823,
+    3.8972350063055967
+   ],
+   "lsq_loo_rms": 17.80226809227922,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0500P2/volumes/20250526151718-2.215um-0.4m-111keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_4.681um_113keV_1.2m_binmean_2_PHerc_0500P2_HA_0001_masked",
+   "n_landmarks": 4,
+   "singular_values": [
+    0.23757650050180268,
+    0.23753225292183133,
+    0.23693245176878228
+   ],
+   "pub_rms": 4.5346657032448846e-12,
+   "pub_max": 5.229594535194337e-12,
+   "lsq_rms": 3.830082398035988e-12,
+   "lsq_singular_values": [
+    0.23757650050180235,
+    0.23753225292183125,
+    0.2369324517687823
+   ],
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0500P2/volumes/20250528085330-4.317um-1.2m-111keV-masked.zarr/transform.json",
+   "fixed_volume": "2.215um_HEL_TA_0.4m_110keV_scroll-fragment_0500P2_TA_0001_masked",
+   "n_landmarks": 6,
+   "singular_values": [
+    1.9537831523516642,
+    1.9465034767444904,
+    1.937691425970368
+   ],
+   "pub_rms": 3.0475946346044536,
+   "pub_max": 5.335910796086123,
+   "lsq_rms": 3.0475946346043914,
+   "lsq_singular_values": [
+    1.9537831523516602,
+    1.9465034767444942,
+    1.9376914259703668
+   ],
+   "lsq_loo_rms": 23.07495584047062,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0500P2/volumes/20250820143440-9.362um-1.2m-113keV-masked.zarr/transform.json",
+   "fixed_volume": "2.215um_HEL_TA_0.4m_110keV_scroll-fragment_0500P2_TA_0001_masked",
+   "n_landmarks": 4,
+   "singular_values": [
+    4.220612214724722,
+    4.209954596477832,
+    4.209170510921024
+   ],
+   "pub_rms": 2.040290771599262e-11,
+   "pub_max": 2.5996279742605933e-11,
+   "lsq_rms": 7.682673532613584e-11,
+   "lsq_singular_values": [
+    4.220612214724594,
+    4.209954596477942,
+    4.209170510920971
+   ],
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0500P2/volumes/20250821110041-0.500um-masked.zarr/transform.json",
+   "fixed_volume": "2.215um_HEL_TA_0.4m_110keV_scroll-fragment_0500P2_TA_0001_masked",
+   "n_landmarks": 7,
+   "singular_values": [
+    0.2482850388907503,
+    0.24757023677620488,
+    0.24619331254757912
+   ],
+   "pub_rms": 4.1086888207476795,
+   "pub_max": 7.857097061913119,
+   "lsq_rms": 4.108688820747587,
+   "lsq_singular_values": [
+    0.24828503889073275,
+    0.2475702367762012,
+    0.24619331254766738
+   ],
+   "lsq_loo_rms": 11.318036801024482,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0500P2/volumes/20250821110041-0.550um-0.1m-65keV-masked.zarr/transform.json",
+   "fixed_volume": "2.215um_HEL_TA_0.4m_110keV_scroll-fragment_0500P2_TA_0001_masked",
+   "n_landmarks": 7,
+   "singular_values": [
+    0.2482850388907503,
+    0.24757023677620488,
+    0.24619331254757912
+   ],
+   "pub_rms": 4.1086888207476795,
+   "pub_max": 7.857097061913119,
+   "lsq_rms": 4.108688820747587,
+   "lsq_singular_values": [
+    0.24828503889073275,
+    0.2475702367762012,
+    0.24619331254766738
+   ],
+   "lsq_loo_rms": 11.318036801024482,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc0814/volumes/20260521123630-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_0814_TA2_0001_masked",
+   "n_landmarks": 11,
+   "singular_values": [
+    0.4702619681352296,
+    0.4700605251274419,
+    0.4699709345991764
+   ],
+   "pub_rms": 1.0657583443101863,
+   "pub_max": 2.1704863473083957,
+   "lsq_rms": 1.0657583443102496,
+   "lsq_singular_values": [
+    0.4702619681352284,
+    0.4700605251274418,
+    0.46997093459917577
+   ],
+   "lsq_loo_rms": 1.8045843144615508,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc1667/volumes/20251217075048-2.399um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "PHerc1667-20231117161658_masked",
+   "n_landmarks": 12,
+   "singular_values": [
+    0.30591939756188846,
+    0.30575976870734617,
+    0.3045286771546932
+   ],
+   "pub_rms": 6.780051883910555,
+   "pub_max": 14.893788844738742,
+   "lsq_rms": 6.780051883910567,
+   "lsq_singular_values": [
+    0.3059193975618882,
+    0.3057597687073459,
+    0.304528677154693
+   ],
+   "lsq_loo_rms": 9.675263392430741,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc1667/volumes/20260323082859-1.129um-0.2m-59keV-masked.zarr/transform-to-7.91-20231117161658.json",
+   "fixed_volume": "PHerc1667-20231117161658_masked",
+   "n_landmarks": 18,
+   "singular_values": [
+    0.14404469550989102,
+    0.1439679039748191,
+    0.1433720181583606
+   ],
+   "pub_rms": 0.5820344456062923,
+   "pub_max": 1.0557721965848694,
+   "lsq_rms": 0.5820344456062492,
+   "lsq_singular_values": [
+    0.1440446955098911,
+    0.143967903974819,
+    0.14337201815836065
+   ],
+   "lsq_loo_rms": 0.7698160967779194,
+   "status": "ok"
+  },
+  {
+   "key": "PHerc1667/volumes/20260323082859-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_1667_TA_0001_masked",
+   "n_landmarks": 6,
+   "singular_values": [
+    0.4774389162895538,
+    0.4711073852413716,
+    0.46489329689774245
+   ],
+   "pub_rms": 51.38586040987774,
+   "pub_max": 88.57375222996492,
+   "lsq_rms": 0.9258791722328044,
+   "lsq_singular_values": [
+    0.4714310896380596,
+    0.4710479589578218,
+    0.4707885116829946
+   ],
+   "lsq_loo_rms": 2.7335569894308325,
+   "status": "ok"
+  },
+  {
+   "key": "PHercMANBp/volumes/20260427100434-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_MANBp_bis_TA_0001_masked",
+   "n_landmarks": 15,
+   "singular_values": [
+    0.4705270144924513,
+    0.4703312471712345,
+    0.46448124999971263
+   ],
+   "pub_rms": 3.597637088534607,
+   "pub_max": 7.405881531139727,
+   "lsq_rms": 3.5976370885345372,
+   "lsq_singular_values": [
+    0.47052701449245116,
+    0.47033124717123476,
+    0.46448124999971035
+   ],
+   "lsq_loo_rms": 4.774261852106158,
+   "status": "ok"
+  },
+  {
+   "key": "PHercParis3/volumes/20260427095331-2.400um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "54keV_7.91um_Scroll2A",
+   "n_landmarks": 14,
+   "singular_values": [
+    0.30758665650040673,
+    0.30738257817699327,
+    0.3065999381542568
+   ],
+   "pub_rms": 2.607052089571114,
+   "pub_max": 3.854316873884988,
+   "lsq_rms": 2.6070520895713676,
+   "lsq_singular_values": [
+    0.3075866565004078,
+    0.3073825781769941,
+    0.30659993815425685
+   ],
+   "lsq_loo_rms": 4.378484610753532,
+   "status": "ok"
+  },
+  {
+   "key": "PHercParis4/volumes/20260310170716-45.532um-11.0m-74keV-masked.zarr/transform.json",
+   "fixed_volume": "PHerc4Paris-20230205180739_masked",
+   "n_landmarks": 15,
+   "singular_values": [
+    5.889470985329533,
+    5.816610801593019,
+    5.79890853575425
+   ],
+   "pub_rms": 65.53066549392113,
+   "pub_max": 125.69018128190187,
+   "lsq_rms": 62.404071342150665,
+   "lsq_singular_values": [
+    5.889470985328772,
+    5.8166108015930655,
+    5.798908535755051
+   ],
+   "lsq_loo_rms": 82.3966036142916,
+   "status": "ok"
+  },
+  {
+   "key": "PHercParis4/volumes/20260323153942-2.400um-0.2m-137keV-masked.zarr/transform.json",
+   "fixed_volume": "PHercParis4-20230205180739_masked",
+   "n_landmarks": 13,
+   "singular_values": [
+    0.30755645606713206,
+    0.30728985623858196,
+    0.30655635134511877
+   ],
+   "pub_rms": 0.7603808939770457,
+   "pub_max": 1.114258052333298,
+   "lsq_rms": 0.7603808939770825,
+   "lsq_singular_values": [
+    0.3075564560671319,
+    0.3072898562385819,
+    0.3065563513451189
+   ],
+   "lsq_loo_rms": 1.1241279840014655,
+   "status": "ok"
+  },
+  {
+   "key": "PHercParis4/volumes/20260411134726-2.400um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "PHercParis4-20230205180739_masked",
+   "n_landmarks": 24,
+   "singular_values": [
+    0.30727757816940676,
+    0.3071398851806851,
+    0.30660281977341075
+   ],
+   "pub_rms": 2.4540901305866134,
+   "pub_max": 6.439737279042922,
+   "lsq_rms": 2.454090130586432,
+   "lsq_singular_values": [
+    0.3072775781694069,
+    0.3071398851806849,
+    0.3066028197734109
+   ],
+   "lsq_loo_rms": 2.986593319141325,
+   "status": "ok"
+  },
+  {
+   "key": "PHercParis4/volumes/20260608103018-1.129um-0.2m-78keV-masked.zarr/transform.json",
+   "fixed_volume": "2.4um_PHerc-Paris4_masked",
+   "n_landmarks": 16,
+   "singular_values": [
+    0.4709195120497041,
+    0.47080723577606554,
+    0.470693011966608
+   ],
+   "pub_rms": 1.2234627420546564,
+   "pub_max": 1.8768299158099997,
+   "lsq_rms": 1.2234627420552908,
+   "lsq_singular_values": [
+    0.4709195120497037,
+    0.4708072357760654,
+    0.4706930119666075
+   ],
+   "lsq_loo_rms": 1.7065920461139212,
+   "status": "ok"
+  }
+ ]
+}
