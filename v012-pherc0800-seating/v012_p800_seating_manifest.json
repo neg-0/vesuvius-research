@@ -1,0 +1,87 @@
+{
+ "allowed_segments": {
+  "20251028222030-auto_grown_20251028222030940": {
+   "coordinate_tif_bytes": 66698,
+   "reference_score": 6.6608332793,
+   "role": "reproduction control (V-010 run 20260927T225244-ca5b618800)",
+   "sample_indices_sha256": "6f56f0ccbfdd7fb45d8d425d745d7e3638d47593fda3d084206f57fffc61cc86"
+  },
+  "20251028225813-auto_grown_20251028225813045": {
+   "coordinate_tif_bytes": 52114,
+   "role": "test segment (user selected 2026-10-04)"
+  }
+ },
+ "bucket_endpoint": "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/",
+ "compressor": null,
+ "dimension_separator": "/",
+ "dtype": "|u1",
+ "eligible_volume_id": "20250521135224",
+ "expected_mesh_scale_yx": [
+  0.05,
+  0.05
+ ],
+ "fill_value": 0,
+ "hypothesis": "V-012",
+ "level": 2,
+ "level_chunks_zyx": [
+  128,
+  128,
+  128
+ ],
+ "level_shape_zyx": [
+  6075,
+  2467,
+  2467
+ ],
+ "limits": {
+  "hard_runner_timeout_seconds": 1200,
+  "max_ct_chunk_bytes": 209715200,
+  "max_missing_chunk_body_bytes": 4096,
+  "max_object_bytes": 2097152,
+  "max_total_response_bytes": 262144000,
+  "minimum_free_disk_bytes": 3221225472,
+  "planning_memory_cap_bytes": 1073741824,
+  "request_timeout_seconds": 20
+ },
+ "mesh_scale": 1.0,
+ "min_coverage": 0.25,
+ "order": "C",
+ "probe_steps_level_voxels": [
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20,
+  22,
+  24,
+  26,
+  28,
+  30,
+  32,
+  34,
+  36,
+  38,
+  40,
+  42,
+  44,
+  46,
+  48,
+  50,
+  52,
+  54,
+  56,
+  58
+ ],
+ "sample": "PHerc0800",
+ "sample_count": 600,
+ "sample_seed": 0,
+ "schema_version": 1,
+ "threshold_no": 3.0,
+ "threshold_seated": 15.0,
+ "volume_prefix": "PHerc0800/volumes/20250521135224-8.640um-1.2m-116keV-masked.zarr/"
+}
