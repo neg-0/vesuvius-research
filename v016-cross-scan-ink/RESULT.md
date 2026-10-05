@@ -55,7 +55,11 @@ skipped as non-finite.
   each way against the refit mesh (w023: published 0.722, refit 0.843; w028: published 0.892, refit 0.852). The rerun
   of both arms with one numerically stable recipe (bfloat16) is [V-016b](../v016b-mesh-comparison/): the refit mesh wins
   on 6 of 6 segments (mean +0.208 AUC, one seed).
-- **It does not show** whether the fine-tuned model still reads the 2.399 µm scan.
+- **The adapted model forgets part of the 2.399 µm scan.** On the same six held-out windows of the 2.399 µm scan,
+  each fold's model scores a mean AUC of 0.755, against 0.918 for the original model. The loss is uneven: w013 drops
+  from 0.990 to 0.944, while w031 drops from 0.879 to 0.502. The bf16 models from V-016b behave the same way (refit
+  0.744, published 0.735). A model meant to read both scans would need 2.399 µm data mixed into the fine-tune. This
+  check is descriptive and has no pass rule; the data are in `results/forgetting/`.
 - **Scope:** six segments of one scroll, one seed, one training recipe fixed in advance.
 
 ## Reproduce
