@@ -1,7 +1,7 @@
-# V-018 result: published cross-scan surface volumes are offset 25–115 µm in-plane
+# V-018 result: published cross-scan surface volumes are offset 25–115 µm in-plane, some by up to 390 µm
 
 Run 2026-10-05 on cloud CPU. Code: `code/`. Data in `results/`: `audit.jsonl` (raw), `summary.md` (tables),
-`mesh_offset.jsonl`.
+`mesh_offset.jsonl`, `leads_500um.jsonl`.
 
 ## What was measured
 
@@ -36,9 +36,14 @@ other scan's render with the reference scan's render of the same segment in shar
 4. **The convention does not explain the 1.129 µm offsets.** It predicts about 13 µm there; the audit sees
    58–114 µm. The remainder is unexplained (transform or registration residuals are the likely source; not
    verified).
-5. **Leads with no good placement (best NCC < 0.4), outside PHerc1667:** PHercParis4 1.129 µm w064-068
-   (0.17), w085-088 (0.19), w046-052_jordi (0.29), w038-045 (0.37); PHerc0814 auto_grown 20250926051122
-   (1.129 µm 0.32, 9.362 µm 0.21), 20250925204843 (9.362 µm 0.24), 20250925182632 (9.362 µm 0.37).
+5. **The low-match segments outside PHerc1667 are larger offsets, not wrong sheets.** Seven pairs had best NCC
+   under 0.4 at ±200 µm. Rerun with villa-fork `check_placement.py --search-um 500 --windows 6`
+   (`leads_500um.jsonl`), every one but one reaches best NCC 0.72–0.95 at a median in-plane shift of 250–390 µm:
+   PHercParis4 1.129 µm w038-045, w046-052_jordi, w064-068, w085-088 (the last two on 1 usable window only) and
+   PHerc0814 auto_grown 20250925182632, 20250925204843 (9.362 µm) and 20250926051122 (1.129 µm). The exception
+   is PHerc0814 20250926051122 on 9.362 µm (best 0.38 at ±500 µm), which stays unexplained. So outside PHerc1667
+   no published cross-scan surface volume is on the wrong papyrus, but some are offset by several hundred µm,
+   which is many sheet spacings.
 
 ## Not yet reported upstream
 
@@ -54,4 +59,5 @@ checked on 2026-10-05.
 
 ## Next
 
-Per-segment look at the Paris4 and PHerc0814 leads; turn the check into a reusable placement step for multi-scan segments.
+The check is packaged as `foundation/volume-registration/check_placement.py` on the neg-0/villa branch
+claude/project-thread-s6f6nh (commit ca0ed2d, with tests).
