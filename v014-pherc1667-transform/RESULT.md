@@ -53,15 +53,30 @@ segments and C ≥ 0.4 on at least 5.
 | w029 | 0.186 | **0.588** | 0.565 (−6, −12, −8) | 0.621 (0, 2, −2) | 44 |
 | w031 | 0.021 | **0.185** | 0.066 (−9, −12, −8) | 0.716 (−13, 4, 0) | 411 |
 
-## Ink model (preregistered primary test, in progress)
+## Ink model (preregistered primary test): FAIL
 
-The canonical 2.4 µm model (`scrollprize/ink_canonical_2um`) was run on each arm.
-- On w013 it gives AUC 0.990 on R, 0.608 on P and 0.514 on C.
-- Since C sits on the same papyrus as R, the low score on C says this model, trained on 2.4 µm
-  78 keV data, does not read the 59 keV 1.129 µm scan. It does not say the mesh is wrong.
-- Fixing the transform is therefore necessary but not sufficient for 1.129 µm ink work. Ink
-  results on the 1.129 µm scan also need a model trained or adapted for that scan.
-- Full ink results for all six segments will be added here when the run ends.
+The canonical 2.4 µm model (`scrollprize/ink_canonical_2um`) was run on each arm. The table gives AUC at the
+centre 62-layer window, with the median displacement between the P and C meshes.
+
+| Segment | R (2.399 µm) | P (published) | C (refit) | P–C displacement (µm) |
+|---|---|---|---|---|
+| w013 | 0.990 | 0.608 | 0.514 | 124 |
+| w018 | 0.972 | 0.486 | 0.535 | 38 |
+| w023 | 0.913 | 0.606 | 0.602 | 166 |
+| w028 | 0.869 | 0.614 | 0.627 | 56 |
+| w029 | 0.888 | 0.600 | 0.573 | 44 |
+| w031 | 0.879 | 0.549 | 0.532 | 411 |
+
+- **Verdict: FAIL** as registered. The mean gain C − P is −0.013, and C wins on 2 segments and loses on 4.
+- **Neither mesh reads ink on the 1.129 µm scan.** The same model reads 0.87–0.99 on the 2.399 µm scan in the same
+  windows. The model, trained on 2.4 µm 78 keV data, does not transfer to the 59 keV 1.129 µm scan, so this test
+  cannot tell a good mesh from a bad one.
+- **Depth search does not rescue it** (descriptive only). The best of five depth offsets reaches 0.59–0.65 for P and
+  0.60–0.71 for C.
+- **Brightness matching does not rescue it** (exploratory). Quantile-matching the 1.129 µm voxels to the 2.399 µm
+  scan on w013 gave 0.75 or less for both meshes, with unstable label alignment.
+- **What this means.** The transform claim rests on the model-free CT placement test above. Ink on this scan needs a
+  model trained for it, such as the team's 1 µm model, re-run on rebuilt meshes.
 
 ## What should change
 
