@@ -49,8 +49,11 @@ skipped as non-finite.
   two.
 - **The transform matters.** V-014 showed that the published PHerc1667 matrix puts 1.129 µm meshes 38–411 µm off
   the papyrus. The labels supervise the right CT only along the refit mesh.
-- **It does not yet show** that the refit mesh trains a better model than the published one. That needs the same
-  run along the published meshes (planned).
+- **It does not yet show** that the refit mesh trains a better model than the published one. The same run along
+  the published meshes was attempted and is not a valid comparison: 2 of its 3 folds diverged (backbone activations
+  grew until the fp16 decoder overflowed, so their ink maps are NaN). The one fold that trained normally splits one
+  each way against the refit mesh (w023: published 0.722, refit 0.843; w028: published 0.892, refit 0.852). A rerun
+  of both arms with one numerically stable recipe (bfloat16) is registered and queued.
 - **It does not show** whether the fine-tuned model still reads the 2.399 µm scan.
 - **Scope:** six segments of one scroll, one seed, one training recipe fixed in advance.
 
