@@ -1,0 +1,1048 @@
+{
+ "listed_utc": "2026-10-08T01:40Z",
+ "bucket": "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/",
+ "segments": {
+  "1667_w013": {
+   "scroll": "PHerc1667",
+   "segment": "20240304141531-w013_20240304141531_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20240304141531-w013_20240304141531_flatboi/mesh/20240304141531-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20240304141531-w013_20240304141531_flatboi/mesh/20240304141531-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20240304141531-w013_20240304141531_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    41600,
+    79600
+   ],
+   "mrg": "PHerc1667/segments/20240304141531-w013_20240304141531_flatboi/ink-detection/PHerc1667-20240304141531-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20240304141531-w013_20240304141531_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    2080,
+    3980
+   ],
+   "mesh_B_shape": [
+    4449,
+    8401
+   ],
+   "mesh_B_bbox": [
+    [
+     1246.858154296875,
+     2204.562255859375,
+     -23524.13671875
+    ],
+    [
+     19018.345703125,
+     15876.9462890625,
+     51637.51171875
+    ]
+   ],
+   "mrg_size": 317704144,
+   "mrg_shape": [
+    44490,
+    84010
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    44490,
+    84010
+   ]
+  },
+  "1667_w018": {
+   "scroll": "PHerc1667",
+   "segment": "20240304144031-w018_20240304144031_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20240304144031-w018_20240304144031_flatboi/mesh/20240304144031-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20240304144031-w018_20240304144031_flatboi/mesh/20240304144031-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20240304144031-w018_20240304144031_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    42380,
+    98100
+   ],
+   "mrg": "PHerc1667/segments/20240304144031-w018_20240304144031_flatboi/ink-detection/PHerc1667-20240304144031-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20240304144031-w018_20240304144031_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    2119,
+    4905
+   ],
+   "mesh_B_shape": [
+    4531,
+    10355
+   ],
+   "mesh_B_bbox": [
+    [
+     531.93603515625,
+     755.323974609375,
+     -23802.517578125
+    ],
+    [
+     19974.798828125,
+     17284.966796875,
+     52248.6484375
+    ]
+   ],
+   "mrg_size": 361919359,
+   "mrg_shape": [
+    45310,
+    103550
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    45310,
+    103550
+   ]
+  },
+  "1667_w023": {
+   "scroll": "PHerc1667",
+   "segment": "20240304161941-w023_20240304161941_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20240304161941-w023_20240304161941_flatboi/mesh/20240304161941-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20240304161941-w023_20240304161941_flatboi/mesh/20240304161941-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20240304161941-w023_20240304161941_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    41860,
+    102360
+   ],
+   "mrg": "PHerc1667/segments/20240304161941-w023_20240304161941_flatboi/ink-detection/PHerc1667-20240304161941-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20240304161941-w023_20240304161941_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    2093,
+    5118
+   ],
+   "mesh_B_shape": [
+    4476,
+    10803
+   ],
+   "mesh_B_bbox": [
+    [
+     -32.73930740356445,
+     -877.5049438476562,
+     -23502.103515625
+    ],
+    [
+     20305.822265625,
+     18398.865234375,
+     52992.55078125
+    ]
+   ],
+   "mrg_size": 363974174,
+   "mrg_shape": [
+    44760,
+    108030
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    44760,
+    108030
+   ]
+  },
+  "1667_w028": {
+   "scroll": "PHerc1667",
+   "segment": "20251208130119-w028_20251208130119156_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20251208130119-w028_20251208130119156_flatboi/mesh/20251208130119-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20251208130119-w028_20251208130119156_flatboi/mesh/20251208130119-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20251208130119-w028_20251208130119156_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    37420,
+    30340
+   ],
+   "mrg": "PHerc1667/segments/20251208130119-w028_20251208130119156_flatboi/ink-detection/PHerc1667-20251208130119-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20251208130119-w028_20251208130119156_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    1871,
+    1517
+   ],
+   "mesh_B_shape": [
+    4001,
+    3201
+   ],
+   "mesh_B_bbox": [
+    [
+     -101.49333953857422,
+     -1294.13330078125,
+     -19863.8828125
+    ],
+    [
+     20195.158203125,
+     18598.28515625,
+     52664.0078125
+    ]
+   ],
+   "mrg_size": 107577072,
+   "mrg_shape": [
+    40010,
+    32010
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    40010,
+    32010
+   ]
+  },
+  "1667_w029": {
+   "scroll": "PHerc1667",
+   "segment": "20251212185248-w029_20251212185248662_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20251212185248-w029_20251212185248662_flatboi/mesh/20251212185248-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20251212185248-w029_20251212185248662_flatboi/mesh/20251212185248-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20251212185248-w029_20251212185248662_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    38000,
+    31320
+   ],
+   "mrg": "PHerc1667/segments/20251212185248-w029_20251212185248662_flatboi/ink-detection/PHerc1667-20251212185248-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20251212185248-w029_20251212185248662_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    1900,
+    1566
+   ],
+   "mesh_B_shape": [
+    4063,
+    3305
+   ],
+   "mesh_B_bbox": [
+    [
+     -258.2457580566406,
+     -1539.831787109375,
+     -20061.744140625
+    ],
+    [
+     20424.537109375,
+     18848.5859375,
+     52772.63671875
+    ]
+   ],
+   "mrg_size": 107657211,
+   "mrg_shape": [
+    40630,
+    33050
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    40630,
+    33050
+   ]
+  },
+  "1667_w031": {
+   "scroll": "PHerc1667",
+   "segment": "20251223230000-w031_2025122323_flatboi",
+   "status": "ok",
+   "mesh_A": "PHerc1667/segments/20251223230000-w031_2025122323_flatboi/mesh/20251223230000-on-20251217075048-2.399um.tifxyz/",
+   "mesh_B": "PHerc1667/segments/20251223230000-w031_2025122323_flatboi/mesh/20251223230000-on-20260323082859-1.129um.tifxyz/",
+   "labels": "PHerc1667/segments/20251223230000-w031_2025122323_flatboi/ink-labels/2.399um-volume-20251217075048/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    37480,
+    32180
+   ],
+   "mrg": "PHerc1667/segments/20251223230000-w031_2025122323_flatboi/ink-detection/PHerc1667-20251223230000-1.129um-0.22m-59keV-volume-20260323082859-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc1667/segments/20251223230000-w031_2025122323_flatboi/surface-volumes/1.129um-0.22m-59keV-volume-20260323082859-L1.zarr/",
+   "mesh_A_shape": [
+    1874,
+    1609
+   ],
+   "mesh_B_shape": [
+    4007,
+    3395
+   ],
+   "mesh_B_bbox": [
+    [
+     -478.2041931152344,
+     -1674.2025146484375,
+     -14253.6396484375
+    ],
+    [
+     20877.9921875,
+     19483.837890625,
+     53367.0
+    ]
+   ],
+   "mrg_size": 91053890,
+   "mrg_shape": [
+    40070,
+    33950
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    40070,
+    33950
+   ]
+  },
+  "P4_20230702185753": {
+   "scroll": "PHercParis4",
+   "segment": "20230702185753",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20230702185753/mesh/20230702185753-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20230702185753/mesh/20230702185753-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20230702185753/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    50600,
+    36400
+   ],
+   "mrg": "PHercParis4/segments/20230702185753/ink-detection/PHercParis4-20230702185753-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20230702185753/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    2530,
+    1820
+   ],
+   "mesh_B_shape": [
+    5374,
+    3865
+   ],
+   "mesh_B_bbox": [
+    [
+     16962.013671875,
+     13422.0791015625,
+     2818.317138671875
+    ],
+    [
+     32444.673828125,
+     40652.21484375,
+     97287.421875
+    ]
+   ],
+   "mrg_size": 233574753,
+   "mrg_shape": [
+    53740,
+    38650
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    53740,
+    38650
+   ]
+  },
+  "P4_20231007101619": {
+   "scroll": "PHercParis4",
+   "segment": "20231007101619",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20231007101619/mesh/20231007101619-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20231007101619/mesh/20231007101619-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20231007101619/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    52040,
+    108140
+   ],
+   "mrg": "PHercParis4/segments/20231007101619/ink-detection/PHercParis4-20231007101619-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20231007101619/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    2602,
+    5407
+   ],
+   "mesh_B_shape": [
+    5526,
+    11485
+   ],
+   "mesh_B_bbox": [
+    [
+     13985.6904296875,
+     10341.955078125,
+     2737.25537109375
+    ],
+    [
+     36163.2890625,
+     43150.73046875,
+     95303.4375
+    ]
+   ],
+   "mrg_size": 623052533,
+   "mrg_shape": [
+    55260,
+    114850
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    55260,
+    114850
+   ]
+  },
+  "P4_20231012184424": {
+   "scroll": "PHercParis4",
+   "segment": "20231012184424",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20231012184424/mesh/20231012184424-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20231012184424/mesh/20231012184424-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20231012184424/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    50800,
+    75720
+   ],
+   "mrg": "PHercParis4/segments/20231012184424/ink-detection/PHercParis4-20231012184424-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20231012184424/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    2540,
+    3786
+   ],
+   "mesh_B_shape": [
+    5395,
+    8042
+   ],
+   "mesh_B_bbox": [
+    [
+     15673.7021484375,
+     11417.06640625,
+     2729.866943359375
+    ],
+    [
+     34967.078125,
+     42134.12109375,
+     95274.109375
+    ]
+   ],
+   "mrg_size": 458443333,
+   "mrg_shape": [
+    53950,
+    80420
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    53950,
+    80420
+   ]
+  },
+  "P4_20231031143852": {
+   "scroll": "PHercParis4",
+   "segment": "20231031143852",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20231031143852/mesh/20231031143852-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20231031143852/mesh/20231031143852-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20231031143852/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    34180,
+    44020
+   ],
+   "mrg": "PHercParis4/segments/20231031143852/ink-detection/PHercParis4-20231031143852-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20231031143852/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    1709,
+    2201
+   ],
+   "mesh_B_shape": [
+    3629,
+    4674
+   ],
+   "mesh_B_bbox": [
+    [
+     18678.64453125,
+     13044.7861328125,
+     2761.920654296875
+    ],
+    [
+     32905.66015625,
+     31647.763671875,
+     66312.921875
+    ]
+   ],
+   "mrg_size": 261975568,
+   "mrg_shape": [
+    36290,
+    46740
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    36290,
+    46740
+   ]
+  },
+  "P4_20231106155351": {
+   "scroll": "PHercParis4",
+   "segment": "20231106155351",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20231106155351/mesh/20231106155351-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20231106155351/mesh/20231106155351-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20231106155351/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    34300,
+    51240
+   ],
+   "mrg": "PHercParis4/segments/20231106155351/ink-detection/PHercParis4-20231106155351-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20231106155351/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    1715,
+    2562
+   ],
+   "mesh_B_shape": [
+    3643,
+    5442
+   ],
+   "mesh_B_bbox": [
+    [
+     18361.7109375,
+     12327.2451171875,
+     2761.462158203125
+    ],
+    [
+     33579.0703125,
+     32055.36328125,
+     66332.2421875
+    ]
+   ],
+   "mrg_size": 327641473,
+   "mrg_shape": [
+    36430,
+    54420
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    36430,
+    54420
+   ]
+  },
+  "P4_20231210121321": {
+   "scroll": "PHercParis4",
+   "segment": "20231210121321",
+   "status": "ok",
+   "mesh_A": "PHercParis4/segments/20231210121321/mesh/20231210121321-on-20260411134726-2.4um.tifxyz/",
+   "mesh_B": "PHercParis4/segments/20231210121321/mesh/20231210121321-on-20260608103018-1.129um.tifxyz/",
+   "labels": "PHercParis4/segments/20231210121321/ink-labels/2.4um-volume-20260411134726/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    51000,
+    39980
+   ],
+   "mrg": "PHercParis4/segments/20231210121321/ink-detection/PHercParis4-20231210121321-1.129um-0.23m-78keV-volume-20260608103018-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHercParis4/segments/20231210121321/surface-volumes/1.129um-0.23m-78keV-volume-20260608103018-L1.zarr/",
+   "mesh_A_shape": [
+    2550,
+    1999
+   ],
+   "mesh_B_shape": [
+    5416,
+    4246
+   ],
+   "mesh_B_bbox": [
+    [
+     15239.5263671875,
+     11269.75,
+     2753.022216796875
+    ],
+    [
+     35133.49609375,
+     42433.953125,
+     95292.9375
+    ]
+   ],
+   "mrg_size": 224995078,
+   "mrg_shape": [
+    54160,
+    42460
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    54160,
+    42460
+   ]
+  },
+  "0139_w030": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000005-w030_2025010818",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20250108000005-w030_2025010818/mesh/20250108000005-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20250108000005-w030_2025010818/mesh/20250108000005-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20250108000005-w030_2025010818/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    27760,
+    29040
+   ],
+   "mrg": "PHerc0139/segments/20250108000005-w030_2025010818/ink-detection/PHerc0139-20250108000005-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20250108000005-w030_2025010818/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1388,
+    1452
+   ],
+   "mesh_B_shape": [
+    2952,
+    3089
+   ],
+   "mesh_B_bbox": [
+    [
+     6901.43798828125,
+     8464.310546875,
+     -15570.259765625
+    ],
+    [
+     27190.048828125,
+     28082.234375,
+     40386.17578125
+    ]
+   ],
+   "mrg_size": 48948156,
+   "mrg_shape": [
+    29520,
+    30890
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    29520,
+    30890
+   ]
+  },
+  "0139_w035": {
+   "scroll": "PHerc0139",
+   "segment": "20260317000000-w035_2026031718",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260317000000-w035_2026031718/mesh/20260317000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260317000000-w035_2026031718/mesh/20260317000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260317000000-w035_2026031718/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    22640,
+    20400
+   ],
+   "mrg": "PHerc0139/segments/20260317000000-w035_2026031718/ink-detection/PHerc0139-20260317000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260317000000-w035_2026031718/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1132,
+    1020
+   ],
+   "mesh_B_shape": [
+    2408,
+    2170
+   ],
+   "mesh_B_bbox": [
+    [
+     6038.7177734375,
+     8405.390625,
+     -6161.98388671875
+    ],
+    [
+     27567.544921875,
+     27490.44140625,
+     37303.87109375
+    ]
+   ],
+   "mrg_size": 31892543,
+   "mrg_shape": [
+    24080,
+    21700
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    24080,
+    21700
+   ]
+  },
+  "0139_w039": {
+   "scroll": "PHerc0139",
+   "segment": "20260302000000-w039_2026030210",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260302000000-w039_2026030210/mesh/20260302000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260302000000-w039_2026030210/mesh/20260302000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260302000000-w039_2026030210/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    33280,
+    30000
+   ],
+   "mrg": "PHerc0139/segments/20260302000000-w039_2026030210/ink-detection/PHerc0139-20260302000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260302000000-w039_2026030210/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1664,
+    1500
+   ],
+   "mesh_B_shape": [
+    3539,
+    3191
+   ],
+   "mesh_B_bbox": [
+    [
+     150.05714416503906,
+     3518.388671875,
+     -14669.080078125
+    ],
+    [
+     28222.87109375,
+     28279.0859375,
+     38714.0390625
+    ]
+   ],
+   "mrg_size": 46601197,
+   "mrg_shape": [
+    35390,
+    31910
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    35390,
+    31910
+   ]
+  },
+  "0139_w040": {
+   "scroll": "PHerc0139",
+   "segment": "20250831000000-w040_2025083102",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20250831000000-w040_2025083102/mesh/20250831000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20250831000000-w040_2025083102/mesh/20250831000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20250831000000-w040_2025083102/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    24880,
+    31040
+   ],
+   "mrg": "PHerc0139/segments/20250831000000-w040_2025083102/ink-detection/PHerc0139-20250831000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20250831000000-w040_2025083102/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1244,
+    1552
+   ],
+   "mesh_B_shape": [
+    2646,
+    3302
+   ],
+   "mesh_B_bbox": [
+    [
+     4882.83056640625,
+     7355.70068359375,
+     -8697.8173828125
+    ],
+    [
+     28514.51171875,
+     28760.693359375,
+     39015.2890625
+    ]
+   ],
+   "mrg_size": 51483293,
+   "mrg_shape": [
+    26460,
+    33020
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    26460,
+    33020
+   ]
+  },
+  "0139_w041": {
+   "scroll": "PHerc0139",
+   "segment": "20260108000000-w041_2026010816",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260108000000-w041_2026010816/mesh/20260108000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260108000000-w041_2026010816/mesh/20260108000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260108000000-w041_2026010816/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    24080,
+    31200
+   ],
+   "mrg": "PHerc0139/segments/20260108000000-w041_2026010816/ink-detection/PHerc0139-20260108000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260108000000-w041_2026010816/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1204,
+    1560
+   ],
+   "mesh_B_shape": [
+    2561,
+    3319
+   ],
+   "mesh_B_bbox": [
+    [
+     4737.13525390625,
+     7373.75634765625,
+     -8311.130859375
+    ],
+    [
+     28777.70703125,
+     28873.826171875,
+     38374.0
+    ]
+   ],
+   "mrg_size": 48233642,
+   "mrg_shape": [
+    25610,
+    33190
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    25610,
+    33190
+   ]
+  },
+  "0139_w043": {
+   "scroll": "PHerc0139",
+   "segment": "20260112000000-w043_2026011217",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260112000000-w043_2026011217/mesh/20260112000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260112000000-w043_2026011217/mesh/20260112000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260112000000-w043_2026011217/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    23760,
+    31600
+   ],
+   "mrg": "PHerc0139/segments/20260112000000-w043_2026011217/ink-detection/PHerc0139-20260112000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260112000000-w043_2026011217/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1188,
+    1580
+   ],
+   "mesh_B_shape": [
+    2527,
+    3361
+   ],
+   "mesh_B_bbox": [
+    [
+     4461.771484375,
+     7098.1416015625,
+     -7864.9951171875
+    ],
+    [
+     28894.3046875,
+     28949.19921875,
+     38282.12109375
+    ]
+   ],
+   "mrg_size": 51396911,
+   "mrg_shape": [
+    25270,
+    33610
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    25270,
+    33610
+   ]
+  },
+  "0139_w044": {
+   "scroll": "PHerc0139",
+   "segment": "20260115000000-w044_2026011522",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260115000000-w044_2026011522/mesh/20260115000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260115000000-w044_2026011522/mesh/20260115000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260115000000-w044_2026011522/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    23520,
+    31760
+   ],
+   "mrg": "PHerc0139/segments/20260115000000-w044_2026011522/ink-detection/PHerc0139-20260115000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260115000000-w044_2026011522/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1176,
+    1588
+   ],
+   "mesh_B_shape": [
+    2501,
+    3378
+   ],
+   "mesh_B_bbox": [
+    [
+     4373.0224609375,
+     6977.7705078125,
+     -7621.333984375
+    ],
+    [
+     29132.421875,
+     29042.1953125,
+     38010.33203125
+    ]
+   ],
+   "mrg_size": 50648842,
+   "mrg_shape": [
+    25010,
+    33780
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    25010,
+    33780
+   ]
+  },
+  "0139_w045": {
+   "scroll": "PHerc0139",
+   "segment": "20260126000000-w045_2026012619",
+   "status": "ok",
+   "mesh_A": "PHerc0139/segments/20260126000000-w045_2026012619/mesh/20260126000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_B": "PHerc0139/segments/20260126000000-w045_2026012619/mesh/20260126000000-on-20260413113053-1.129um.tifxyz/",
+   "labels": "PHerc0139/segments/20260126000000-w045_2026012619/ink-labels/2.399um-volume-20260102150214/20260918/inklabels.zarr/0/",
+   "label_dates": [
+    "20260918"
+   ],
+   "label_shape": [
+    23280,
+    32080
+   ],
+   "mrg": "PHerc0139/segments/20260126000000-w045_2026012619/ink-detection/PHerc0139-20260126000000-1.129um-0.22m-59keV-volume-20260413113053-L1-20260709123958-mrg20736-1um-s1z2-tile256-stride128.tif",
+   "sv_B": "PHerc0139/segments/20260126000000-w045_2026012619/surface-volumes/1.129um-0.22m-59keV-volume-20260413113053-L1.zarr/",
+   "mesh_A_shape": [
+    1164,
+    1604
+   ],
+   "mesh_B_shape": [
+    2476,
+    3412
+   ],
+   "mesh_B_bbox": [
+    [
+     4023.39013671875,
+     6793.12109375,
+     -7134.85693359375
+    ],
+    [
+     29218.1953125,
+     29131.478515625,
+     37867.7109375
+    ]
+   ],
+   "mrg_size": 50049737,
+   "mrg_shape": [
+    24760,
+    34120
+   ],
+   "mrg_dtype": "uint8",
+   "mrg_compression": 32946,
+   "mrg_tiled": true,
+   "canvas_B": [
+    24760,
+    34120
+   ]
+  }
+ },
+ "scrolls": {
+  "PHerc1667": {
+   "vol_A": "PHerc1667/volumes/20251217075048-2.399um-0.2m-78keV-masked.zarr",
+   "vol_B": "PHerc1667/volumes/20260323082859-1.129um-0.2m-59keV-masked.zarr",
+   "transform": "PHerc1667/volumes/20260323082859-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "transform_fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_1667_TA_0001_masked",
+   "n_landmarks": 6,
+   "vol_A_L0_zyx": [
+    37076,
+    15229,
+    15229
+   ],
+   "vol_B_L0_zyx": [
+    42209,
+    22122,
+    20276
+   ],
+   "um_A": 2.399,
+   "refit_required": true
+  },
+  "PHercParis4": {
+   "vol_A": "PHercParis4/volumes/20260411134726-2.400um-0.2m-78keV-masked.zarr",
+   "vol_B": "PHercParis4/volumes/20260608103018-1.129um-0.2m-78keV-masked.zarr",
+   "transform": "PHercParis4/volumes/20260608103018-1.129um-0.2m-78keV-masked.zarr/transform.json",
+   "transform_fixed_volume": "2.4um_PHerc-Paris4_masked",
+   "n_landmarks": 16,
+   "vol_A_L0_zyx": [
+    75784,
+    32693,
+    32693
+   ],
+   "vol_B_L0_zyx": [
+    59969,
+    36006,
+    32354
+   ],
+   "um_A": 2.4,
+   "refit_required": false
+  },
+  "PHerc0139": {
+   "vol_A": "PHerc0139/volumes/20260102150214-2.399um-0.2m-78keV-masked.zarr",
+   "vol_B": "PHerc0139/volumes/20260413113053-1.129um-0.2m-59keV-masked.zarr",
+   "transform": "PHerc0139/volumes/20260413113053-1.129um-0.2m-59keV-masked.zarr/transform.json",
+   "transform_fixed_volume": "SCROLLS_HEL_2.399um_78keV_0.22m_PHerc_0139_TA3_0001_masked",
+   "n_landmarks": 12,
+   "vol_A_L0_zyx": [
+    76953,
+    26511,
+    26511
+   ],
+   "vol_B_L0_zyx": [
+    19297,
+    35971,
+    32318
+   ],
+   "um_A": 2.399,
+   "refit_required": false
+  }
+ },
+ "listed_utc_by_scroll": {
+  "PHerc0139": "2026-10-08T04:45Z"
+ }
+}
