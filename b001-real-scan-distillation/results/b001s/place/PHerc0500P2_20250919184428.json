@@ -1,0 +1,30 @@
+{
+ "segment": "PHerc0500P2_20250919184428",
+ "verdict": "PLACE_FAIL",
+ "k": 4.226636568848758,
+ "crops": [],
+ "fit": {
+  "informative": 0,
+  "coef": null,
+  "rms": null,
+  "used": 0
+ },
+ "dz": 0,
+ "rule": {
+  "N_CROPS": 12,
+  "CROP": 192,
+  "DZ": 3,
+  "R_COARSE": 20,
+  "R_FINE": 2,
+  "NCC_LAYERS": [
+   8,
+   21
+  ],
+  "NCC_OK": 0.5,
+  "NEED_CROPS": 8,
+  "RMS_MAX": 2.0,
+  "TRIM_PX": 3.0
+ },
+ "seconds": 0.4,
+ "line": "PLACE_FAIL: 0 of 0 crops used (informative 0, need 8), fit RMS None px (<= 2.0), median NCC nan -> nan, dz 0, max shift None um"
+}

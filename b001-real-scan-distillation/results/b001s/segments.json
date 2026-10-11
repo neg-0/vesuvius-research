@@ -1,0 +1,4819 @@
+{
+ "bucket": "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/",
+ "listed_utc": "2026-10-10T21:57Z",
+ "scrolls": {
+  "PHerc0139": {
+   "role": "train",
+   "lr": "20250728140407",
+   "hr": "20260102150214",
+   "um_lr": 9.362,
+   "um_hr": 2.399
+  },
+  "PHerc0814": {
+   "role": "train",
+   "lr": "20250804134230",
+   "hr": "20260309142202",
+   "um_lr": 9.362,
+   "um_hr": 2.399
+  },
+  "PHerc0343P": {
+   "role": "train",
+   "lr": "20250521134555",
+   "hr": "20260304131111",
+   "um_lr": 8.64,
+   "um_hr": 2.215
+  },
+  "PHerc0841": {
+   "role": "test",
+   "lr": "20250821151531",
+   "hr": "20260319124803",
+   "um_lr": 9.366,
+   "um_hr": 2.403
+  },
+  "PHerc0009B": {
+   "role": "test",
+   "lr": "20250521125136",
+   "hr": "20250820154339",
+   "um_lr": 8.64,
+   "um_hr": 2.401
+  },
+  "PHerc0500P2": {
+   "role": "test",
+   "lr": "20250820143440",
+   "hr": "20250526151718",
+   "um_lr": 9.362,
+   "um_hr": 2.215
+  }
+ },
+ "segments": {
+  "PHerc0009B_20250510172639": {
+   "scroll": "PHerc0009B",
+   "segment": "20250510172639",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250510172639/mesh/20250510172639-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250510172639/mesh/20250510172639-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250510172639/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250510172639/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250510172639/ink-detection/PHerc0009B-20250510172639-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    5140,
+    4100
+   ],
+   "sv_hr_shape": [
+    109,
+    18520,
+    14760
+   ],
+   "mesh_hr_shape": [
+    926,
+    738
+   ],
+   "mesh_lr_shape": [
+    257,
+    205
+   ],
+   "teacher_shape": [
+    18520,
+    14760
+   ],
+   "index": 0
+  },
+  "PHerc0009B_20250510172804": {
+   "scroll": "PHerc0009B",
+   "segment": "20250510172804",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250510172804/mesh/20250510172804-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250510172804/mesh/20250510172804-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250510172804/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250510172804/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250510172804/ink-detection/PHerc0009B-20250510172804-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    4080,
+    5900
+   ],
+   "sv_hr_shape": [
+    109,
+    14680,
+    21240
+   ],
+   "mesh_hr_shape": [
+    734,
+    1062
+   ],
+   "mesh_lr_shape": [
+    204,
+    295
+   ],
+   "teacher_shape": [
+    14680,
+    21240
+   ],
+   "index": 1
+  },
+  "PHerc0009B_20250511200236": {
+   "scroll": "PHerc0009B",
+   "segment": "20250511200236",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250511200236/mesh/20250511200236-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250511200236/mesh/20250511200236-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250511200236/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250511200236/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250511200236/ink-detection/PHerc0009B-20250511200236-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    4160,
+    4020
+   ],
+   "sv_hr_shape": [
+    109,
+    14980,
+    14460
+   ],
+   "mesh_hr_shape": [
+    749,
+    723
+   ],
+   "mesh_lr_shape": [
+    208,
+    201
+   ],
+   "teacher_shape": [
+    14980,
+    14460
+   ],
+   "index": 2
+  },
+  "PHerc0009B_20250910185200": {
+   "scroll": "PHerc0009B",
+   "segment": "20250910185200",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "status": "missing mesh_hr,mesh_lr,sv_hr,sv_lr,teacher",
+   "index": 3
+  },
+  "PHerc0009B_20250919064353": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919064353-auto_grown_20250918234353791",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919064353-auto_grown_20250918234353791/mesh/20250919064353-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919064353-auto_grown_20250918234353791/mesh/20250919064353-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919064353-auto_grown_20250918234353791/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919064353-auto_grown_20250918234353791/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919064353-auto_grown_20250918234353791/ink-detection/PHerc0009B-20250919064353-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6720,
+    5800
+   ],
+   "sv_hr_shape": [
+    109,
+    24200,
+    20880
+   ],
+   "mesh_hr_shape": [
+    1210,
+    1044
+   ],
+   "mesh_lr_shape": [
+    336,
+    290
+   ],
+   "teacher_shape": [
+    24200,
+    20880
+   ],
+   "index": 4
+  },
+  "PHerc0009B_20250919123506": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919123506-auto_grown_20250919053506178_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919123506-auto_grown_20250919053506178_inp_hr/mesh/20250919123506-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919123506-auto_grown_20250919053506178_inp_hr/mesh/20250919123506-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919123506-auto_grown_20250919053506178_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919123506-auto_grown_20250919053506178_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919123506-auto_grown_20250919053506178_inp_hr/ink-detection/PHerc0009B-20250919123506-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7260,
+    5660
+   ],
+   "sv_hr_shape": [
+    109,
+    26140,
+    20360
+   ],
+   "mesh_hr_shape": [
+    1307,
+    1018
+   ],
+   "mesh_lr_shape": [
+    363,
+    283
+   ],
+   "teacher_shape": [
+    26140,
+    20360
+   ],
+   "index": 5
+  },
+  "PHerc0009B_20250919124722": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919124722-auto_grown_20250919054722721_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919124722-auto_grown_20250919054722721_inp_hr/mesh/20250919124722-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919124722-auto_grown_20250919054722721_inp_hr/mesh/20250919124722-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919124722-auto_grown_20250919054722721_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919124722-auto_grown_20250919054722721_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919124722-auto_grown_20250919054722721_inp_hr/ink-detection/PHerc0009B-20250919124722-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7320,
+    5000
+   ],
+   "sv_hr_shape": [
+    109,
+    26360,
+    18000
+   ],
+   "mesh_hr_shape": [
+    1318,
+    900
+   ],
+   "mesh_lr_shape": [
+    366,
+    250
+   ],
+   "teacher_shape": [
+    26360,
+    18000
+   ],
+   "index": 6
+  },
+  "PHerc0009B_20250919124917": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919124917-auto_grown_20250919054917419_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919124917-auto_grown_20250919054917419_inp_hr/mesh/20250919124917-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919124917-auto_grown_20250919054917419_inp_hr/mesh/20250919124917-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919124917-auto_grown_20250919054917419_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919124917-auto_grown_20250919054917419_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919124917-auto_grown_20250919054917419_inp_hr/ink-detection/PHerc0009B-20250919124917-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7000,
+    3780
+   ],
+   "sv_hr_shape": [
+    109,
+    25200,
+    13600
+   ],
+   "mesh_hr_shape": [
+    1260,
+    680
+   ],
+   "mesh_lr_shape": [
+    350,
+    189
+   ],
+   "teacher_shape": [
+    25200,
+    13600
+   ],
+   "index": 7
+  },
+  "PHerc0009B_20250919125302": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919125302-auto_grown_20250919055302061",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919125302-auto_grown_20250919055302061/mesh/20250919125302-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919125302-auto_grown_20250919055302061/mesh/20250919125302-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919125302-auto_grown_20250919055302061/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919125302-auto_grown_20250919055302061/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919125302-auto_grown_20250919055302061/ink-detection/PHerc0009B-20250919125302-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6180,
+    5160
+   ],
+   "sv_hr_shape": [
+    109,
+    22260,
+    18580
+   ],
+   "mesh_hr_shape": [
+    1113,
+    929
+   ],
+   "mesh_lr_shape": [
+    309,
+    258
+   ],
+   "teacher_shape": [
+    22260,
+    18580
+   ],
+   "index": 8
+  },
+  "PHerc0009B_20250919125605": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919125605-auto_grown_20250919055605407",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919125605-auto_grown_20250919055605407/mesh/20250919125605-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919125605-auto_grown_20250919055605407/mesh/20250919125605-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919125605-auto_grown_20250919055605407/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919125605-auto_grown_20250919055605407/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919125605-auto_grown_20250919055605407/ink-detection/PHerc0009B-20250919125605-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6960,
+    5740
+   ],
+   "sv_hr_shape": [
+    109,
+    25060,
+    20660
+   ],
+   "mesh_hr_shape": [
+    1253,
+    1033
+   ],
+   "mesh_lr_shape": [
+    348,
+    287
+   ],
+   "teacher_shape": [
+    25060,
+    20660
+   ],
+   "index": 9
+  },
+  "PHerc0009B_20250919125754": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919125754-auto_grown_20250919055754487_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/mesh/20250919125754-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/mesh/20250919125754-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/ink-detection/PHerc0009B-20250919125754-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0009B/segments/20250919125754-auto_grown_20250919055754487_inp_hr/ink-labels/2.401um-volume-20250820154339/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7040,
+    5700
+   ],
+   "sv_hr_shape": [
+    109,
+    25360,
+    20520
+   ],
+   "mesh_hr_shape": [
+    1268,
+    1026
+   ],
+   "mesh_lr_shape": [
+    352,
+    285
+   ],
+   "teacher_shape": [
+    25360,
+    20520
+   ],
+   "index": 10
+  },
+  "PHerc0009B_20250919130642": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919130642-auto_grown_20250919060642061",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919130642-auto_grown_20250919060642061/mesh/20250919130642-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919130642-auto_grown_20250919060642061/mesh/20250919130642-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919130642-auto_grown_20250919060642061/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919130642-auto_grown_20250919060642061/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919130642-auto_grown_20250919060642061/ink-detection/PHerc0009B-20250919130642-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7180,
+    5260
+   ],
+   "sv_hr_shape": [
+    109,
+    25860,
+    18940
+   ],
+   "mesh_hr_shape": [
+    1293,
+    947
+   ],
+   "mesh_lr_shape": [
+    359,
+    263
+   ],
+   "teacher_shape": [
+    25860,
+    18940
+   ],
+   "index": 11
+  },
+  "PHerc0009B_20250919131352": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919131352-auto_grown_20250919061352722_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919131352-auto_grown_20250919061352722_inp_hr/mesh/20250919131352-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919131352-auto_grown_20250919061352722_inp_hr/mesh/20250919131352-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919131352-auto_grown_20250919061352722_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919131352-auto_grown_20250919061352722_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919131352-auto_grown_20250919061352722_inp_hr/ink-detection/PHerc0009B-20250919131352-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7640,
+    5700
+   ],
+   "sv_hr_shape": [
+    109,
+    27520,
+    20520
+   ],
+   "mesh_hr_shape": [
+    1376,
+    1026
+   ],
+   "mesh_lr_shape": [
+    382,
+    285
+   ],
+   "teacher_shape": [
+    27520,
+    20520
+   ],
+   "index": 12
+  },
+  "PHerc0009B_20250919131642": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919131642-auto_grown_20250919061642215_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919131642-auto_grown_20250919061642215_inp_hr/mesh/20250919131642-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919131642-auto_grown_20250919061642215_inp_hr/mesh/20250919131642-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919131642-auto_grown_20250919061642215_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919131642-auto_grown_20250919061642215_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919131642-auto_grown_20250919061642215_inp_hr/ink-detection/PHerc0009B-20250919131642-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6580,
+    3620
+   ],
+   "sv_hr_shape": [
+    109,
+    23700,
+    13020
+   ],
+   "mesh_hr_shape": [
+    1185,
+    651
+   ],
+   "mesh_lr_shape": [
+    329,
+    181
+   ],
+   "teacher_shape": [
+    23700,
+    13020
+   ],
+   "index": 13
+  },
+  "PHerc0009B_20250919132115": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919132115-auto_grown_20250919062115592_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919132115-auto_grown_20250919062115592_inp_hr/mesh/20250919132115-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919132115-auto_grown_20250919062115592_inp_hr/mesh/20250919132115-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919132115-auto_grown_20250919062115592_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919132115-auto_grown_20250919062115592_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919132115-auto_grown_20250919062115592_inp_hr/ink-detection/PHerc0009B-20250919132115-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7240,
+    6560
+   ],
+   "sv_hr_shape": [
+    109,
+    26060,
+    23620
+   ],
+   "mesh_hr_shape": [
+    1303,
+    1181
+   ],
+   "mesh_lr_shape": [
+    362,
+    328
+   ],
+   "teacher_shape": [
+    26060,
+    23620
+   ],
+   "index": 14
+  },
+  "PHerc0009B_20250919133208": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919133208-auto_grown_20250919063208154_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919133208-auto_grown_20250919063208154_inp_hr/mesh/20250919133208-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919133208-auto_grown_20250919063208154_inp_hr/mesh/20250919133208-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919133208-auto_grown_20250919063208154_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919133208-auto_grown_20250919063208154_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919133208-auto_grown_20250919063208154_inp_hr/ink-detection/PHerc0009B-20250919133208-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6820,
+    5020
+   ],
+   "sv_hr_shape": [
+    109,
+    24560,
+    18060
+   ],
+   "mesh_hr_shape": [
+    1228,
+    903
+   ],
+   "mesh_lr_shape": [
+    341,
+    251
+   ],
+   "teacher_shape": [
+    24560,
+    18060
+   ],
+   "index": 15
+  },
+  "PHerc0009B_20250919135433": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919135433-auto_grown_20250919065433578_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919135433-auto_grown_20250919065433578_inp_hr/mesh/20250919135433-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919135433-auto_grown_20250919065433578_inp_hr/mesh/20250919135433-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919135433-auto_grown_20250919065433578_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919135433-auto_grown_20250919065433578_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919135433-auto_grown_20250919065433578_inp_hr/ink-detection/PHerc0009B-20250919135433-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7040,
+    6880
+   ],
+   "sv_hr_shape": [
+    109,
+    25360,
+    24760
+   ],
+   "mesh_hr_shape": [
+    1268,
+    1238
+   ],
+   "mesh_lr_shape": [
+    352,
+    344
+   ],
+   "teacher_shape": [
+    25360,
+    24760
+   ],
+   "index": 16
+  },
+  "PHerc0009B_20250919135915": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919135915-auto_grown_20250919065915092_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919135915-auto_grown_20250919065915092_inp_hr/mesh/20250919135915-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919135915-auto_grown_20250919065915092_inp_hr/mesh/20250919135915-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919135915-auto_grown_20250919065915092_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919135915-auto_grown_20250919065915092_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919135915-auto_grown_20250919065915092_inp_hr/ink-detection/PHerc0009B-20250919135915-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    6580,
+    5380
+   ],
+   "sv_hr_shape": [
+    109,
+    23700,
+    19360
+   ],
+   "mesh_hr_shape": [
+    1185,
+    968
+   ],
+   "mesh_lr_shape": [
+    329,
+    269
+   ],
+   "teacher_shape": [
+    23700,
+    19360
+   ],
+   "index": 17
+  },
+  "PHerc0009B_20250919140325": {
+   "scroll": "PHerc0009B",
+   "segment": "20250919140325-auto_grown_20250919070325767_inp_hr",
+   "role": "test",
+   "k": 3.5985006247396925,
+   "mesh_hr": "PHerc0009B/segments/20250919140325-auto_grown_20250919070325767_inp_hr/mesh/20250919140325-on-20250820154339-2.401um.tifxyz/",
+   "mesh_lr": "PHerc0009B/segments/20250919140325-auto_grown_20250919070325767_inp_hr/mesh/20250919140325-on-20250521125136-8.64um.tifxyz/",
+   "sv_hr": "PHerc0009B/segments/20250919140325-auto_grown_20250919070325767_inp_hr/surface-volumes/2.401um-0.35m-77keV-volume-20250820154339.zarr",
+   "sv_lr": "PHerc0009B/segments/20250919140325-auto_grown_20250919070325767_inp_hr/surface-volumes/8.64um-1.2m-116keV-volume-20250521125136.zarr",
+   "teacher": "PHerc0009B/segments/20250919140325-auto_grown_20250919070325767_inp_hr/ink-detection/PHerc0009B-20250919140325-2.401um-0.35m-77keV-volume-20250820154339-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    7140,
+    4720
+   ],
+   "sv_hr_shape": [
+    109,
+    25700,
+    17000
+   ],
+   "mesh_hr_shape": [
+    1285,
+    850
+   ],
+   "mesh_lr_shape": [
+    357,
+    236
+   ],
+   "teacher_shape": [
+    25700,
+    17000
+   ],
+   "index": 18
+  },
+  "PHerc0139_20250108000000": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000000-w025_2025010863",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000000-w025_2025010863/mesh/20250108000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000000-w025_2025010863/mesh/20250108000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000000-w025_2025010863/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000000-w025_2025010863/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000000-w025_2025010863/ink-detection/PHerc0139-20250108000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7280,
+    6800
+   ],
+   "sv_hr_shape": [
+    109,
+    28320,
+    26480
+   ],
+   "mesh_hr_shape": [
+    1416,
+    1324
+   ],
+   "mesh_lr_shape": [
+    364,
+    340
+   ],
+   "teacher_shape": [
+    28320,
+    26480
+   ],
+   "index": 19
+  },
+  "PHerc0139_20250108000001": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000001-w026_2025010854",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000001-w026_2025010854/mesh/20250108000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000001-w026_2025010854/mesh/20250108000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000001-w026_2025010854/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000001-w026_2025010854/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000001-w026_2025010854/ink-detection/PHerc0139-20250108000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7440,
+    7320
+   ],
+   "sv_hr_shape": [
+    109,
+    28960,
+    28480
+   ],
+   "mesh_hr_shape": [
+    1448,
+    1424
+   ],
+   "mesh_lr_shape": [
+    372,
+    366
+   ],
+   "teacher_shape": [
+    28960,
+    28480
+   ],
+   "index": 20
+  },
+  "PHerc0139_20250108000002": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000002-w027_2025010845",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000002-w027_2025010845/mesh/20250108000002-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000002-w027_2025010845/mesh/20250108000002-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000002-w027_2025010845/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000002-w027_2025010845/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000002-w027_2025010845/ink-detection/PHerc0139-20250108000002-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7320,
+    7300
+   ],
+   "sv_hr_shape": [
+    109,
+    28480,
+    28400
+   ],
+   "mesh_hr_shape": [
+    1424,
+    1420
+   ],
+   "mesh_lr_shape": [
+    366,
+    365
+   ],
+   "teacher_shape": [
+    28480,
+    28400
+   ],
+   "index": 21
+  },
+  "PHerc0139_20250108000003": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000003-w028_2025010836",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000003-w028_2025010836/mesh/20250108000003-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000003-w028_2025010836/mesh/20250108000003-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000003-w028_2025010836/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000003-w028_2025010836/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000003-w028_2025010836/ink-detection/PHerc0139-20250108000003-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7260,
+    7360
+   ],
+   "sv_hr_shape": [
+    109,
+    28240,
+    28640
+   ],
+   "mesh_hr_shape": [
+    1412,
+    1432
+   ],
+   "mesh_lr_shape": [
+    363,
+    368
+   ],
+   "teacher_shape": [
+    28240,
+    28640
+   ],
+   "index": 22
+  },
+  "PHerc0139_20250108000004": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000004-w029_2025010827",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000004-w029_2025010827/mesh/20250108000004-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000004-w029_2025010827/mesh/20250108000004-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000004-w029_2025010827/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000004-w029_2025010827/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000004-w029_2025010827/ink-detection/PHerc0139-20250108000004-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7220,
+    7420
+   ],
+   "sv_hr_shape": [
+    109,
+    28080,
+    28880
+   ],
+   "mesh_hr_shape": [
+    1404,
+    1444
+   ],
+   "mesh_lr_shape": [
+    361,
+    371
+   ],
+   "teacher_shape": [
+    28080,
+    28880
+   ],
+   "index": 23
+  },
+  "PHerc0139_20250108000005": {
+   "scroll": "PHerc0139",
+   "segment": "20250108000005-w030_2025010818",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250108000005-w030_2025010818/mesh/20250108000005-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250108000005-w030_2025010818/mesh/20250108000005-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250108000005-w030_2025010818/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250108000005-w030_2025010818/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250108000005-w030_2025010818/ink-detection/PHerc0139-20250108000005-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20250108000005-w030_2025010818/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7140,
+    7460
+   ],
+   "sv_hr_shape": [
+    109,
+    27760,
+    29040
+   ],
+   "mesh_hr_shape": [
+    1388,
+    1452
+   ],
+   "mesh_lr_shape": [
+    357,
+    373
+   ],
+   "teacher_shape": [
+    27760,
+    29040
+   ],
+   "index": 24
+  },
+  "PHerc0139_20250223000000": {
+   "scroll": "PHerc0139",
+   "segment": "20250223000000-w059_2025022312",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250223000000-w059_2025022312/mesh/20250223000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250223000000-w059_2025022312/mesh/20250223000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250223000000-w059_2025022312/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250223000000-w059_2025022312/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250223000000-w059_2025022312/ink-detection/PHerc0139-20250223000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7220,
+    10020
+   ],
+   "sv_hr_shape": [
+    109,
+    28080,
+    38960
+   ],
+   "mesh_hr_shape": [
+    1404,
+    1948
+   ],
+   "mesh_lr_shape": [
+    361,
+    501
+   ],
+   "teacher_shape": [
+    28080,
+    38960
+   ],
+   "index": 25
+  },
+  "PHerc0139_20250831000000": {
+   "scroll": "PHerc0139",
+   "segment": "20250831000000-w040_2025083102",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20250831000000-w040_2025083102/mesh/20250831000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20250831000000-w040_2025083102/mesh/20250831000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20250831000000-w040_2025083102/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20250831000000-w040_2025083102/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20250831000000-w040_2025083102/ink-detection/PHerc0139-20250831000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20250831000000-w040_2025083102/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6400,
+    7980
+   ],
+   "sv_hr_shape": [
+    109,
+    24880,
+    31040
+   ],
+   "mesh_hr_shape": [
+    1244,
+    1552
+   ],
+   "mesh_lr_shape": [
+    320,
+    399
+   ],
+   "teacher_shape": [
+    24880,
+    31040
+   ],
+   "index": 26
+  },
+  "PHerc0139_20251226000000": {
+   "scroll": "PHerc0139",
+   "segment": "20251226000000-w055_2025122611",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20251226000000-w055_2025122611/mesh/20251226000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20251226000000-w055_2025122611/mesh/20251226000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20251226000000-w055_2025122611/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20251226000000-w055_2025122611/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20251226000000-w055_2025122611/ink-detection/PHerc0139-20251226000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7720,
+    10420
+   ],
+   "sv_hr_shape": [
+    109,
+    30000,
+    40560
+   ],
+   "mesh_hr_shape": [
+    1500,
+    2028
+   ],
+   "mesh_lr_shape": [
+    386,
+    521
+   ],
+   "teacher_shape": [
+    30000,
+    40560
+   ],
+   "index": 27
+  },
+  "PHerc0139_20260108000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260108000000-w041_2026010816",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260108000000-w041_2026010816/mesh/20260108000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260108000000-w041_2026010816/mesh/20260108000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260108000000-w041_2026010816/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260108000000-w041_2026010816/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260108000000-w041_2026010816/ink-detection/PHerc0139-20260108000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260108000000-w041_2026010816/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6200,
+    8020
+   ],
+   "sv_hr_shape": [
+    109,
+    24080,
+    31200
+   ],
+   "mesh_hr_shape": [
+    1204,
+    1560
+   ],
+   "mesh_lr_shape": [
+    310,
+    401
+   ],
+   "teacher_shape": [
+    24080,
+    31200
+   ],
+   "index": 28
+  },
+  "PHerc0139_20260112000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260112000000-w043_2026011217",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260112000000-w043_2026011217/mesh/20260112000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260112000000-w043_2026011217/mesh/20260112000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260112000000-w043_2026011217/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260112000000-w043_2026011217/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260112000000-w043_2026011217/ink-detection/PHerc0139-20260112000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260112000000-w043_2026011217/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6120,
+    8120
+   ],
+   "sv_hr_shape": [
+    109,
+    23760,
+    31600
+   ],
+   "mesh_hr_shape": [
+    1188,
+    1580
+   ],
+   "mesh_lr_shape": [
+    306,
+    406
+   ],
+   "teacher_shape": [
+    23760,
+    31600
+   ],
+   "index": 29
+  },
+  "PHerc0139_20260115000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260115000000-w044_2026011522",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260115000000-w044_2026011522/mesh/20260115000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260115000000-w044_2026011522/mesh/20260115000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260115000000-w044_2026011522/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260115000000-w044_2026011522/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260115000000-w044_2026011522/ink-detection/PHerc0139-20260115000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260115000000-w044_2026011522/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6040,
+    8160
+   ],
+   "sv_hr_shape": [
+    109,
+    23520,
+    31760
+   ],
+   "mesh_hr_shape": [
+    1176,
+    1588
+   ],
+   "mesh_lr_shape": [
+    302,
+    408
+   ],
+   "teacher_shape": [
+    23520,
+    31760
+   ],
+   "index": 30
+  },
+  "PHerc0139_20260115000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260115000001-w056_2026011514",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260115000001-w056_2026011514/mesh/20260115000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260115000001-w056_2026011514/mesh/20260115000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260115000001-w056_2026011514/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260115000001-w056_2026011514/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260115000001-w056_2026011514/ink-detection/PHerc0139-20260115000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7180,
+    9740
+   ],
+   "sv_hr_shape": [
+    109,
+    27920,
+    37920
+   ],
+   "mesh_hr_shape": [
+    1396,
+    1896
+   ],
+   "mesh_lr_shape": [
+    359,
+    487
+   ],
+   "teacher_shape": [
+    27920,
+    37920
+   ],
+   "index": 31
+  },
+  "PHerc0139_20260126000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260126000000-w045_2026012619",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260126000000-w045_2026012619/mesh/20260126000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260126000000-w045_2026012619/mesh/20260126000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260126000000-w045_2026012619/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260126000000-w045_2026012619/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260126000000-w045_2026012619/ink-detection/PHerc0139-20260126000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260126000000-w045_2026012619/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5980,
+    8240
+   ],
+   "sv_hr_shape": [
+    109,
+    23280,
+    32080
+   ],
+   "mesh_hr_shape": [
+    1164,
+    1604
+   ],
+   "mesh_lr_shape": [
+    299,
+    412
+   ],
+   "teacher_shape": [
+    23280,
+    32080
+   ],
+   "index": 32
+  },
+  "PHerc0139_20260127000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260127000000-w057_2026012713",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260127000000-w057_2026012713/mesh/20260127000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260127000000-w057_2026012713/mesh/20260127000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260127000000-w057_2026012713/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260127000000-w057_2026012713/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260127000000-w057_2026012713/ink-detection/PHerc0139-20260127000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7600,
+    9780
+   ],
+   "sv_hr_shape": [
+    109,
+    29520,
+    38080
+   ],
+   "mesh_hr_shape": [
+    1476,
+    1904
+   ],
+   "mesh_lr_shape": [
+    380,
+    489
+   ],
+   "teacher_shape": [
+    29520,
+    38080
+   ],
+   "index": 33
+  },
+  "PHerc0139_20260130000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260130000000-w031_2026013019",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260130000000-w031_2026013019/mesh/20260130000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260130000000-w031_2026013019/mesh/20260130000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260130000000-w031_2026013019/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260130000000-w031_2026013019/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260130000000-w031_2026013019/ink-detection/PHerc0139-20260130000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7080,
+    7500
+   ],
+   "sv_hr_shape": [
+    109,
+    27520,
+    29200
+   ],
+   "mesh_hr_shape": [
+    1376,
+    1460
+   ],
+   "mesh_lr_shape": [
+    354,
+    375
+   ],
+   "teacher_shape": [
+    27520,
+    29200
+   ],
+   "index": 34
+  },
+  "PHerc0139_20260130000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260130000001-w030_202601301912",
+   "role": "train",
+   "k": 3.902459358065861,
+   "status": "missing mesh_hr,mesh_lr,sv_hr,sv_lr,teacher",
+   "index": 35
+  },
+  "PHerc0139_20260203000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260203000000-w032_2026020303",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260203000000-w032_2026020303/mesh/20260203000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260203000000-w032_2026020303/mesh/20260203000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260203000000-w032_2026020303/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260203000000-w032_2026020303/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260203000000-w032_2026020303/ink-detection/PHerc0139-20260203000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7100,
+    7600
+   ],
+   "sv_hr_shape": [
+    109,
+    27600,
+    29600
+   ],
+   "mesh_hr_shape": [
+    1380,
+    1480
+   ],
+   "mesh_lr_shape": [
+    355,
+    380
+   ],
+   "teacher_shape": [
+    27600,
+    29600
+   ],
+   "index": 36
+  },
+  "PHerc0139_20260206000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260206000000-w042_2026020613",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260206000000-w042_2026020613/mesh/20260206000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260206000000-w042_2026020613/mesh/20260206000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260206000000-w042_2026020613/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260206000000-w042_2026020613/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260206000000-w042_2026020613/ink-detection/PHerc0139-20260206000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5980,
+    7880
+   ],
+   "sv_hr_shape": [
+    109,
+    23280,
+    30640
+   ],
+   "mesh_hr_shape": [
+    1164,
+    1532
+   ],
+   "mesh_lr_shape": [
+    299,
+    394
+   ],
+   "teacher_shape": [
+    23280,
+    30640
+   ],
+   "index": 37
+  },
+  "PHerc0139_20260206000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260206000001-w047_2026020613",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260206000001-w047_2026020613/mesh/20260206000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260206000001-w047_2026020613/mesh/20260206000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260206000001-w047_2026020613/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260206000001-w047_2026020613/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260206000001-w047_2026020613/ink-detection/PHerc0139-20260206000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5840,
+    8440
+   ],
+   "sv_hr_shape": [
+    109,
+    22720,
+    32800
+   ],
+   "mesh_hr_shape": [
+    1136,
+    1640
+   ],
+   "mesh_lr_shape": [
+    292,
+    422
+   ],
+   "teacher_shape": [
+    22720,
+    32800
+   ],
+   "index": 38
+  },
+  "PHerc0139_20260206000002": {
+   "scroll": "PHerc0139",
+   "segment": "20260206000002-w054_2026020617",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260206000002-w054_2026020617/mesh/20260206000002-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260206000002-w054_2026020617/mesh/20260206000002-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260206000002-w054_2026020617/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260206000002-w054_2026020617/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260206000002-w054_2026020617/ink-detection/PHerc0139-20260206000002-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7660,
+    11140
+   ],
+   "sv_hr_shape": [
+    109,
+    29760,
+    43360
+   ],
+   "mesh_hr_shape": [
+    1488,
+    2168
+   ],
+   "mesh_lr_shape": [
+    383,
+    557
+   ],
+   "teacher_shape": [
+    29760,
+    43360
+   ],
+   "index": 39
+  },
+  "PHerc0139_20260210000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260210000000-w058_2026021020",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260210000000-w058_2026021020/mesh/20260210000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260210000000-w058_2026021020/mesh/20260210000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260210000000-w058_2026021020/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260210000000-w058_2026021020/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260210000000-w058_2026021020/ink-detection/PHerc0139-20260210000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7500,
+    9880
+   ],
+   "sv_hr_shape": [
+    109,
+    29200,
+    38400
+   ],
+   "mesh_hr_shape": [
+    1460,
+    1920
+   ],
+   "mesh_lr_shape": [
+    375,
+    494
+   ],
+   "teacher_shape": [
+    29200,
+    38400
+   ],
+   "index": 40
+  },
+  "PHerc0139_20260215000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260215000000-w024_2026021572",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260215000000-w024_2026021572/mesh/20260215000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260215000000-w024_2026021572/mesh/20260215000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260215000000-w024_2026021572/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260215000000-w024_2026021572/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260215000000-w024_2026021572/ink-detection/PHerc0139-20260215000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7100,
+    6620
+   ],
+   "sv_hr_shape": [
+    109,
+    27600,
+    25760
+   ],
+   "mesh_hr_shape": [
+    1380,
+    1288
+   ],
+   "mesh_lr_shape": [
+    355,
+    331
+   ],
+   "teacher_shape": [
+    27600,
+    25760
+   ],
+   "index": 41
+  },
+  "PHerc0139_20260219000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260219000000-w033_2026021913",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260219000000-w033_2026021913/mesh/20260219000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260219000000-w033_2026021913/mesh/20260219000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260219000000-w033_2026021913/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260219000000-w033_2026021913/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260219000000-w033_2026021913/ink-detection/PHerc0139-20260219000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7100,
+    7680
+   ],
+   "sv_hr_shape": [
+    109,
+    27600,
+    29840
+   ],
+   "mesh_hr_shape": [
+    1380,
+    1492
+   ],
+   "mesh_lr_shape": [
+    355,
+    384
+   ],
+   "teacher_shape": [
+    27600,
+    29840
+   ],
+   "index": 42
+  },
+  "PHerc0139_20260219000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260219000001-w048_2026021912",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260219000001-w048_2026021912/mesh/20260219000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260219000001-w048_2026021912/mesh/20260219000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260219000001-w048_2026021912/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260219000001-w048_2026021912/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260219000001-w048_2026021912/ink-detection/PHerc0139-20260219000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5720,
+    8520
+   ],
+   "sv_hr_shape": [
+    109,
+    22240,
+    33120
+   ],
+   "mesh_hr_shape": [
+    1112,
+    1656
+   ],
+   "mesh_lr_shape": [
+    286,
+    426
+   ],
+   "teacher_shape": [
+    22240,
+    33120
+   ],
+   "index": 43
+  },
+  "PHerc0139_20260220000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260220000000-w053_2026022021",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260220000000-w053_2026022021/mesh/20260220000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260220000000-w053_2026022021/mesh/20260220000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260220000000-w053_2026022021/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260220000000-w053_2026022021/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260220000000-w053_2026022021/ink-detection/PHerc0139-20260220000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7440,
+    10360
+   ],
+   "sv_hr_shape": [
+    109,
+    28960,
+    40320
+   ],
+   "mesh_hr_shape": [
+    1448,
+    2016
+   ],
+   "mesh_lr_shape": [
+    372,
+    518
+   ],
+   "teacher_shape": [
+    28960,
+    40320
+   ],
+   "index": 44
+  },
+  "PHerc0139_20260227000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260227000000-w052_2026022705",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260227000000-w052_2026022705/mesh/20260227000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260227000000-w052_2026022705/mesh/20260227000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260227000000-w052_2026022705/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260227000000-w052_2026022705/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260227000000-w052_2026022705/ink-detection/PHerc0139-20260227000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7700,
+    9760
+   ],
+   "sv_hr_shape": [
+    109,
+    29920,
+    38000
+   ],
+   "mesh_hr_shape": [
+    1496,
+    1900
+   ],
+   "mesh_lr_shape": [
+    385,
+    488
+   ],
+   "teacher_shape": [
+    29920,
+    38000
+   ],
+   "index": 45
+  },
+  "PHerc0139_20260302000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260302000000-w039_2026030210",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260302000000-w039_2026030210/mesh/20260302000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260302000000-w039_2026030210/mesh/20260302000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260302000000-w039_2026030210/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260302000000-w039_2026030210/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260302000000-w039_2026030210/ink-detection/PHerc0139-20260302000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260302000000-w039_2026030210/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    8560,
+    7720
+   ],
+   "sv_hr_shape": [
+    109,
+    33280,
+    30000
+   ],
+   "mesh_hr_shape": [
+    1664,
+    1500
+   ],
+   "mesh_lr_shape": [
+    428,
+    386
+   ],
+   "teacher_shape": [
+    33280,
+    30000
+   ],
+   "index": 46
+  },
+  "PHerc0139_20260302000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260302000001-w050_2026030220",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260302000001-w050_2026030220/mesh/20260302000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260302000001-w050_2026030220/mesh/20260302000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260302000001-w050_2026030220/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260302000001-w050_2026030220/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260302000001-w050_2026030220/ink-detection/PHerc0139-20260302000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5300,
+    3880
+   ],
+   "sv_hr_shape": [
+    109,
+    20640,
+    15120
+   ],
+   "mesh_hr_shape": [
+    1032,
+    756
+   ],
+   "mesh_lr_shape": [
+    265,
+    194
+   ],
+   "teacher_shape": [
+    20640,
+    15120
+   ],
+   "index": 47
+  },
+  "PHerc0139_20260303000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260303000000-w034_2026030317",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260303000000-w034_2026030317/mesh/20260303000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260303000000-w034_2026030317/mesh/20260303000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260303000000-w034_2026030317/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260303000000-w034_2026030317/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260303000000-w034_2026030317/ink-detection/PHerc0139-20260303000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7040,
+    7720
+   ],
+   "sv_hr_shape": [
+    109,
+    27360,
+    30000
+   ],
+   "mesh_hr_shape": [
+    1368,
+    1500
+   ],
+   "mesh_lr_shape": [
+    352,
+    386
+   ],
+   "teacher_shape": [
+    27360,
+    30000
+   ],
+   "index": 48
+  },
+  "PHerc0139_20260306000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260306000000-w038_2026030608",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260306000000-w038_2026030608/mesh/20260306000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260306000000-w038_2026030608/mesh/20260306000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260306000000-w038_2026030608/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260306000000-w038_2026030608/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260306000000-w038_2026030608/ink-detection/PHerc0139-20260306000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6200,
+    7440
+   ],
+   "sv_hr_shape": [
+    109,
+    24080,
+    28960
+   ],
+   "mesh_hr_shape": [
+    1204,
+    1448
+   ],
+   "mesh_lr_shape": [
+    310,
+    372
+   ],
+   "teacher_shape": [
+    24080,
+    28960
+   ],
+   "index": 49
+  },
+  "PHerc0139_20260306000001": {
+   "scroll": "PHerc0139",
+   "segment": "20260306000001-w051_2026030600",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260306000001-w051_2026030600/mesh/20260306000001-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260306000001-w051_2026030600/mesh/20260306000001-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260306000001-w051_2026030600/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260306000001-w051_2026030600/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260306000001-w051_2026030600/ink-detection/PHerc0139-20260306000001-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    7580,
+    9600
+   ],
+   "sv_hr_shape": [
+    109,
+    29440,
+    37360
+   ],
+   "mesh_hr_shape": [
+    1472,
+    1868
+   ],
+   "mesh_lr_shape": [
+    379,
+    480
+   ],
+   "teacher_shape": [
+    29440,
+    37360
+   ],
+   "index": 50
+  },
+  "PHerc0139_20260310000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260310000000-w037_2026031015",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260310000000-w037_2026031015/mesh/20260310000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260310000000-w037_2026031015/mesh/20260310000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260310000000-w037_2026031015/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260310000000-w037_2026031015/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260310000000-w037_2026031015/ink-detection/PHerc0139-20260310000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6140,
+    7200
+   ],
+   "sv_hr_shape": [
+    109,
+    23840,
+    28000
+   ],
+   "mesh_hr_shape": [
+    1192,
+    1400
+   ],
+   "mesh_lr_shape": [
+    307,
+    360
+   ],
+   "teacher_shape": [
+    23840,
+    28000
+   ],
+   "index": 51
+  },
+  "PHerc0139_20260311000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260311000000-w023_202603112281",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260311000000-w023_202603112281/mesh/20260311000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260311000000-w023_202603112281/mesh/20260311000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260311000000-w023_202603112281/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260311000000-w023_202603112281/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260311000000-w023_202603112281/ink-detection/PHerc0139-20260311000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6940,
+    6380
+   ],
+   "sv_hr_shape": [
+    109,
+    26960,
+    24800
+   ],
+   "mesh_hr_shape": [
+    1348,
+    1240
+   ],
+   "mesh_lr_shape": [
+    347,
+    319
+   ],
+   "teacher_shape": [
+    26960,
+    24800
+   ],
+   "index": 52
+  },
+  "PHerc0139_20260316000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260316000000-w036_2026031607",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260316000000-w036_2026031607/mesh/20260316000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260316000000-w036_2026031607/mesh/20260316000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260316000000-w036_2026031607/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260316000000-w036_2026031607/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260316000000-w036_2026031607/ink-detection/PHerc0139-20260316000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5980,
+    6980
+   ],
+   "sv_hr_shape": [
+    109,
+    23280,
+    27120
+   ],
+   "mesh_hr_shape": [
+    1164,
+    1356
+   ],
+   "mesh_lr_shape": [
+    299,
+    349
+   ],
+   "teacher_shape": [
+    23280,
+    27120
+   ],
+   "index": 53
+  },
+  "PHerc0139_20260317000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260317000000-w035_2026031718",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260317000000-w035_2026031718/mesh/20260317000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260317000000-w035_2026031718/mesh/20260317000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260317000000-w035_2026031718/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260317000000-w035_2026031718/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260317000000-w035_2026031718/ink-detection/PHerc0139-20260317000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0139/segments/20260317000000-w035_2026031718/ink-labels/2.399um-volume-20260102150214/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5820,
+    5240
+   ],
+   "sv_hr_shape": [
+    109,
+    22640,
+    20400
+   ],
+   "mesh_hr_shape": [
+    1132,
+    1020
+   ],
+   "mesh_lr_shape": [
+    291,
+    262
+   ],
+   "teacher_shape": [
+    22640,
+    20400
+   ],
+   "index": 54
+  },
+  "PHerc0139_20260318000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260318000000-w049_20260318",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260318000000-w049_20260318/mesh/20260318000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260318000000-w049_20260318/mesh/20260318000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260318000000-w049_20260318/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260318000000-w049_20260318/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260318000000-w049_20260318/ink-detection/PHerc0139-20260318000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5660,
+    9400
+   ],
+   "sv_hr_shape": [
+    109,
+    22000,
+    36560
+   ],
+   "mesh_hr_shape": [
+    1100,
+    1828
+   ],
+   "mesh_lr_shape": [
+    283,
+    470
+   ],
+   "teacher_shape": [
+    22000,
+    36560
+   ],
+   "index": 55
+  },
+  "PHerc0139_20260325000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260325000000-w046_20260325",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260325000000-w046_20260325/mesh/20260325000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260325000000-w046_20260325/mesh/20260325000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260325000000-w046_20260325/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260325000000-w046_20260325/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260325000000-w046_20260325/ink-detection/PHerc0139-20260325000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5980,
+    8260
+   ],
+   "sv_hr_shape": [
+    109,
+    23280,
+    32160
+   ],
+   "mesh_hr_shape": [
+    1164,
+    1608
+   ],
+   "mesh_lr_shape": [
+    299,
+    413
+   ],
+   "teacher_shape": [
+    23280,
+    32160
+   ],
+   "index": 56
+  },
+  "PHerc0139_20260422000000": {
+   "scroll": "PHerc0139",
+   "segment": "20260422000000-title_2026042222_zmid_flatboi",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0139/segments/20260422000000-title_2026042222_zmid_flatboi/mesh/20260422000000-on-20260102150214-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0139/segments/20260422000000-title_2026042222_zmid_flatboi/mesh/20260422000000-on-20250728140407-9.362um.tifxyz/",
+   "sv_hr": "PHerc0139/segments/20260422000000-title_2026042222_zmid_flatboi/surface-volumes/2.399um-0.22m-78keV-volume-20260102150214.zarr",
+   "sv_lr": "PHerc0139/segments/20260422000000-title_2026042222_zmid_flatboi/surface-volumes/9.362um-1.2m-113keV-volume-20250728140407.zarr",
+   "teacher": "PHerc0139/segments/20260422000000-title_2026042222_zmid_flatboi/ink-detection/PHerc0139-20260422000000-2.399um-0.22m-78keV-volume-20260102150214-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    1780,
+    5360
+   ],
+   "sv_hr_shape": [
+    109,
+    6960,
+    20880
+   ],
+   "mesh_hr_shape": [
+    348,
+    1044
+   ],
+   "mesh_lr_shape": [
+    89,
+    268
+   ],
+   "teacher_shape": [
+    6960,
+    20880
+   ],
+   "index": 57
+  },
+  "PHerc0343P_20250511003658": {
+   "scroll": "PHerc0343P",
+   "segment": "20250511003658-tifxyz",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250511003658-tifxyz/mesh/20250511003658-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250511003658-tifxyz/mesh/20250511003658-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250511003658-tifxyz/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250511003658-tifxyz/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250511003658-tifxyz/ink-detection/PHerc0343P-20250511003658-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3440,
+    2060
+   ],
+   "sv_hr_shape": [
+    118,
+    13420,
+    8020
+   ],
+   "mesh_hr_shape": [
+    671,
+    401
+   ],
+   "mesh_lr_shape": [
+    172,
+    103
+   ],
+   "teacher_shape": [
+    13420,
+    8020
+   ],
+   "index": 58
+  },
+  "PHerc0343P_20250902170435": {
+   "scroll": "PHerc0343P",
+   "segment": "20250902170435--5_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250902170435--5_b2/mesh/20250902170435-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250902170435--5_b2/mesh/20250902170435-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250902170435--5_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250902170435--5_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250902170435--5_b2/ink-detection/PHerc0343P-20250902170435-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3280,
+    2420
+   ],
+   "sv_hr_shape": [
+    118,
+    12800,
+    9440
+   ],
+   "mesh_hr_shape": [
+    640,
+    472
+   ],
+   "mesh_lr_shape": [
+    164,
+    121
+   ],
+   "teacher_shape": [
+    12800,
+    9440
+   ],
+   "index": 59
+  },
+  "PHerc0343P_20250902170441": {
+   "scroll": "PHerc0343P",
+   "segment": "20250902170441--4_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250902170441--4_b2/mesh/20250902170441-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250902170441--4_b2/mesh/20250902170441-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250902170441--4_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250902170441--4_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250902170441--4_b2/ink-detection/PHerc0343P-20250902170441-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3300,
+    2520
+   ],
+   "sv_hr_shape": [
+    118,
+    12880,
+    9820
+   ],
+   "mesh_hr_shape": [
+    644,
+    491
+   ],
+   "mesh_lr_shape": [
+    165,
+    126
+   ],
+   "teacher_shape": [
+    12880,
+    9820
+   ],
+   "index": 60
+  },
+  "PHerc0343P_20250902170447": {
+   "scroll": "PHerc0343P",
+   "segment": "20250902170447--3_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250902170447--3_b2/mesh/20250902170447-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250902170447--3_b2/mesh/20250902170447-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250902170447--3_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250902170447--3_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250902170447--3_b2/ink-detection/PHerc0343P-20250902170447-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3560,
+    2600
+   ],
+   "sv_hr_shape": [
+    118,
+    13880,
+    10140
+   ],
+   "mesh_hr_shape": [
+    694,
+    507
+   ],
+   "mesh_lr_shape": [
+    178,
+    130
+   ],
+   "teacher_shape": [
+    13880,
+    10140
+   ],
+   "index": 61
+  },
+  "PHerc0343P_20250902171202": {
+   "scroll": "PHerc0343P",
+   "segment": "20250902171202--2_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250902171202--2_b2/mesh/20250902171202-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250902171202--2_b2/mesh/20250902171202-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250902171202--2_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250902171202--2_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250902171202--2_b2/ink-detection/PHerc0343P-20250902171202-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3440,
+    2320
+   ],
+   "sv_hr_shape": [
+    118,
+    13420,
+    9040
+   ],
+   "mesh_hr_shape": [
+    671,
+    452
+   ],
+   "mesh_lr_shape": [
+    172,
+    116
+   ],
+   "teacher_shape": [
+    13420,
+    9040
+   ],
+   "index": 62
+  },
+  "PHerc0343P_20250902171204": {
+   "scroll": "PHerc0343P",
+   "segment": "20250902171204--1_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250902171204--1_b2/mesh/20250902171204-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250902171204--1_b2/mesh/20250902171204-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250902171204--1_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250902171204--1_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250902171204--1_b2/ink-detection/PHerc0343P-20250902171204-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3340,
+    2340
+   ],
+   "sv_hr_shape": [
+    118,
+    13040,
+    9120
+   ],
+   "mesh_hr_shape": [
+    652,
+    456
+   ],
+   "mesh_lr_shape": [
+    167,
+    117
+   ],
+   "teacher_shape": [
+    13040,
+    9120
+   ],
+   "index": 63
+  },
+  "PHerc0343P_20250904233748": {
+   "scroll": "PHerc0343P",
+   "segment": "20250904233748-0_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250904233748-0_b2/mesh/20250904233748-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250904233748-0_b2/mesh/20250904233748-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250904233748-0_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250904233748-0_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250904233748-0_b2/ink-detection/PHerc0343P-20250904233748-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3620,
+    2500
+   ],
+   "sv_hr_shape": [
+    118,
+    14120,
+    9740
+   ],
+   "mesh_hr_shape": [
+    706,
+    487
+   ],
+   "mesh_lr_shape": [
+    181,
+    125
+   ],
+   "teacher_shape": [
+    14120,
+    9740
+   ],
+   "index": 64
+  },
+  "PHerc0343P_20250905172054": {
+   "scroll": "PHerc0343P",
+   "segment": "20250905172054-1_b2",
+   "role": "train",
+   "k": 3.900677200902935,
+   "mesh_hr": "PHerc0343P/segments/20250905172054-1_b2/mesh/20250905172054-on-20260304131111-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0343P/segments/20250905172054-1_b2/mesh/20250905172054-on-20250521134555-8.64um.tifxyz/",
+   "sv_hr": "PHerc0343P/segments/20250905172054-1_b2/surface-volumes/2.215um-0.4m-111keV-volume-20260304131111.zarr",
+   "sv_lr": "PHerc0343P/segments/20250905172054-1_b2/surface-volumes/8.64um-1.2m-116keV-volume-20250521134555.zarr",
+   "teacher": "PHerc0343P/segments/20250905172054-1_b2/ink-detection/PHerc0343P-20250905172054-2.215um-0.4m-111keV-volume-20260304131111-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    31,
+    3020,
+    2280
+   ],
+   "sv_hr_shape": [
+    118,
+    11780,
+    8880
+   ],
+   "mesh_hr_shape": [
+    589,
+    444
+   ],
+   "mesh_lr_shape": [
+    151,
+    114
+   ],
+   "teacher_shape": [
+    11780,
+    8880
+   ],
+   "index": 65
+  },
+  "PHerc0500P2_20250609204953": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250609204953-z_dbg_gen_00612",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250609204953-z_dbg_gen_00612/mesh/20250609204953-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250609204953-z_dbg_gen_00612/mesh/20250609204953-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250609204953-z_dbg_gen_00612/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250609204953-z_dbg_gen_00612/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250609204953-z_dbg_gen_00612/ink-detection/PHerc0500P2-20250609204953-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4520,
+    3120
+   ],
+   "sv_hr_shape": [
+    118,
+    19080,
+    13100
+   ],
+   "mesh_hr_shape": [
+    954,
+    655
+   ],
+   "mesh_lr_shape": [
+    226,
+    156
+   ],
+   "teacher_shape": [
+    19080,
+    13100
+   ],
+   "index": 66
+  },
+  "PHerc0500P2_20250611132918": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611132918-z_dbg_gen_00302_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611132918-z_dbg_gen_00302_inp_hr/mesh/20250611132918-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611132918-z_dbg_gen_00302_inp_hr/mesh/20250611132918-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611132918-z_dbg_gen_00302_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611132918-z_dbg_gen_00302_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611132918-z_dbg_gen_00302_inp_hr/ink-detection/PHerc0500P2-20250611132918-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5040,
+    3260
+   ],
+   "sv_hr_shape": [
+    118,
+    21220,
+    13760
+   ],
+   "mesh_hr_shape": [
+    1061,
+    688
+   ],
+   "mesh_lr_shape": [
+    252,
+    163
+   ],
+   "teacher_shape": [
+    21220,
+    13760
+   ],
+   "index": 67
+  },
+  "PHerc0500P2_20250611133823": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611133823-z_dbg_gen_00130_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611133823-z_dbg_gen_00130_inp_hr/mesh/20250611133823-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611133823-z_dbg_gen_00130_inp_hr/mesh/20250611133823-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611133823-z_dbg_gen_00130_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611133823-z_dbg_gen_00130_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611133823-z_dbg_gen_00130_inp_hr/ink-detection/PHerc0500P2-20250611133823-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5380,
+    1800
+   ],
+   "sv_hr_shape": [
+    118,
+    22660,
+    7600
+   ],
+   "mesh_hr_shape": [
+    1133,
+    380
+   ],
+   "mesh_lr_shape": [
+    269,
+    90
+   ],
+   "teacher_shape": [
+    22660,
+    7600
+   ],
+   "index": 68
+  },
+  "PHerc0500P2_20250611134135": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611134135-z_dbg_gen_00331_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611134135-z_dbg_gen_00331_inp_hr/mesh/20250611134135-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611134135-z_dbg_gen_00331_inp_hr/mesh/20250611134135-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611134135-z_dbg_gen_00331_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611134135-z_dbg_gen_00331_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611134135-z_dbg_gen_00331_inp_hr/ink-detection/PHerc0500P2-20250611134135-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5420,
+    3280
+   ],
+   "sv_hr_shape": [
+    118,
+    22820,
+    13820
+   ],
+   "mesh_hr_shape": [
+    1141,
+    691
+   ],
+   "mesh_lr_shape": [
+    271,
+    164
+   ],
+   "teacher_shape": [
+    22820,
+    13820
+   ],
+   "index": 69
+  },
+  "PHerc0500P2_20250611153340": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611153340-z_dbg_gen_00275",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611153340-z_dbg_gen_00275/mesh/20250611153340-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611153340-z_dbg_gen_00275/mesh/20250611153340-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611153340-z_dbg_gen_00275/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611153340-z_dbg_gen_00275/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611153340-z_dbg_gen_00275/ink-detection/PHerc0500P2-20250611153340-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3980,
+    2380
+   ],
+   "sv_hr_shape": [
+    118,
+    16780,
+    10020
+   ],
+   "mesh_hr_shape": [
+    839,
+    501
+   ],
+   "mesh_lr_shape": [
+    199,
+    119
+   ],
+   "teacher_shape": [
+    16780,
+    10020
+   ],
+   "index": 70
+  },
+  "PHerc0500P2_20250611153346": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611153346-z_dbg_gen_00286_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611153346-z_dbg_gen_00286_inp_hr/mesh/20250611153346-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611153346-z_dbg_gen_00286_inp_hr/mesh/20250611153346-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611153346-z_dbg_gen_00286_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611153346-z_dbg_gen_00286_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611153346-z_dbg_gen_00286_inp_hr/ink-detection/PHerc0500P2-20250611153346-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4280,
+    2800
+   ],
+   "sv_hr_shape": [
+    118,
+    17980,
+    11800
+   ],
+   "mesh_hr_shape": [
+    899,
+    590
+   ],
+   "mesh_lr_shape": [
+    214,
+    140
+   ],
+   "teacher_shape": [
+    17980,
+    11800
+   ],
+   "index": 71
+  },
+  "PHerc0500P2_20250611153347": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611153347-z_dbg_gen_00105_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611153347-z_dbg_gen_00105_inp_hr/mesh/20250611153347-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611153347-z_dbg_gen_00105_inp_hr/mesh/20250611153347-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611153347-z_dbg_gen_00105_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611153347-z_dbg_gen_00105_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611153347-z_dbg_gen_00105_inp_hr/ink-detection/PHerc0500P2-20250611153347-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4380,
+    2060
+   ],
+   "sv_hr_shape": [
+    118,
+    18480,
+    8660
+   ],
+   "mesh_hr_shape": [
+    924,
+    433
+   ],
+   "mesh_lr_shape": [
+    219,
+    103
+   ],
+   "teacher_shape": [
+    18480,
+    8660
+   ],
+   "index": 72
+  },
+  "PHerc0500P2_20250611154256": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611154256-z_dbg_gen_00354_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611154256-z_dbg_gen_00354_inp_hr/mesh/20250611154256-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611154256-z_dbg_gen_00354_inp_hr/mesh/20250611154256-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611154256-z_dbg_gen_00354_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611154256-z_dbg_gen_00354_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611154256-z_dbg_gen_00354_inp_hr/ink-detection/PHerc0500P2-20250611154256-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5360,
+    3560
+   ],
+   "sv_hr_shape": [
+    118,
+    22540,
+    15000
+   ],
+   "mesh_hr_shape": [
+    1127,
+    750
+   ],
+   "mesh_lr_shape": [
+    268,
+    178
+   ],
+   "teacher_shape": [
+    22540,
+    15000
+   ],
+   "index": 73
+  },
+  "PHerc0500P2_20250611161023": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611161023-z_dbg_gen_00205_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611161023-z_dbg_gen_00205_inp_hr/mesh/20250611161023-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611161023-z_dbg_gen_00205_inp_hr/mesh/20250611161023-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611161023-z_dbg_gen_00205_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611161023-z_dbg_gen_00205_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611161023-z_dbg_gen_00205_inp_hr/ink-detection/PHerc0500P2-20250611161023-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5180,
+    1520
+   ],
+   "sv_hr_shape": [
+    118,
+    21800,
+    6400
+   ],
+   "mesh_hr_shape": [
+    1090,
+    320
+   ],
+   "mesh_lr_shape": [
+    259,
+    76
+   ],
+   "teacher_shape": [
+    21800,
+    6400
+   ],
+   "index": 74
+  },
+  "PHerc0500P2_20250611161415": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611161415-z_dbg_gen_00411_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611161415-z_dbg_gen_00411_inp_hr/mesh/20250611161415-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611161415-z_dbg_gen_00411_inp_hr/mesh/20250611161415-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611161415-z_dbg_gen_00411_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611161415-z_dbg_gen_00411_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611161415-z_dbg_gen_00411_inp_hr/ink-detection/PHerc0500P2-20250611161415-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4780,
+    2960
+   ],
+   "sv_hr_shape": [
+    118,
+    20100,
+    12440
+   ],
+   "mesh_hr_shape": [
+    1005,
+    622
+   ],
+   "mesh_lr_shape": [
+    239,
+    148
+   ],
+   "teacher_shape": [
+    20100,
+    12440
+   ],
+   "index": 75
+  },
+  "PHerc0500P2_20250611170257": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611170257-z_dbg_gen_00308_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611170257-z_dbg_gen_00308_inp_hr/mesh/20250611170257-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611170257-z_dbg_gen_00308_inp_hr/mesh/20250611170257-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611170257-z_dbg_gen_00308_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611170257-z_dbg_gen_00308_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611170257-z_dbg_gen_00308_inp_hr/ink-detection/PHerc0500P2-20250611170257-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    8240,
+    6120
+   ],
+   "sv_hr_shape": [
+    118,
+    34720,
+    25800
+   ],
+   "mesh_hr_shape": [
+    1736,
+    1290
+   ],
+   "mesh_lr_shape": [
+    412,
+    306
+   ],
+   "teacher_shape": [
+    34720,
+    25800
+   ],
+   "index": 76
+  },
+  "PHerc0500P2_20250611171318": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611171318-z_dbg_gen_00440_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611171318-z_dbg_gen_00440_inp_hr/mesh/20250611171318-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611171318-z_dbg_gen_00440_inp_hr/mesh/20250611171318-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611171318-z_dbg_gen_00440_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611171318-z_dbg_gen_00440_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611171318-z_dbg_gen_00440_inp_hr/ink-detection/PHerc0500P2-20250611171318-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3340,
+    2700
+   ],
+   "sv_hr_shape": [
+    118,
+    14100,
+    11340
+   ],
+   "mesh_hr_shape": [
+    705,
+    567
+   ],
+   "mesh_lr_shape": [
+    167,
+    135
+   ],
+   "teacher_shape": [
+    14100,
+    11340
+   ],
+   "index": 77
+  },
+  "PHerc0500P2_20250611171745": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611171745-z_dbg_gen_00225_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611171745-z_dbg_gen_00225_inp_hr/mesh/20250611171745-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611171745-z_dbg_gen_00225_inp_hr/mesh/20250611171745-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611171745-z_dbg_gen_00225_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611171745-z_dbg_gen_00225_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611171745-z_dbg_gen_00225_inp_hr/ink-detection/PHerc0500P2-20250611171745-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4680,
+    1960
+   ],
+   "sv_hr_shape": [
+    118,
+    19740,
+    8260
+   ],
+   "mesh_hr_shape": [
+    987,
+    413
+   ],
+   "mesh_lr_shape": [
+    234,
+    98
+   ],
+   "teacher_shape": [
+    19740,
+    8260
+   ],
+   "index": 78
+  },
+  "PHerc0500P2_20250611172135": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611172135-z_dbg_gen_00346_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611172135-z_dbg_gen_00346_inp_hr/mesh/20250611172135-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611172135-z_dbg_gen_00346_inp_hr/mesh/20250611172135-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611172135-z_dbg_gen_00346_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611172135-z_dbg_gen_00346_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611172135-z_dbg_gen_00346_inp_hr/ink-detection/PHerc0500P2-20250611172135-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5140,
+    3040
+   ],
+   "sv_hr_shape": [
+    118,
+    21640,
+    12820
+   ],
+   "mesh_hr_shape": [
+    1082,
+    641
+   ],
+   "mesh_lr_shape": [
+    257,
+    152
+   ],
+   "teacher_shape": [
+    21640,
+    12820
+   ],
+   "index": 79
+  },
+  "PHerc0500P2_20250611173014": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250611173014-z_dbg_gen_00506_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250611173014-z_dbg_gen_00506_inp_hr/mesh/20250611173014-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250611173014-z_dbg_gen_00506_inp_hr/mesh/20250611173014-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250611173014-z_dbg_gen_00506_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250611173014-z_dbg_gen_00506_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250611173014-z_dbg_gen_00506_inp_hr/ink-detection/PHerc0500P2-20250611173014-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5720,
+    4500
+   ],
+   "sv_hr_shape": [
+    118,
+    24060,
+    18900
+   ],
+   "mesh_hr_shape": [
+    1203,
+    945
+   ],
+   "mesh_lr_shape": [
+    286,
+    225
+   ],
+   "teacher_shape": [
+    24060,
+    18900
+   ],
+   "index": 80
+  },
+  "PHerc0500P2_20250628074500": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250628074500-500P2_front",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250628074500-500P2_front/mesh/20250628074500-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250628074500-500P2_front/mesh/20250628074500-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250628074500-500P2_front/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250628074500-500P2_front/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250628074500-500P2_front/ink-detection/PHerc0500P2-20250628074500-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    6280,
+    3580
+   ],
+   "sv_hr_shape": [
+    118,
+    26440,
+    15060
+   ],
+   "mesh_hr_shape": [
+    1322,
+    753
+   ],
+   "mesh_lr_shape": [
+    314,
+    179
+   ],
+   "teacher_shape": [
+    26440,
+    15060
+   ],
+   "index": 81
+  },
+  "PHerc0500P2_20250716055227": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055227-z_dbg_gen_00260_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055227-z_dbg_gen_00260_inp_hr/mesh/20250716055227-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055227-z_dbg_gen_00260_inp_hr/mesh/20250716055227-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055227-z_dbg_gen_00260_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055227-z_dbg_gen_00260_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055227-z_dbg_gen_00260_inp_hr/ink-detection/PHerc0500P2-20250716055227-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    2660,
+    1760
+   ],
+   "sv_hr_shape": [
+    118,
+    11180,
+    7440
+   ],
+   "mesh_hr_shape": [
+    559,
+    372
+   ],
+   "mesh_lr_shape": [
+    133,
+    88
+   ],
+   "teacher_shape": [
+    11180,
+    7440
+   ],
+   "index": 82
+  },
+  "PHerc0500P2_20250716055228": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055228-z_dbg_gen_00333_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055228-z_dbg_gen_00333_inp_hr/mesh/20250716055228-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055228-z_dbg_gen_00333_inp_hr/mesh/20250716055228-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055228-z_dbg_gen_00333_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055228-z_dbg_gen_00333_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055228-z_dbg_gen_00333_inp_hr/ink-detection/PHerc0500P2-20250716055228-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    2760,
+    2220
+   ],
+   "sv_hr_shape": [
+    118,
+    11600,
+    9320
+   ],
+   "mesh_hr_shape": [
+    580,
+    466
+   ],
+   "mesh_lr_shape": [
+    138,
+    111
+   ],
+   "teacher_shape": [
+    11600,
+    9320
+   ],
+   "index": 83
+  },
+  "PHerc0500P2_20250716055229": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055229-z_dbg_gen_00371_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055229-z_dbg_gen_00371_inp_hr/mesh/20250716055229-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055229-z_dbg_gen_00371_inp_hr/mesh/20250716055229-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055229-z_dbg_gen_00371_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055229-z_dbg_gen_00371_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055229-z_dbg_gen_00371_inp_hr/ink-detection/PHerc0500P2-20250716055229-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5120,
+    1880
+   ],
+   "sv_hr_shape": [
+    118,
+    21560,
+    7880
+   ],
+   "mesh_hr_shape": [
+    1078,
+    394
+   ],
+   "mesh_lr_shape": [
+    256,
+    94
+   ],
+   "teacher_shape": [
+    21560,
+    7880
+   ],
+   "index": 84
+  },
+  "PHerc0500P2_20250716055230": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055230-z_dbg_gen_00377_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055230-z_dbg_gen_00377_inp_hr/mesh/20250716055230-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055230-z_dbg_gen_00377_inp_hr/mesh/20250716055230-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055230-z_dbg_gen_00377_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055230-z_dbg_gen_00377_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055230-z_dbg_gen_00377_inp_hr/ink-detection/PHerc0500P2-20250716055230-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5160,
+    3340
+   ],
+   "sv_hr_shape": [
+    118,
+    21720,
+    14060
+   ],
+   "mesh_hr_shape": [
+    1086,
+    703
+   ],
+   "mesh_lr_shape": [
+    258,
+    167
+   ],
+   "teacher_shape": [
+    21720,
+    14060
+   ],
+   "index": 85
+  },
+  "PHerc0500P2_20250716055231": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055231-z_dbg_gen_00473_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055231-z_dbg_gen_00473_inp_hr/mesh/20250716055231-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055231-z_dbg_gen_00473_inp_hr/mesh/20250716055231-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055231-z_dbg_gen_00473_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055231-z_dbg_gen_00473_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055231-z_dbg_gen_00473_inp_hr/ink-detection/PHerc0500P2-20250716055231-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5360,
+    3320
+   ],
+   "sv_hr_shape": [
+    118,
+    22540,
+    13940
+   ],
+   "mesh_hr_shape": [
+    1127,
+    697
+   ],
+   "mesh_lr_shape": [
+    268,
+    166
+   ],
+   "teacher_shape": [
+    22540,
+    13940
+   ],
+   "index": 86
+  },
+  "PHerc0500P2_20250716055232": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055232-z_dbg_gen_00505_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055232-z_dbg_gen_00505_inp_hr/mesh/20250716055232-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055232-z_dbg_gen_00505_inp_hr/mesh/20250716055232-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055232-z_dbg_gen_00505_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055232-z_dbg_gen_00505_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055232-z_dbg_gen_00505_inp_hr/ink-detection/PHerc0500P2-20250716055232-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5020,
+    3480
+   ],
+   "sv_hr_shape": [
+    118,
+    21180,
+    14620
+   ],
+   "mesh_hr_shape": [
+    1059,
+    731
+   ],
+   "mesh_lr_shape": [
+    251,
+    174
+   ],
+   "teacher_shape": [
+    21180,
+    14620
+   ],
+   "index": 87
+  },
+  "PHerc0500P2_20250716055233": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055233-z_dbg_gen_00565_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055233-z_dbg_gen_00565_inp_hr/mesh/20250716055233-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055233-z_dbg_gen_00565_inp_hr/mesh/20250716055233-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055233-z_dbg_gen_00565_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055233-z_dbg_gen_00565_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055233-z_dbg_gen_00565_inp_hr/ink-detection/PHerc0500P2-20250716055233-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4440,
+    3680
+   ],
+   "sv_hr_shape": [
+    118,
+    18720,
+    15460
+   ],
+   "mesh_hr_shape": [
+    936,
+    773
+   ],
+   "mesh_lr_shape": [
+    222,
+    184
+   ],
+   "teacher_shape": [
+    18720,
+    15460
+   ],
+   "index": 88
+  },
+  "PHerc0500P2_20250716055234": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055234-z_dbg_gen_00709_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055234-z_dbg_gen_00709_inp_hr/mesh/20250716055234-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055234-z_dbg_gen_00709_inp_hr/mesh/20250716055234-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055234-z_dbg_gen_00709_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055234-z_dbg_gen_00709_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055234-z_dbg_gen_00709_inp_hr/ink-detection/PHerc0500P2-20250716055234-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3740,
+    2280
+   ],
+   "sv_hr_shape": [
+    118,
+    15760,
+    9620
+   ],
+   "mesh_hr_shape": [
+    788,
+    481
+   ],
+   "mesh_lr_shape": [
+    187,
+    114
+   ],
+   "teacher_shape": [
+    15760,
+    9620
+   ],
+   "index": 89
+  },
+  "PHerc0500P2_20250716055235": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055235-z_dbg_gen_00779_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055235-z_dbg_gen_00779_inp_hr/mesh/20250716055235-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055235-z_dbg_gen_00779_inp_hr/mesh/20250716055235-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055235-z_dbg_gen_00779_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055235-z_dbg_gen_00779_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055235-z_dbg_gen_00779_inp_hr/ink-detection/PHerc0500P2-20250716055235-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5640,
+    5860
+   ],
+   "sv_hr_shape": [
+    118,
+    23700,
+    24680
+   ],
+   "mesh_hr_shape": [
+    1185,
+    1234
+   ],
+   "mesh_lr_shape": [
+    282,
+    293
+   ],
+   "teacher_shape": [
+    23700,
+    24680
+   ],
+   "index": 90
+  },
+  "PHerc0500P2_20250716055236": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250716055236-z_dbg_gen_00356_inp_hr",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250716055236-z_dbg_gen_00356_inp_hr/mesh/20250716055236-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250716055236-z_dbg_gen_00356_inp_hr/mesh/20250716055236-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250716055236-z_dbg_gen_00356_inp_hr/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250716055236-z_dbg_gen_00356_inp_hr/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250716055236-z_dbg_gen_00356_inp_hr/ink-detection/PHerc0500P2-20250716055236-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5380,
+    3140
+   ],
+   "sv_hr_shape": [
+    118,
+    22700,
+    13200
+   ],
+   "mesh_hr_shape": [
+    1135,
+    660
+   ],
+   "mesh_lr_shape": [
+    269,
+    157
+   ],
+   "teacher_shape": [
+    22700,
+    13200
+   ],
+   "index": 91
+  },
+  "PHerc0500P2_20250825181859": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181859--1",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181859--1/mesh/20250825181859-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181859--1/mesh/20250825181859-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181859--1/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181859--1/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181859--1/ink-detection/PHerc0500P2-20250825181859-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0500P2/segments/20250825181859--1/ink-labels/2.215um-volume-20250526151718/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5880,
+    3300
+   ],
+   "sv_hr_shape": [
+    118,
+    24760,
+    13880
+   ],
+   "mesh_hr_shape": [
+    1238,
+    694
+   ],
+   "mesh_lr_shape": [
+    294,
+    165
+   ],
+   "teacher_shape": [
+    24760,
+    13880
+   ],
+   "index": 92
+  },
+  "PHerc0500P2_20250825181907": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181907-0",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181907-0/mesh/20250825181907-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181907-0/mesh/20250825181907-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181907-0/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181907-0/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181907-0/ink-detection/PHerc0500P2-20250825181907-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5860,
+    3360
+   ],
+   "sv_hr_shape": [
+    118,
+    24680,
+    14120
+   ],
+   "mesh_hr_shape": [
+    1234,
+    706
+   ],
+   "mesh_lr_shape": [
+    293,
+    168
+   ],
+   "teacher_shape": [
+    24680,
+    14120
+   ],
+   "index": 93
+  },
+  "PHerc0500P2_20250825181917": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181917--2",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181917--2/mesh/20250825181917-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181917--2/mesh/20250825181917-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181917--2/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181917--2/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181917--2/ink-detection/PHerc0500P2-20250825181917-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5520,
+    3240
+   ],
+   "sv_hr_shape": [
+    118,
+    23280,
+    13640
+   ],
+   "mesh_hr_shape": [
+    1164,
+    682
+   ],
+   "mesh_lr_shape": [
+    276,
+    162
+   ],
+   "teacher_shape": [
+    23280,
+    13640
+   ],
+   "index": 94
+  },
+  "PHerc0500P2_20250825181922": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181922-1",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181922-1/mesh/20250825181922-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181922-1/mesh/20250825181922-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181922-1/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181922-1/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181922-1/ink-detection/PHerc0500P2-20250825181922-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5900,
+    3380
+   ],
+   "sv_hr_shape": [
+    118,
+    24840,
+    14260
+   ],
+   "mesh_hr_shape": [
+    1242,
+    713
+   ],
+   "mesh_lr_shape": [
+    295,
+    169
+   ],
+   "teacher_shape": [
+    24840,
+    14260
+   ],
+   "index": 95
+  },
+  "PHerc0500P2_20250825181928": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181928-2",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181928-2/mesh/20250825181928-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181928-2/mesh/20250825181928-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181928-2/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181928-2/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181928-2/ink-detection/PHerc0500P2-20250825181928-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5500,
+    3080
+   ],
+   "sv_hr_shape": [
+    118,
+    23200,
+    12940
+   ],
+   "mesh_hr_shape": [
+    1160,
+    647
+   ],
+   "mesh_lr_shape": [
+    275,
+    154
+   ],
+   "teacher_shape": [
+    23200,
+    12940
+   ],
+   "index": 96
+  },
+  "PHerc0500P2_20250825181934": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181934-3",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181934-3/mesh/20250825181934-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181934-3/mesh/20250825181934-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181934-3/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181934-3/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181934-3/ink-detection/PHerc0500P2-20250825181934-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5560,
+    3060
+   ],
+   "sv_hr_shape": [
+    118,
+    23440,
+    12860
+   ],
+   "mesh_hr_shape": [
+    1172,
+    643
+   ],
+   "mesh_lr_shape": [
+    278,
+    153
+   ],
+   "teacher_shape": [
+    23440,
+    12860
+   ],
+   "index": 97
+  },
+  "PHerc0500P2_20250825181939": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250825181939-4",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250825181939-4/mesh/20250825181939-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250825181939-4/mesh/20250825181939-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250825181939-4/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250825181939-4/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250825181939-4/ink-detection/PHerc0500P2-20250825181939-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5480,
+    3100
+   ],
+   "sv_hr_shape": [
+    118,
+    23040,
+    13020
+   ],
+   "mesh_hr_shape": [
+    1152,
+    651
+   ],
+   "mesh_lr_shape": [
+    274,
+    155
+   ],
+   "teacher_shape": [
+    23040,
+    13020
+   ],
+   "index": 98
+  },
+  "PHerc0500P2_20250919184428": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184428-0500P2-wrap01_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184428-0500P2-wrap01_0919/mesh/20250919184428-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184428-0500P2-wrap01_0919/mesh/20250919184428-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184428-0500P2-wrap01_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184428-0500P2-wrap01_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184428-0500P2-wrap01_0919/ink-detection/PHerc0500P2-20250919184428-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    280,
+    340
+   ],
+   "sv_hr_shape": [
+    118,
+    1160,
+    1400
+   ],
+   "mesh_hr_shape": [
+    58,
+    70
+   ],
+   "mesh_lr_shape": [
+    14,
+    17
+   ],
+   "teacher_shape": [
+    1160,
+    1400
+   ],
+   "index": 99
+  },
+  "PHerc0500P2_20250919184429": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184429-0500P2-wrap02_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184429-0500P2-wrap02_0919/mesh/20250919184429-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184429-0500P2-wrap02_0919/mesh/20250919184429-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184429-0500P2-wrap02_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184429-0500P2-wrap02_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184429-0500P2-wrap02_0919/ink-detection/PHerc0500P2-20250919184429-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    400,
+    560
+   ],
+   "sv_hr_shape": [
+    118,
+    1720,
+    2340
+   ],
+   "mesh_hr_shape": [
+    86,
+    117
+   ],
+   "mesh_lr_shape": [
+    20,
+    28
+   ],
+   "teacher_shape": [
+    1720,
+    2340
+   ],
+   "index": 100
+  },
+  "PHerc0500P2_20250919184430": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184430-0500P2-wrap03_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184430-0500P2-wrap03_0919/mesh/20250919184430-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184430-0500P2-wrap03_0919/mesh/20250919184430-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184430-0500P2-wrap03_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184430-0500P2-wrap03_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184430-0500P2-wrap03_0919/ink-detection/PHerc0500P2-20250919184430-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    560,
+    780
+   ],
+   "sv_hr_shape": [
+    118,
+    2340,
+    3280
+   ],
+   "mesh_hr_shape": [
+    117,
+    164
+   ],
+   "mesh_lr_shape": [
+    28,
+    39
+   ],
+   "teacher_shape": [
+    2340,
+    3280
+   ],
+   "index": 101
+  },
+  "PHerc0500P2_20250919184431": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184431-0500P2-wrap04_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184431-0500P2-wrap04_0919/mesh/20250919184431-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184431-0500P2-wrap04_0919/mesh/20250919184431-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184431-0500P2-wrap04_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184431-0500P2-wrap04_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184431-0500P2-wrap04_0919/ink-detection/PHerc0500P2-20250919184431-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    1300,
+    960
+   ],
+   "sv_hr_shape": [
+    118,
+    5480,
+    4020
+   ],
+   "mesh_hr_shape": [
+    274,
+    201
+   ],
+   "mesh_lr_shape": [
+    65,
+    48
+   ],
+   "teacher_shape": [
+    5480,
+    4020
+   ],
+   "index": 102
+  },
+  "PHerc0500P2_20250919184432": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184432-0500P2-wrap05_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184432-0500P2-wrap05_0919/mesh/20250919184432-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184432-0500P2-wrap05_0919/mesh/20250919184432-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184432-0500P2-wrap05_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184432-0500P2-wrap05_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184432-0500P2-wrap05_0919/ink-detection/PHerc0500P2-20250919184432-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    980,
+    1140
+   ],
+   "sv_hr_shape": [
+    118,
+    4160,
+    4760
+   ],
+   "mesh_hr_shape": [
+    208,
+    238
+   ],
+   "mesh_lr_shape": [
+    49,
+    57
+   ],
+   "teacher_shape": [
+    4160,
+    4760
+   ],
+   "index": 103
+  },
+  "PHerc0500P2_20250919184433": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184433-0500P2-wrap06_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184433-0500P2-wrap06_0919/mesh/20250919184433-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184433-0500P2-wrap06_0919/mesh/20250919184433-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184433-0500P2-wrap06_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184433-0500P2-wrap06_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184433-0500P2-wrap06_0919/ink-detection/PHerc0500P2-20250919184433-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    940,
+    920
+   ],
+   "sv_hr_shape": [
+    118,
+    3940,
+    3900
+   ],
+   "mesh_hr_shape": [
+    197,
+    195
+   ],
+   "mesh_lr_shape": [
+    47,
+    46
+   ],
+   "teacher_shape": [
+    3940,
+    3900
+   ],
+   "index": 104
+  },
+  "PHerc0500P2_20250919184434": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184434-0500P2-wrap07_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184434-0500P2-wrap07_0919/mesh/20250919184434-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184434-0500P2-wrap07_0919/mesh/20250919184434-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184434-0500P2-wrap07_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184434-0500P2-wrap07_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184434-0500P2-wrap07_0919/ink-detection/PHerc0500P2-20250919184434-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    980,
+    880
+   ],
+   "sv_hr_shape": [
+    118,
+    4160,
+    3700
+   ],
+   "mesh_hr_shape": [
+    208,
+    185
+   ],
+   "mesh_lr_shape": [
+    49,
+    44
+   ],
+   "teacher_shape": [
+    4160,
+    3700
+   ],
+   "index": 105
+  },
+  "PHerc0500P2_20250919184435": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184435-0500P2-wrap08_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184435-0500P2-wrap08_0919/mesh/20250919184435-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184435-0500P2-wrap08_0919/mesh/20250919184435-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184435-0500P2-wrap08_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184435-0500P2-wrap08_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184435-0500P2-wrap08_0919/ink-detection/PHerc0500P2-20250919184435-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    960,
+    920
+   ],
+   "sv_hr_shape": [
+    118,
+    4080,
+    3900
+   ],
+   "mesh_hr_shape": [
+    204,
+    195
+   ],
+   "mesh_lr_shape": [
+    48,
+    46
+   ],
+   "teacher_shape": [
+    4080,
+    3900
+   ],
+   "index": 106
+  },
+  "PHerc0500P2_20250919184436": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250919184436-0500P2-wrap09_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250919184436-0500P2-wrap09_0919/mesh/20250919184436-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250919184436-0500P2-wrap09_0919/mesh/20250919184436-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250919184436-0500P2-wrap09_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250919184436-0500P2-wrap09_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250919184436-0500P2-wrap09_0919/ink-detection/PHerc0500P2-20250919184436-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    1040,
+    640
+   ],
+   "sv_hr_shape": [
+    118,
+    4360,
+    2700
+   ],
+   "mesh_hr_shape": [
+    218,
+    135
+   ],
+   "mesh_lr_shape": [
+    52,
+    32
+   ],
+   "teacher_shape": [
+    4360,
+    2700
+   ],
+   "index": 107
+  },
+  "PHerc0500P2_20250920020222": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250920020222-0500P2-wrap10_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250920020222-0500P2-wrap10_0919/mesh/20250920020222-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250920020222-0500P2-wrap10_0919/mesh/20250920020222-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250920020222-0500P2-wrap10_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250920020222-0500P2-wrap10_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250920020222-0500P2-wrap10_0919/ink-detection/PHerc0500P2-20250920020222-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    980,
+    640
+   ],
+   "sv_hr_shape": [
+    118,
+    4080,
+    2680
+   ],
+   "mesh_hr_shape": [
+    204,
+    134
+   ],
+   "mesh_lr_shape": [
+    49,
+    32
+   ],
+   "teacher_shape": [
+    4080,
+    2680
+   ],
+   "index": 108
+  },
+  "PHerc0500P2_20250920020223": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250920020223-0500P2-wrap12_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250920020223-0500P2-wrap12_0919/mesh/20250920020223-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250920020223-0500P2-wrap12_0919/mesh/20250920020223-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250920020223-0500P2-wrap12_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250920020223-0500P2-wrap12_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250920020223-0500P2-wrap12_0919/ink-detection/PHerc0500P2-20250920020223-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    900,
+    700
+   ],
+   "sv_hr_shape": [
+    118,
+    3820,
+    2960
+   ],
+   "mesh_hr_shape": [
+    191,
+    148
+   ],
+   "mesh_lr_shape": [
+    45,
+    35
+   ],
+   "teacher_shape": [
+    3820,
+    2960
+   ],
+   "index": 109
+  },
+  "PHerc0500P2_20250920020224": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250920020224-0500P2-wrap13_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250920020224-0500P2-wrap13_0919/mesh/20250920020224-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250920020224-0500P2-wrap13_0919/mesh/20250920020224-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250920020224-0500P2-wrap13_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250920020224-0500P2-wrap13_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250920020224-0500P2-wrap13_0919/ink-detection/PHerc0500P2-20250920020224-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    880,
+    680
+   ],
+   "sv_hr_shape": [
+    118,
+    3700,
+    2880
+   ],
+   "mesh_hr_shape": [
+    185,
+    144
+   ],
+   "mesh_lr_shape": [
+    44,
+    34
+   ],
+   "teacher_shape": [
+    3700,
+    2880
+   ],
+   "index": 110
+  },
+  "PHerc0500P2_20250922024644": {
+   "scroll": "PHerc0500P2",
+   "segment": "20250922024644-0500P2-wrap11_0919",
+   "role": "test",
+   "k": 4.226636568848758,
+   "mesh_hr": "PHerc0500P2/segments/20250922024644-0500P2-wrap11_0919/mesh/20250922024644-on-20250526151718-2.215um.tifxyz/",
+   "mesh_lr": "PHerc0500P2/segments/20250922024644-0500P2-wrap11_0919/mesh/20250922024644-on-20250820143440-9.362um.tifxyz/",
+   "sv_hr": "PHerc0500P2/segments/20250922024644-0500P2-wrap11_0919/surface-volumes/2.215um-0.4m-111keV-volume-20250526151718.zarr",
+   "sv_lr": "PHerc0500P2/segments/20250922024644-0500P2-wrap11_0919/surface-volumes/9.362um-1.2m-113keV-volume-20250820143440.zarr",
+   "teacher": "PHerc0500P2/segments/20250922024644-0500P2-wrap11_0919/ink-detection/PHerc0500P2-20250922024644-2.215um-0.4m-111keV-volume-20250526151718-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    720,
+    1040
+   ],
+   "sv_hr_shape": [
+    118,
+    3000,
+    4360
+   ],
+   "mesh_hr_shape": [
+    150,
+    218
+   ],
+   "mesh_lr_shape": [
+    36,
+    52
+   ],
+   "teacher_shape": [
+    3000,
+    4360
+   ],
+   "index": 111
+  },
+  "PHerc0814_20250925161630": {
+   "scroll": "PHerc0814",
+   "segment": "20250925161630-auto_grown_20250925161630635",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250925161630-auto_grown_20250925161630635/mesh/20250925161630-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250925161630-auto_grown_20250925161630635/mesh/20250925161630-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250925161630-auto_grown_20250925161630635/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250925161630-auto_grown_20250925161630635/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250925161630-auto_grown_20250925161630635/ink-detection/PHerc0814-20250925161630-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5160,
+    19000
+   ],
+   "sv_hr_shape": [
+    109,
+    20080,
+    73920
+   ],
+   "mesh_hr_shape": [
+    1004,
+    3696
+   ],
+   "mesh_lr_shape": [
+    258,
+    950
+   ],
+   "teacher_shape": [
+    20080,
+    73920
+   ],
+   "index": 112
+  },
+  "PHerc0814_20250925182632": {
+   "scroll": "PHerc0814",
+   "segment": "20250925182632-auto_grown_20250925182632715",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250925182632-auto_grown_20250925182632715/mesh/20250925182632-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250925182632-auto_grown_20250925182632715/mesh/20250925182632-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250925182632-auto_grown_20250925182632715/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250925182632-auto_grown_20250925182632715/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250925182632-auto_grown_20250925182632715/ink-detection/PHerc0814-20250925182632-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4780,
+    21680
+   ],
+   "sv_hr_shape": [
+    109,
+    18600,
+    84340
+   ],
+   "mesh_hr_shape": [
+    930,
+    4217
+   ],
+   "mesh_lr_shape": [
+    239,
+    1084
+   ],
+   "teacher_shape": [
+    18600,
+    84340
+   ],
+   "index": 113
+  },
+  "PHerc0814_20250925204843": {
+   "scroll": "PHerc0814",
+   "segment": "20250925204843-auto_grown_20250925204843950",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250925204843-auto_grown_20250925204843950/mesh/20250925204843-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250925204843-auto_grown_20250925204843950/mesh/20250925204843-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250925204843-auto_grown_20250925204843950/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250925204843-auto_grown_20250925204843950/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250925204843-auto_grown_20250925204843950/ink-detection/PHerc0814-20250925204843-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4640,
+    31860
+   ],
+   "sv_hr_shape": [
+    109,
+    18060,
+    123940
+   ],
+   "mesh_hr_shape": [
+    903,
+    6197
+   ],
+   "mesh_lr_shape": [
+    232,
+    1593
+   ],
+   "teacher_shape": [
+    18060,
+    123940
+   ],
+   "index": 114
+  },
+  "PHerc0814_20250925212701": {
+   "scroll": "PHerc0814",
+   "segment": "20250925212701-auto_grown_20250925212701145",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250925212701-auto_grown_20250925212701145/mesh/20250925212701-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250925212701-auto_grown_20250925212701145/mesh/20250925212701-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250925212701-auto_grown_20250925212701145/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250925212701-auto_grown_20250925212701145/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250925212701-auto_grown_20250925212701145/ink-detection/PHerc0814-20250925212701-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4080,
+    6900
+   ],
+   "sv_hr_shape": [
+    109,
+    15880,
+    26840
+   ],
+   "mesh_hr_shape": [
+    794,
+    1342
+   ],
+   "mesh_lr_shape": [
+    204,
+    345
+   ],
+   "teacher_shape": [
+    15880,
+    26840
+   ],
+   "index": 115
+  },
+  "PHerc0814_20250925222237": {
+   "scroll": "PHerc0814",
+   "segment": "20250925222237-auto_grown_20250925222237459",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250925222237-auto_grown_20250925222237459/mesh/20250925222237-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250925222237-auto_grown_20250925222237459/mesh/20250925222237-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250925222237-auto_grown_20250925222237459/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250925222237-auto_grown_20250925222237459/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250925222237-auto_grown_20250925222237459/ink-detection/PHerc0814-20250925222237-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3920,
+    11900
+   ],
+   "sv_hr_shape": [
+    109,
+    15260,
+    46300
+   ],
+   "mesh_hr_shape": [
+    763,
+    2315
+   ],
+   "mesh_lr_shape": [
+    196,
+    595
+   ],
+   "teacher_shape": [
+    15260,
+    46300
+   ],
+   "index": 116
+  },
+  "PHerc0814_20250926051122": {
+   "scroll": "PHerc0814",
+   "segment": "20250926051122-auto_grown_20250926051122829",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250926051122-auto_grown_20250926051122829/mesh/20250926051122-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250926051122-auto_grown_20250926051122829/mesh/20250926051122-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250926051122-auto_grown_20250926051122829/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250926051122-auto_grown_20250926051122829/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250926051122-auto_grown_20250926051122829/ink-detection/PHerc0814-20250926051122-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5400,
+    51780
+   ],
+   "sv_hr_shape": [
+    109,
+    21020,
+    201420
+   ],
+   "mesh_hr_shape": [
+    1051,
+    10071
+   ],
+   "mesh_lr_shape": [
+    270,
+    2589
+   ],
+   "teacher_shape": [
+    21020,
+    201420
+   ],
+   "index": 117
+  },
+  "PHerc0814_20250926165636": {
+   "scroll": "PHerc0814",
+   "segment": "20250926165636-auto_trace_20250926165636789",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250926165636-auto_trace_20250926165636789/mesh/20250926165636-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250926165636-auto_trace_20250926165636789/mesh/20250926165636-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250926165636-auto_trace_20250926165636789/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250926165636-auto_trace_20250926165636789/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250926165636-auto_trace_20250926165636789/ink-detection/PHerc0814-20250926165636-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4820,
+    27220
+   ],
+   "sv_hr_shape": [
+    109,
+    18760,
+    105880
+   ],
+   "mesh_hr_shape": [
+    938,
+    5294
+   ],
+   "mesh_lr_shape": [
+    241,
+    1361
+   ],
+   "teacher_shape": [
+    18760,
+    105880
+   ],
+   "index": 118
+  },
+  "PHerc0814_20250926203608": {
+   "scroll": "PHerc0814",
+   "segment": "20250926203608-auto_grown_20250926203608932",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250926203608-auto_grown_20250926203608932/mesh/20250926203608-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250926203608-auto_grown_20250926203608932/mesh/20250926203608-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250926203608-auto_grown_20250926203608932/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250926203608-auto_grown_20250926203608932/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250926203608-auto_grown_20250926203608932/ink-detection/PHerc0814-20250926203608-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4620,
+    24460
+   ],
+   "sv_hr_shape": [
+    109,
+    17980,
+    95140
+   ],
+   "mesh_hr_shape": [
+    899,
+    4757
+   ],
+   "mesh_lr_shape": [
+    231,
+    1223
+   ],
+   "teacher_shape": [
+    17980,
+    95140
+   ],
+   "index": 119
+  },
+  "PHerc0814_20250928235953": {
+   "scroll": "PHerc0814",
+   "segment": "20250928235953-auto_grown_20250928235953722",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250928235953-auto_grown_20250928235953722/mesh/20250928235953-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250928235953-auto_grown_20250928235953722/mesh/20250928235953-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250928235953-auto_grown_20250928235953722/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250928235953-auto_grown_20250928235953722/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250928235953-auto_grown_20250928235953722/ink-detection/PHerc0814-20250928235953-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5040,
+    52760
+   ],
+   "sv_hr_shape": [
+    109,
+    19620,
+    205240
+   ],
+   "mesh_hr_shape": [
+    981,
+    10262
+   ],
+   "mesh_lr_shape": [
+    252,
+    2638
+   ],
+   "teacher_shape": [
+    19620,
+    205240
+   ],
+   "index": 120
+  },
+  "PHerc0814_20250928235954": {
+   "scroll": "PHerc0814",
+   "segment": "20250928235954-auto_grown_20250928235953722_copy",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250928235954-auto_grown_20250928235953722_copy/mesh/20250928235954-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250928235954-auto_grown_20250928235953722_copy/mesh/20250928235954-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250928235954-auto_grown_20250928235953722_copy/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250928235954-auto_grown_20250928235953722_copy/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250928235954-auto_grown_20250928235953722_copy/ink-detection/PHerc0814-20250928235954-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    600,
+    900
+   ],
+   "sv_hr_shape": [
+    109,
+    2340,
+    3480
+   ],
+   "mesh_hr_shape": [
+    117,
+    174
+   ],
+   "mesh_lr_shape": [
+    30,
+    45
+   ],
+   "teacher_shape": [
+    2340,
+    3480
+   ],
+   "index": 121
+  },
+  "PHerc0814_20250929040153": {
+   "scroll": "PHerc0814",
+   "segment": "20250929040153-auto_grown_20250929040153260",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250929040153-auto_grown_20250929040153260/mesh/20250929040153-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250929040153-auto_grown_20250929040153260/mesh/20250929040153-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250929040153-auto_grown_20250929040153260/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250929040153-auto_grown_20250929040153260/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250929040153-auto_grown_20250929040153260/ink-detection/PHerc0814-20250929040153-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3360,
+    11240
+   ],
+   "sv_hr_shape": [
+    109,
+    13080,
+    43720
+   ],
+   "mesh_hr_shape": [
+    654,
+    2186
+   ],
+   "mesh_lr_shape": [
+    168,
+    562
+   ],
+   "teacher_shape": [
+    13080,
+    43720
+   ],
+   "index": 122
+  },
+  "PHerc0814_20250930083742": {
+   "scroll": "PHerc0814",
+   "segment": "20250930083742-auto_grown_20250930083742882",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20250930083742-auto_grown_20250930083742882/mesh/20250930083742-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20250930083742-auto_grown_20250930083742882/mesh/20250930083742-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20250930083742-auto_grown_20250930083742882/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20250930083742-auto_grown_20250930083742882/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20250930083742-auto_grown_20250930083742882/ink-detection/PHerc0814-20250930083742-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    5060,
+    20540
+   ],
+   "sv_hr_shape": [
+    109,
+    19680,
+    79900
+   ],
+   "mesh_hr_shape": [
+    984,
+    3995
+   ],
+   "mesh_lr_shape": [
+    253,
+    1027
+   ],
+   "teacher_shape": [
+    19680,
+    79900
+   ],
+   "index": 123
+  },
+  "PHerc0814_20251001060526": {
+   "scroll": "PHerc0814",
+   "segment": "20251001060526-auto_grown_20251001060526760",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20251001060526-auto_grown_20251001060526760/mesh/20251001060526-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20251001060526-auto_grown_20251001060526760/mesh/20251001060526-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20251001060526-auto_grown_20251001060526760/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20251001060526-auto_grown_20251001060526760/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20251001060526-auto_grown_20251001060526760/ink-detection/PHerc0814-20251001060526-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4720,
+    24680
+   ],
+   "sv_hr_shape": [
+    109,
+    18360,
+    96000
+   ],
+   "mesh_hr_shape": [
+    918,
+    4800
+   ],
+   "mesh_lr_shape": [
+    236,
+    1234
+   ],
+   "teacher_shape": [
+    18360,
+    96000
+   ],
+   "index": 124
+  },
+  "PHerc0814_20260225160055": {
+   "scroll": "PHerc0814",
+   "segment": "20260225160055-auto_grown_20260225160055913",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260225160055-auto_grown_20260225160055913/mesh/20260225160055-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260225160055-auto_grown_20260225160055913/mesh/20260225160055-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260225160055-auto_grown_20260225160055913/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260225160055-auto_grown_20260225160055913/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260225160055-auto_grown_20260225160055913/ink-detection/PHerc0814-20260225160055-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    660,
+    660
+   ],
+   "sv_hr_shape": [
+    109,
+    2560,
+    2540
+   ],
+   "mesh_hr_shape": [
+    128,
+    127
+   ],
+   "mesh_lr_shape": [
+    33,
+    33
+   ],
+   "teacher_shape": [
+    2560,
+    2540
+   ],
+   "index": 125
+  },
+  "PHerc0814_20260226000000": {
+   "scroll": "PHerc0814",
+   "segment": "20260226000000-46527_2um_try2",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260226000000-46527_2um_try2/mesh/20260226000000-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260226000000-46527_2um_try2/mesh/20260226000000-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260226000000-46527_2um_try2/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260226000000-46527_2um_try2/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260226000000-46527_2um_try2/ink-detection/PHerc0814-20260226000000-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0814/segments/20260226000000-46527_2um_try2/ink-labels/2.399um-volume-20260309142202/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    2180,
+    3560
+   ],
+   "sv_hr_shape": [
+    109,
+    8520,
+    13820
+   ],
+   "mesh_hr_shape": [
+    426,
+    691
+   ],
+   "mesh_lr_shape": [
+    109,
+    178
+   ],
+   "teacher_shape": [
+    8520,
+    13820
+   ],
+   "index": 126
+  },
+  "PHerc0814_20260226110425": {
+   "scroll": "PHerc0814",
+   "segment": "20260226110425-auto_grown_20260226110425097_abf",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260226110425-auto_grown_20260226110425097_abf/mesh/20260226110425-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260226110425-auto_grown_20260226110425097_abf/mesh/20260226110425-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260226110425-auto_grown_20260226110425097_abf/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260226110425-auto_grown_20260226110425097_abf/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260226110425-auto_grown_20260226110425097_abf/ink-detection/PHerc0814-20260226110425-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    600,
+    960
+   ],
+   "sv_hr_shape": [
+    109,
+    2300,
+    3720
+   ],
+   "mesh_hr_shape": [
+    115,
+    186
+   ],
+   "mesh_lr_shape": [
+    30,
+    48
+   ],
+   "teacher_shape": [
+    2300,
+    3720
+   ],
+   "index": 127
+  },
+  "PHerc0814_20260226113324": {
+   "scroll": "PHerc0814",
+   "segment": "20260226113324-auto_grown_20260226113324624_abf",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260226113324-auto_grown_20260226113324624_abf/mesh/20260226113324-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260226113324-auto_grown_20260226113324624_abf/mesh/20260226113324-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260226113324-auto_grown_20260226113324624_abf/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260226113324-auto_grown_20260226113324624_abf/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260226113324-auto_grown_20260226113324624_abf/ink-detection/PHerc0814-20260226113324-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    600,
+    980
+   ],
+   "sv_hr_shape": [
+    109,
+    2320,
+    3840
+   ],
+   "mesh_hr_shape": [
+    116,
+    192
+   ],
+   "mesh_lr_shape": [
+    30,
+    49
+   ],
+   "teacher_shape": [
+    2320,
+    3840
+   ],
+   "index": 128
+  },
+  "PHerc0814_20260226121302": {
+   "scroll": "PHerc0814",
+   "segment": "20260226121302-auto_grown_20260226121302716_abf",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260226121302-auto_grown_20260226121302716_abf/mesh/20260226121302-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260226121302-auto_grown_20260226121302716_abf/mesh/20260226121302-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260226121302-auto_grown_20260226121302716_abf/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260226121302-auto_grown_20260226121302716_abf/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260226121302-auto_grown_20260226121302716_abf/ink-detection/PHerc0814-20260226121302-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    600,
+    980
+   ],
+   "sv_hr_shape": [
+    109,
+    2360,
+    3840
+   ],
+   "mesh_hr_shape": [
+    118,
+    192
+   ],
+   "mesh_lr_shape": [
+    30,
+    49
+   ],
+   "teacher_shape": [
+    2360,
+    3840
+   ],
+   "index": 129
+  },
+  "PHerc0814_20260226123353": {
+   "scroll": "PHerc0814",
+   "segment": "20260226123353-auto_grown_20260226123353106",
+   "role": "train",
+   "k": 3.902459358065861,
+   "mesh_hr": "PHerc0814/segments/20260226123353-auto_grown_20260226123353106/mesh/20260226123353-on-20260309142202-2.399um.tifxyz/",
+   "mesh_lr": "PHerc0814/segments/20260226123353-auto_grown_20260226123353106/mesh/20260226123353-on-20250804134230-9.362um.tifxyz/",
+   "sv_hr": "PHerc0814/segments/20260226123353-auto_grown_20260226123353106/surface-volumes/2.399um-0.22m-78keV-volume-20260309142202.zarr",
+   "sv_lr": "PHerc0814/segments/20260226123353-auto_grown_20260226123353106/surface-volumes/9.362um-1.2m-113keV-volume-20250804134230.zarr",
+   "teacher": "PHerc0814/segments/20260226123353-auto_grown_20260226123353106/ink-detection/PHerc0814-20260226123353-2.399um-0.22m-78keV-volume-20260309142202-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": null,
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    460,
+    1120
+   ],
+   "sv_hr_shape": [
+    109,
+    1820,
+    4340
+   ],
+   "mesh_hr_shape": [
+    91,
+    217
+   ],
+   "mesh_lr_shape": [
+    23,
+    56
+   ],
+   "teacher_shape": [
+    1820,
+    4340
+   ],
+   "index": 130
+  },
+  "PHerc0841_20260220213127": {
+   "scroll": "PHerc0841",
+   "segment": "20260220213127-w00",
+   "role": "test",
+   "k": 3.897627965043695,
+   "mesh_hr": "PHerc0841/segments/20260220213127-w00/mesh/20260220213127-on-20260319124803-2.403um.tifxyz/",
+   "mesh_lr": "PHerc0841/segments/20260220213127-w00/mesh/20260220213127-on-20250821151531-9.366um.tifxyz/",
+   "sv_hr": "PHerc0841/segments/20260220213127-w00/surface-volumes/2.403um-0.22m-77keV-volume-20260319124803.zarr",
+   "sv_lr": "PHerc0841/segments/20260220213127-w00/surface-volumes/9.366um-1.2m-113keV-volume-20250821151531.zarr",
+   "teacher": "PHerc0841/segments/20260220213127-w00/ink-detection/PHerc0841-20260220213127-2.403um-0.22m-77keV-volume-20260319124803-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0841/segments/20260220213127-w00/ink-labels/2.403um-volume-20260319124803/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4220,
+    4760
+   ],
+   "sv_hr_shape": [
+    109,
+    16460,
+    18560
+   ],
+   "mesh_hr_shape": [
+    823,
+    928
+   ],
+   "mesh_lr_shape": [
+    211,
+    238
+   ],
+   "teacher_shape": [
+    16460,
+    18560
+   ],
+   "index": 131
+  },
+  "PHerc0841_20260220214732": {
+   "scroll": "PHerc0841",
+   "segment": "20260220214732-auto_grown_20260220144552896",
+   "role": "test",
+   "k": 3.897627965043695,
+   "mesh_hr": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/mesh/20260220214732-on-20260319124803-2.403um.tifxyz/",
+   "mesh_lr": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/mesh/20260220214732-on-20250821151531-9.366um.tifxyz/",
+   "sv_hr": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/surface-volumes/2.403um-0.22m-77keV-volume-20260319124803.zarr",
+   "sv_lr": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/surface-volumes/9.366um-1.2m-113keV-volume-20250821151531.zarr",
+   "teacher": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/ink-detection/PHerc0841-20260220214732-2.403um-0.22m-77keV-volume-20260319124803-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0841/segments/20260220214732-auto_grown_20260220144552896/ink-labels/2.403um-volume-20260319124803/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    4640,
+    4720
+   ],
+   "sv_hr_shape": [
+    109,
+    18080,
+    18400
+   ],
+   "mesh_hr_shape": [
+    904,
+    920
+   ],
+   "mesh_lr_shape": [
+    232,
+    236
+   ],
+   "teacher_shape": [
+    18080,
+    18400
+   ],
+   "index": 132
+  },
+  "PHerc0841_20260221022814": {
+   "scroll": "PHerc0841",
+   "segment": "20260221022814-auto_grown_20260220174252405",
+   "role": "test",
+   "k": 3.897627965043695,
+   "mesh_hr": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/mesh/20260221022814-on-20260319124803-2.403um.tifxyz/",
+   "mesh_lr": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/mesh/20260221022814-on-20250821151531-9.366um.tifxyz/",
+   "sv_hr": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/surface-volumes/2.403um-0.22m-77keV-volume-20260319124803.zarr",
+   "sv_lr": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/surface-volumes/9.366um-1.2m-113keV-volume-20250821151531.zarr",
+   "teacher": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/ink-detection/PHerc0841-20260221022814-2.403um-0.22m-77keV-volume-20260319124803-20260417190342-new_canon_autoresearch_recipe-tile256-stride128.tif",
+   "labels": "PHerc0841/segments/20260221022814-auto_grown_20260220174252405/ink-labels/2.403um-volume-20260319124803/20260918/",
+   "status": "ok",
+   "sv_lr_shape": [
+    28,
+    3760,
+    4900
+   ],
+   "sv_hr_shape": [
+    109,
+    14660,
+    19100
+   ],
+   "mesh_hr_shape": [
+    733,
+    955
+   ],
+   "mesh_lr_shape": [
+    188,
+    245
+   ],
+   "teacher_shape": [
+    14660,
+    19100
+   ],
+   "index": 133
+  }
+ },
+ "note_b001s": "B-001s: unlabelled segments of the test scrolls are usable for training in the folds that do not hold their scroll out (experiments/b001s/README.md)."
+}

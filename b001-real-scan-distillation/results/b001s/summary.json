@@ -1,0 +1,30 @@
+{
+ "verdict": "NO_CLEAR_DIFFERENCE",
+ "vs_s0": "PASS",
+ "lines": [
+  "REPRO S0 forward AUC vs B-001 committed: max abs diff 0.00000 on 49 windows (tol 0.005) -> OK",
+  "VS_S0 RULE mean paired gain +0.0987 (need >= +0.05); REAL > S0 on 45 of 49 windows (need 70%); n 49 (need 20)",
+  "VS_S0 RULE PHerc0009B: 12 windows, mean gain +0.1236",
+  "VS_S0 RULE PHerc0500P2: 12 windows, mean gain +0.1264",
+  "VS_S0 RULE PHerc0841: 25 windows, mean gain +0.0734",
+  "CONTROL fold PHerc0841 shuffled-layer pooled AUC 0.5629 (need 0.5 +- 0.1)",
+  "CONTROL fold PHerc0009B shuffled-layer pooled AUC 0.5766 (need 0.5 +- 0.1)",
+  "CONTROL fold PHerc0500P2 shuffled-layer pooled AUC 0.5369 (need 0.5 +- 0.1)",
+  "VS_S0_VERDICT PASS",
+  "SCALE B-001s - B-001 (two-seed mean) mean paired gain +0.0012; higher on 31 of 49, lower on 18 of 49 (margin 0.02, fraction 60%)",
+  "SCALE_OUTCOME NO_CLEAR_DIFFERENCE",
+  "SCALE PHerc0841: 25 windows, mean B-001s 0.7656 vs B-001 two-seed 0.7739 (-0.0084)",
+  "SCALE PHerc0009B: 12 windows, mean B-001s 0.8585 vs B-001 two-seed 0.8393 (+0.0192)",
+  "SCALE PHerc0500P2: 12 windows, mean B-001s 0.8540 vs B-001 two-seed 0.8507 (+0.0033)",
+  "VERDICT NO_CLEAR_DIFFERENCE (vs stock: PASS)"
+ ],
+ "n_scored": 49,
+ "descriptive": {
+  "B001_S0_fwd": 0.7113,
+  "B001_REAL_fwd": 0.8027,
+  "B001_R1_fwd": 0.8148,
+  "S_fwd": 0.81,
+  "S_rev": 0.5284,
+  "S0_fwd": 0.7113
+ }
+}
