@@ -1,0 +1,37 @@
+{
+ "r1_verdict": "PASS",
+ "sim_outcome": "REAL_INPUT_MATTERS",
+ "lines": [
+  "REPRO S0 forward AUC vs B-001 committed: max abs diff 0.00000 on 49 windows (tol 0.005) -> OK",
+  "R1 RULE mean paired gain +0.1035 (need >= +0.05); REAL > S0 on 46 of 49 windows (need 70%); n 49 (need 20)",
+  "R1 RULE PHerc0009B: 12 windows, mean gain +0.1045",
+  "R1 RULE PHerc0500P2: 12 windows, mean gain +0.1294",
+  "R1 RULE PHerc0841: 25 windows, mean gain +0.0906",
+  "CONTROL R1 shuffled-layer pooled AUC 0.5608 (need 0.5 +- 0.1)",
+  "CONTROL SIM shuffled-layer pooled AUC 0.5496 (need 0.5 +- 0.1)",
+  "R1_VERDICT PASS -> B-001 REPLICATED",
+  "SIM REAL - SIM mean paired gain +0.0348; REAL > SIM on 39 of 49, SIM > REAL on 10 of 49 (margin 0.02, fraction 60%)",
+  "SIM_OUTCOME REAL_INPUT_MATTERS"
+ ],
+ "n_scored": 49,
+ "descriptive": {
+  "B001_S0_fwd": 0.7113,
+  "B001_REAL_fwd": 0.8027,
+  "S0_fwd": 0.7113,
+  "R1_fwd": 0.8148,
+  "R1_rev": 0.52,
+  "SIM_fwd": 0.768,
+  "SIM_rev": 0.5315,
+  "gain_correlation_REAL_R1": 0.9448,
+  "SIM_vs_S0_B001_rule": [
+   "RULE mean paired gain +0.0566 (need >= +0.05); REAL > S0 on 35 of 49 windows (need 70%); n 49 (need 20)",
+   "RULE PHerc0009B: 12 windows, mean gain +0.0662",
+   "RULE PHerc0500P2: 12 windows, mean gain +0.0679",
+   "RULE PHerc0841: 25 windows, mean gain +0.0466"
+  ]
+ },
+ "control_shuffled_auc": {
+  "R1": 0.5607691127601011,
+  "SIM": 0.5495552506614283
+ }
+}

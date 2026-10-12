@@ -1,0 +1,23 @@
+{
+ "verdict": "PASS",
+ "lines": [
+  "RULE mean paired gain +0.0914 (need >= +0.05); REAL > S0 on 44 of 49 windows (need 70%); n 49 (need 20)",
+  "RULE PHerc0009B: 12 windows, mean gain +0.1044",
+  "RULE PHerc0500P2: 12 windows, mean gain +0.1167",
+  "RULE PHerc0841: 25 windows, mean gain +0.0730",
+  "CONTROL REAL shuffled-layer pooled AUC 0.5613 (need 0.5 +- 0.1)",
+  "VERDICT PASS"
+ ],
+ "n_windows": 49,
+ "n_scored": 49,
+ "mean_auc_scored": {
+  "S0_fwd": 0.7113,
+  "REAL_fwd": 0.8027,
+  "S0_rev": 0.5073,
+  "REAL_rev": 0.515,
+  "S0_max": 0.6732,
+  "REAL_max": 0.7739,
+  "S0_fwd_gridindex_labels": 0.7086
+ },
+ "control_shuffled_auc": 0.5613110972546619
+}
