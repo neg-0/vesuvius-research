@@ -38,3 +38,4 @@ Our code in this repository is MIT licensed (see `LICENSE`). Derived data
 (ink-probability maps, AUC tables) come from Vesuvius Challenge data and model
 outputs and are shared under the Challenge's data terms, not under MIT. Linked
 third-party code keeps its own licence.
+| [`v033-depth-chooser/`](v033-depth-chooser/) | On PHercParis4, can a label-free statistic of the ink map (std, top-5, mean) choose the depth offset per window, using V-032's nine-offset maps? | No. The primary chooser (std) scores -0.0398 on loss windows against an oracle gain of +0.1131 and -0.1775 on control windows; FAIL as registered. |
