@@ -1,0 +1,178 @@
+{
+ "verdict": "FAIL",
+ "evaluation": {
+  "choosers": {
+   "std": {
+    "gain_L": -0.039813031971468044,
+    "gain_W": -0.17747404839171108,
+    "gain_D": 0.0029094990941306137,
+    "wins_L": 4,
+    "chosen_L": [
+     32,
+     24,
+     -8,
+     16,
+     24,
+     24,
+     -24,
+     32,
+     32,
+     -32,
+     -16,
+     0
+    ],
+    "chosen_W": [
+     -32,
+     32,
+     -16,
+     16,
+     -24,
+     -16,
+     24,
+     -24,
+     32,
+     32,
+     -16,
+     0
+    ],
+    "chosen_D": [
+     0,
+     -8,
+     8,
+     16,
+     16,
+     16,
+     8
+    ],
+    "matches_oracle_offset": 1,
+    "reason": "mean gain on loss windows -0.0398 (need >= 0.5 x oracle +0.1131 = +0.0566); mean gain on control windows -0.1775 (need >= -0.01); chosen beats offset 0 on 4 of 12 loss windows (need >= 8)",
+    "verdict": "FAIL"
+   },
+   "top5": {
+    "gain_L": 0.045370749262492766,
+    "gain_W": -0.011688774041237074,
+    "gain_D": -0.05759601440255726,
+    "wins_L": 9,
+    "chosen_L": [
+     32,
+     32,
+     -8,
+     -24,
+     32,
+     8,
+     -8,
+     16,
+     16,
+     8,
+     24,
+     -8
+    ],
+    "chosen_W": [
+     32,
+     8,
+     0,
+     -8,
+     24,
+     8,
+     -16,
+     24,
+     16,
+     16,
+     24,
+     0
+    ],
+    "chosen_D": [
+     32,
+     -8,
+     8,
+     32,
+     16,
+     8,
+     -32
+    ],
+    "matches_oracle_offset": 4,
+    "reason": "mean gain on loss windows +0.0454 (need >= 0.5 x oracle +0.1131 = +0.0566); mean gain on control windows -0.0117 (need >= -0.01); chosen beats offset 0 on 9 of 12 loss windows (need >= 8)",
+    "verdict": "FAIL"
+   },
+   "mean": {
+    "gain_L": 0.030611800630579843,
+    "gain_W": 0.0016872914681785867,
+    "gain_D": 0.007134494855228435,
+    "wins_L": 8,
+    "chosen_L": [
+     8,
+     32,
+     -8,
+     -8,
+     0,
+     -8,
+     -24,
+     8,
+     -8,
+     8,
+     32,
+     -8
+    ],
+    "chosen_W": [
+     -8,
+     8,
+     0,
+     -8,
+     8,
+     16,
+     8,
+     16,
+     8,
+     0,
+     8,
+     -8
+    ],
+    "chosen_D": [
+     0,
+     8,
+     24,
+     8,
+     8,
+     -24,
+     8
+    ],
+    "matches_oracle_offset": 5,
+    "reason": "mean gain on loss windows +0.0306 (need >= 0.5 x oracle +0.1131 = +0.0566); mean gain on control windows +0.0017 (need >= -0.01); chosen beats offset 0 on 8 of 12 loss windows (need >= 8)",
+    "verdict": "FAIL"
+   }
+  },
+  "oracle_gain_L": 0.11310734275995694,
+  "random_offset_gain": {
+   "L": -0.03955216997145369,
+   "W": -0.0911281609342901,
+   "D": -0.06026626941997121
+  },
+  "mean_auc_L": {
+   "at_0": 0.7226718635300028,
+   "oracle": 0.8357792062899597,
+   "mrg": 0.9332252344769177
+  },
+  "mean_auc_W": {
+   "at_0": 0.8966056856847434,
+   "oracle": 0.9256432329820706,
+   "mrg": 0.834128694697017
+  },
+  "mean_auc_D": {
+   "at_0": 0.750282660859544,
+   "oracle": 0.8986616525530735,
+   "mrg": 0.8784415709199588
+  },
+  "verdict": "FAIL",
+  "reason": "mean gain on loss windows -0.0398 (need >= 0.5 x oracle +0.1131 = +0.0566); mean gain on control windows -0.1775 (need >= -0.01); chosen beats offset 0 on 4 of 12 loss windows (need >= 8)"
+ },
+ "lines": [
+  "RULE label-free depth chooser (V-033, primary: std of the ds8 ink map): mean gain on loss windows -0.0398 (need >= 0.5 x oracle +0.1131 = +0.0566); mean gain on control windows -0.1775 (need >= -0.01); chosen beats offset 0 on 4 of 12 loss windows (need >= 8) -> FAIL",
+  "DESCR chooser std: gain L -0.0398, W -0.1775, D 0.0029; chosen beats 0 on 4 of 12 L windows; equals the oracle offset on 1 of 31; chosen offsets L [32, 24, -8, 16, 24, 24, -24, 32, 32, -32, -16, 0]",
+  "DESCR chooser top5: gain L 0.0454, W -0.0117, D -0.0576; chosen beats 0 on 9 of 12 L windows; equals the oracle offset on 4 of 31; chosen offsets L [32, 32, -8, -24, 32, 8, -8, 16, 16, 8, 24, -8]",
+  "DESCR chooser mean: gain L 0.0306, W 0.0017, D 0.0071; chosen beats 0 on 8 of 12 L windows; equals the oracle offset on 5 of 31; chosen offsets L [8, 32, -8, -8, 0, -8, -24, 8, -8, 8, 32, -8]",
+  "DESCR oracle gain L 0.1131; random-offset gain L -0.0396, W -0.0911, D -0.0603",
+  "DESCR loss set mean AUC: at 0 0.7227, oracle 0.8358, mrg20736-1um 0.9332; primary chooser gives 0.6829",
+  "DESCR control set mean AUC: at 0 0.8966, oracle 0.9256, mrg20736-1um 0.8341; primary chooser gives 0.7191",
+  "DESCR PHerc0139 w044/w045 set mean AUC: at 0 0.7503, oracle 0.8987, mrg20736-1um 0.8784; primary chooser gives 0.7532"
+ ]
+}
