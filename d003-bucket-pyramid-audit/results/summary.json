@@ -1,0 +1,10 @@
+{
+ "volumes": 692,
+ "flagged": 5,
+ "flag_counts": {
+  "PROBE_EMPTY": 5
+ },
+ "depth_flagged": [],
+ "errors": [],
+ "verdict": "BUCKET_CLEAN"
+}
