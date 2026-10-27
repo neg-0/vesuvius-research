@@ -1,0 +1,108 @@
+{
+ "verdict": "FAIL",
+ "evaluation": {
+  "n": 85,
+  "n_planned_comparable": 85,
+  "folds_done": [
+   0,
+   1,
+   2
+  ],
+  "mean_zero_shot": 0.8010952053356516,
+  "mean_finetuned": 0.8063771942830464,
+  "mean_mrg": 0.8573701031546328,
+  "mean_gain": 0.005281988947394377,
+  "above": 44,
+  "need": 60,
+  "skipped": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "verdict": "FAIL",
+  "reason": "fine-tuned > zero-shot on 44 of 85 windows (need 60), mean gain +0.0053 (need >= +0.02)",
+  "strata": {
+   "stock_below_0.75": {
+    "n": 23,
+    "mean_gain": 0.1343673584512132
+   },
+   "stock_at_least_0.75": {
+    "n": 62,
+    "mean_gain": -0.04260451909434486
+   }
+  },
+  "per_segment": {
+   "0139_w030": {
+    "n": 18,
+    "zero_shot": 0.7998564365539678,
+    "finetuned": 0.8154731766272458,
+    "mrg": 0.8461485208046815,
+    "gate_adapts": false
+   },
+   "0139_w035": {
+    "n": 18,
+    "zero_shot": 0.8043274124805229,
+    "finetuned": 0.8248549659508034,
+    "mrg": 0.8586604657761824,
+    "gate_adapts": false
+   },
+   "0139_w039": {
+    "n": 13,
+    "zero_shot": 0.8514266016102378,
+    "finetuned": 0.8389672790539954,
+    "mrg": 0.8775981865621277,
+    "gate_adapts": false
+   },
+   "0139_w040": {
+    "n": 18,
+    "zero_shot": 0.7852992376550254,
+    "finetuned": 0.7746900319733862,
+    "mrg": 0.8509332286961137,
+    "gate_adapts": false
+   },
+   "0139_w041": {
+    "n": 11,
+    "zero_shot": 0.7965338587426569,
+    "finetuned": 0.7650741127618486,
+    "mrg": 0.8468392246737114,
+    "gate_adapts": false
+   },
+   "0139_w044": {
+    "n": 5,
+    "zero_shot": 0.72852925220158,
+    "finetuned": 0.8212937998486766,
+    "mrg": 0.8654460561168771,
+    "gate_adapts": true
+   },
+   "0139_w045": {
+    "n": 2,
+    "zero_shot": 0.8046661825044537,
+    "finetuned": 0.8214377524037195,
+    "mrg": 0.9109303579276636,
+    "gate_adapts": false
+   }
+  },
+  "wins_vs_mrg": {
+   "zero_shot": 25,
+   "finetuned": 19
+  }
+ },
+ "lines": [
+  "RULE fine-tune on PHerc0139 (V-049): fine-tuned > zero-shot on 44 of 85 windows (need 60), mean gain +0.0053 (need >= +0.02) -> FAIL",
+  "DESCR mean AUC: zero-shot 0.8011, fine-tuned 0.8064, mrg20736-1um 0.8574; windows with AUC >= mrg: zero-shot 25, fine-tuned 19 of 85",
+  "DESCR mean gain: stock < 0.75 on 23 windows 0.1344; stock >= 0.75 on 62 windows -0.0426",
+  "DESCR 0139_w030: zero-shot 0.7999 fine-tuned 0.8155 mrg 0.8461 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR 0139_w035: zero-shot 0.8043 fine-tuned 0.8249 mrg 0.8587 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR 0139_w039: zero-shot 0.8514 fine-tuned 0.8390 mrg 0.8776 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR 0139_w040: zero-shot 0.7853 fine-tuned 0.7747 mrg 0.8509 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR 0139_w041: zero-shot 0.7965 fine-tuned 0.7651 mrg 0.8468 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR 0139_w044: zero-shot 0.7285 fine-tuned 0.8213 mrg 0.8654 (toolkit gate, adapt only below 0.75: adapts)",
+  "DESCR 0139_w045: zero-shot 0.8047 fine-tuned 0.8214 mrg 0.9109 (toolkit gate, adapt only below 0.75: does not adapt)"
+ ],
+ "gpu_stage_h": 1.38,
+ "skipped_frac": [
+  0.0,
+  0.0,
+  0.0
+ ]
+}

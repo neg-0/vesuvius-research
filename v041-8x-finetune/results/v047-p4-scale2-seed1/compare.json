@@ -1,0 +1,26 @@
+{
+ "compare": {
+  "outcome": "REPLICATED",
+  "seed0": {
+   "verdict": "PASS",
+   "mean_gain": 0.05033101240479842,
+   "above": 77,
+   "n": 105
+  },
+  "seed1": {
+   "verdict": "PASS",
+   "mean_gain": 0.04775651187575237,
+   "above": 78,
+   "n": 105
+  },
+  "windows_in_both": 105,
+  "gain_correlation": 0.9295845667422823,
+  "mean_abs_gain_difference": 0.02167960341065054,
+  "mean_gain_holds": true
+ },
+ "lines": [
+  "COMPARE V-041 (seed 0) PASS (mean gain 0.0503, 77 of 105 up) vs V-047 (seed 1) PASS (mean gain 0.0478, 78 of 105 up) -> REPLICATED",
+  "DESCR 105 windows in both; per-window gain correlation 0.9296; mean |gain seed 0 - gain seed 1| 0.0217",
+  "MEAN_GAIN_HOLDS yes: seed-1 mean gain 0.0478 vs 50% of V-041's 0.0503 (descriptive companion to the verdict match)"
+ ]
+}

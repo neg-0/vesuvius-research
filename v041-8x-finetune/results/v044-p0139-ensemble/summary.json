@@ -1,0 +1,102 @@
+{
+ "verdict": "FAIL",
+ "evaluation": {
+  "n": 85,
+  "n_planned_comparable": 85,
+  "folds_done": [
+   0,
+   1,
+   2
+  ],
+  "mean_zero_shot": 0.8010952053356516,
+  "mean_finetuned": 0.801870164077164,
+  "mean_mrg": 0.8573701031546328,
+  "mean_gain": 0.0007749587415119826,
+  "above": 41,
+  "need": 60,
+  "skipped": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "verdict": "FAIL",
+  "reason": "fine-tuned > zero-shot on 41 of 85 windows (need 60), mean gain +0.0008 (need >= +0.02)",
+  "strata": {
+   "stock_below_0.75": {
+    "n": 23,
+    "mean_gain": 0.06376017480891584
+   },
+   "stock_at_least_0.75": {
+    "n": 62,
+    "mean_gain": -0.02259052463833138
+   }
+  },
+  "per_segment": {
+   "0139_w030": {
+    "n": 18,
+    "zero_shot": 0.7998564365539678,
+    "finetuned": 0.8059077600588196,
+    "mrg": 0.8461485208046815,
+    "gate_adapts": false
+   },
+   "0139_w035": {
+    "n": 18,
+    "zero_shot": 0.8043274124805229,
+    "finetuned": 0.7831247824650089,
+    "mrg": 0.8586604657761824,
+    "gate_adapts": false
+   },
+   "0139_w039": {
+    "n": 13,
+    "zero_shot": 0.8514266016102378,
+    "finetuned": 0.8713380111461997,
+    "mrg": 0.8775981865621277,
+    "gate_adapts": false
+   },
+   "0139_w040": {
+    "n": 18,
+    "zero_shot": 0.7852992376550254,
+    "finetuned": 0.7927381764506988,
+    "mrg": 0.8509332286961137,
+    "gate_adapts": false
+   },
+   "0139_w041": {
+    "n": 11,
+    "zero_shot": 0.7965338587426569,
+    "finetuned": 0.7863809475020638,
+    "mrg": 0.8468392246737114,
+    "gate_adapts": false
+   },
+   "0139_w044": {
+    "n": 5,
+    "zero_shot": 0.72852925220158,
+    "finetuned": 0.7468707452575597,
+    "mrg": 0.8654460561168771,
+    "gate_adapts": true
+   },
+   "0139_w045": {
+    "n": 2,
+    "zero_shot": 0.8046661825044537,
+    "finetuned": 0.7875763556531699,
+    "mrg": 0.9109303579276636,
+    "gate_adapts": false
+   }
+  },
+  "wins_vs_mrg": {
+   "zero_shot": 25,
+   "finetuned": 22
+  }
+ },
+ "lines": [
+  "RULE PHerc0139 three-member ensemble (stock + seed 0 + seed 1): ensemble > zero-shot on 41 of 85 windows (need 60), mean gain +0.0008 (need >= +0.02) -> FAIL",
+  "DESCR mean AUC: zero-shot 0.8011, seed 0 alone 0.7665, seed 1 alone 0.7548, ensemble 0.8019, mrg20736-1um 0.8574",
+  "DESCR mean gain over zero-shot: seed 0 alone -0.0346, seed 1 alone -0.0463, two-member blends 0.0104 / -0.0016, three-member ensemble 0.0008",
+  "DESCR ensemble gain: stock < 0.75 on 23 windows 0.0638; stock >= 0.75 on 62 windows -0.0226"
+ ],
+ "gpu_stage_h": 1.52,
+ "skipped_frac": [
+  0.0,
+  0.0,
+  0.0
+ ]
+}

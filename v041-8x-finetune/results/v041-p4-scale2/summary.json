@@ -1,0 +1,100 @@
+{
+ "verdict": "PASS",
+ "evaluation": {
+  "n": 105,
+  "n_planned_comparable": 105,
+  "folds_done": [
+   0,
+   1,
+   2
+  ],
+  "mean_zero_shot": 0.8607317082345134,
+  "mean_finetuned": 0.9110627206393117,
+  "mean_mrg": 0.9201587107547452,
+  "mean_gain": 0.05033101240479842,
+  "above": 77,
+  "need": 74,
+  "skipped": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "verdict": "PASS",
+  "reason": "fine-tuned > zero-shot on 77 of 105 windows (need 74), mean gain +0.0503 (need >= +0.02)",
+  "strata": {
+   "stock_below_0.75": {
+    "n": 15,
+    "mean_gain": 0.1967629060575808
+   },
+   "stock_at_least_0.75": {
+    "n": 90,
+    "mean_gain": 0.025925696796001357
+   }
+  },
+  "per_segment": {
+   "P4_20230702185753": {
+    "n": 18,
+    "zero_shot": 0.8724143215382338,
+    "finetuned": 0.9265485625718056,
+    "mrg": 0.9125393243407911,
+    "gate_adapts": false
+   },
+   "P4_20231007101619": {
+    "n": 18,
+    "zero_shot": 0.8466814167641225,
+    "finetuned": 0.9150505372736701,
+    "mrg": 0.9169315670128544,
+    "gate_adapts": false
+   },
+   "P4_20231012184424": {
+    "n": 18,
+    "zero_shot": 0.893685027553697,
+    "finetuned": 0.91380651216138,
+    "mrg": 0.9517622646218773,
+    "gate_adapts": false
+   },
+   "P4_20231031143852": {
+    "n": 18,
+    "zero_shot": 0.8281495273911855,
+    "finetuned": 0.9124015771942126,
+    "mrg": 0.9218387473374801,
+    "gate_adapts": false
+   },
+   "P4_20231106155351": {
+    "n": 18,
+    "zero_shot": 0.8777456110461122,
+    "finetuned": 0.9126858957714623,
+    "mrg": 0.9162436158698694,
+    "gate_adapts": false
+   },
+   "P4_20231210121321": {
+    "n": 15,
+    "zero_shot": 0.842710872489572,
+    "finetuned": 0.8808473425081453,
+    "mrg": 0.8979323522637697,
+    "gate_adapts": false
+   }
+  },
+  "wins_vs_mrg": {
+   "zero_shot": 24,
+   "finetuned": 45
+  }
+ },
+ "lines": [
+  "RULE fine-tune on PHercParis4 (V-034): fine-tuned > zero-shot on 77 of 105 windows (need 74), mean gain +0.0503 (need >= +0.02) -> PASS",
+  "DESCR mean AUC: zero-shot 0.8607, fine-tuned 0.9111, mrg20736-1um 0.9202; windows with AUC >= mrg: zero-shot 24, fine-tuned 45 of 105",
+  "DESCR mean gain: stock < 0.75 on 15 windows 0.1968; stock >= 0.75 on 90 windows 0.0259",
+  "DESCR P4_20230702185753: zero-shot 0.8724 fine-tuned 0.9265 mrg 0.9125 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR P4_20231007101619: zero-shot 0.8467 fine-tuned 0.9151 mrg 0.9169 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR P4_20231012184424: zero-shot 0.8937 fine-tuned 0.9138 mrg 0.9518 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR P4_20231031143852: zero-shot 0.8281 fine-tuned 0.9124 mrg 0.9218 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR P4_20231106155351: zero-shot 0.8777 fine-tuned 0.9127 mrg 0.9162 (toolkit gate, adapt only below 0.75: does not adapt)",
+  "DESCR P4_20231210121321: zero-shot 0.8427 fine-tuned 0.8808 mrg 0.8979 (toolkit gate, adapt only below 0.75: does not adapt)"
+ ],
+ "gpu_stage_h": 1.81,
+ "skipped_frac": [
+  0.0,
+  0.0,
+  0.0
+ ]
+}
