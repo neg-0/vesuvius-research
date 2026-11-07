@@ -1,8 +1,8 @@
 # Ink readers are sensitive to scan-to-scan intensity shift
 
 Two public ink readers lose a lot of accuracy on a labelled 9.362 µm segment when that segment is given the grey-level
-distribution of other scans of the same type (9.362 µm, 113 keV). A per-layer histogram match back to a reference
-render is a cheap, monotone correction. `match_intensity.py` does both the matching and the per-layer statistics.
+distribution of other scans of the same type (9.362 µm, 113 keV). A per-layer histogram match is a cheap way to test
+whether a reader is sensitive to this shift; as a correction it did not help in our follow-up (see Scope). `match_intensity.py` does both the matching and the per-layer statistics.
 
 The test was registered (method, baselines and pass rule written down) on 2026-10-24, before any shifted render was scored.
 
@@ -37,6 +37,17 @@ The test was registered (method, baselines and pass rule written down) on 2026-1
   best case.
 - An empty ink map on a new scan can come from intensity shift alone. Before trusting a negative, match the scan's
   render to a render where the reader is known to work, and re-run.
+
+## Scope
+
+- The finding is sensitivity: giving a scan another same-type scan's grey levels makes Hecate and Reader V3 worse on
+  this labelled segment.
+- Matching is **not** a general accuracy gain. On a reader already fine-tuned on real 9 µm-class scans
+  ([B-001](../b001-real-scan-distillation/)), matching each window to a pooled reference from the other scrolls lowered
+  mean AUC on its 49 held-out windows from 0.803 to 0.761 (12 of 49 better; a second seed 0.815 to 0.763). Matching a
+  window to itself changed nothing.
+- Use `match_intensity.py` as a diagnostic (match a new scan to one where the reader is known to work and see whether
+  the read changes), not as a default preprocessing step.
 
 ## Use
 
