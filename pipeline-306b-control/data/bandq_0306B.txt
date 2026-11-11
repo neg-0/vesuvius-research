@@ -1,0 +1,19 @@
+# bandq.py on PHerc0306B m7 (6 level-2 boxes per bin, radii 400/900 vx from our hand-placed axis), 2026-11-06, cloud CPU
+1536	coh 0.742	frac 0.369	crestCV 0.389
+2304	coh 0.729	frac 0.322	crestCV 0.367
+3072	coh 0.705	frac 0.374	crestCV 0.357
+3840	coh 0.766	frac 0.272	crestCV 0.351
+4608	coh 0.688	frac 0.395	crestCV 0.350
+5376	coh 0.797	frac 0.286	crestCV 0.324
+6144	coh 0.904	frac 0.163	crestCV 0.336
+6912	coh 0.888	frac 0.242	crestCV 0.327
+7680	coh 0.910	frac 0.151	crestCV 0.322   (our earlier band)
+8448	coh 0.897	frac 0.136	crestCV 0.324
+9216	coh 0.880	frac 0.159	crestCV 0.331   (prize text bin)
+9984	coh 0.920	frac 0.113	crestCV 0.308
+10752	coh 0.933	frac 0.113	crestCV 0.331
+11520	coh 0.856	frac 0.264	crestCV 0.358
+12288	coh 0.728	frac 0.439	crestCV 0.351
+13056	coh 0.793	frac 0.311	crestCV 0.304
+13824	coh 0.897	frac 0.368	crestCV 0.319
+14592	coh 0.929	frac 0.437	crestCV 0.345

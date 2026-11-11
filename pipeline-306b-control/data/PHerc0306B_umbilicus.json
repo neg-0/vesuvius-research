@@ -1,0 +1,45 @@
+{
+ "control_points": [
+  {
+   "x": 4680,
+   "y": 5060,
+   "z": 7000,
+   "score": 100
+  },
+  {
+   "x": 4760,
+   "y": 4952,
+   "z": 7480,
+   "score": 100
+  },
+  {
+   "x": 4840,
+   "y": 4848,
+   "z": 7948,
+   "score": 100
+  },
+  {
+   "x": 4980,
+   "y": 4732,
+   "z": 8420,
+   "score": 100
+  },
+  {
+   "x": 4960,
+   "y": 4600,
+   "z": 8900,
+   "score": 100
+  }
+ ],
+ "metadata": {
+  "source_volume": "PHerc0306B/volumes/20250521133212-8.640um-1.2m-116keV-masked.zarr",
+  "volume": "20250521133212-8.640um-1.2m-116keV-masked.zarr",
+  "voxelsize_um": 8.64,
+  "volume_width": 8849,
+  "volume_height": 8849,
+  "volume_slices": 15898,
+  "total_points": 5,
+  "annotator_note": "hand-placed by the breakthrough thread (writrunner FL-026) on m7 level-2 slices z 1750,1870,1987,2105,2225: innermost curl/loop; z 1870 interpolated from a pinch (no closed curl); lower confidence than FL-025; level-0 voxels = 4 x level 2",
+  "created": "2026-10-23"
+ }
+}
