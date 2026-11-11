@@ -21,6 +21,7 @@ data were scored), a `RESULT.md`, and machine-readable payloads.
 | [`v033-depth-chooser/`](v033-depth-chooser/) | On PHercParis4, can a label-free statistic of the ink map (std, top-5, mean) choose the depth offset per window, using V-032's nine-offset maps? | No. The primary chooser (std) scores -0.0398 on loss windows against an oracle gain of +0.1131 and -0.1775 on control windows; FAIL as registered. |
 | [`d003-bucket-pyramid-audit/`](d003-bucket-pyramid-audit/) | Does the pyramid defect reported in villa #2107 (truncated depth at a coarse level) exist in the open-data bucket copy of the surface volumes? | No. 692 volumes audited, no pyramid defects (BUCKET_CLEAN); 5 sparse volumes had nothing to probe. |
 | [`v041-8x-finetune/`](v041-8x-finetune/) | Does a fine-tune with 8x the data and 8x the steps beat the stock 2.4 µm ink model on 1.129 µm PHercParis4 scans, and does it carry to PHerc0139? | PHercParis4: yes, twice (77 and 78 of 105 windows, +0.050 and +0.048 mean AUC, AUC 0.911 vs 0.861); PHerc0139: no (V-049 +0.005, V-044 +0.001). Scroll-specific. |
+| [`pipeline-306b-control/`](pipeline-306b-control/) | Does an independent open pipeline (own normals, hand-placed axis, villa spiral fit and flatten, Reader V3) reproduce the PHerc0306B prize text, and what decided it? | Yes, on winding w069 (3.13 vx median from the winners' surface, letter row at the published place). The band decided it; our own band score failed to pick it, the public SQM atlas did. |
 
 ## Provenance and credit
 
