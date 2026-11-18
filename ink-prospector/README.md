@@ -37,6 +37,10 @@ sha256 check, smoke test), then `PROSPECTOR_HOME=~/prospector ~/prospector/venv/
 To split a scan over machines, give each the same command with `--shard 0/4`, `--shard 1/4`, and so on. The seed order
 is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders.
 
+## Try it without installing
+
+`demo/` is the viewer built from a blind scan of PHerc0306B (126 patches, 77 cm2). With GitHub Pages on, it is at https://neg-0.github.io/vesuvius-research/ink-prospector/demo/. Locally: `python3 -m http.server -d demo 8000`.
+
 ## Commands
 
 | command | what it does |
