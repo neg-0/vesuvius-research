@@ -48,6 +48,7 @@ is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder wi
 | `scan --scroll S --box z0 z1 y0 y1 x0 x1 --out DIR` | Seeds a lattice (`--spacing`, default 250 vx) in the box, grows a patch (`--half-nodes` 128 = 8.9 mm) on every sheet not already covered, reads both faces. |
 | `rank DIR... [-n N] [--sheet PNG]` | Lists patches by text score and writes a contact sheet of the best side of each. |
 | `spread --scroll S --seed z y x --side a\|b --out DIR` | Grows one large patch (`--half-nodes` 320 = 22 mm) from a hit and reads it at full resolution, averaging four turned and mirrored reads (the result then does not depend on how the patch happens to be turned; it does not recover more ink). `scan --fuse` does the same per patch at 4x the read time. |
+| `python3 export_tifxyz.py pNNNN.npz OUT.tifxyz [--scroll S --scan ID]` | Writes one grown patch as a tifxyz surface (x.tif, y.tif, z.tif, meta.json, scale 0.25) so a hit can be opened in VC3D or used as a starting surface. Round-trip checked; not yet opened in VC3D. |
 | `stitch DIR... --out OUT [--top N]` | Joins patches that lie on the same sheet into one flat map per sheet (`sheetK_ink.png`, `sheetK_back.png`, `sheets.json`), for the sheets holding the top N hits. |
 | `viewer DIR... --out SITE [--known x.tif y.tif z.tif r0 r1 c0 c1 label]` | Builds a self-contained page: 3D map of all patches, hit list, both-side reads. `--known` overlays a surface with known text. |
 
@@ -122,7 +123,7 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 ## Files
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
-`run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`.
+`export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`.
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
