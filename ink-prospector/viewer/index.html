@@ -1,0 +1,158 @@
+<title>Ink Prospector</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: instrument console. Scroll map (3D point cloud) left, ranked hit list right, patch read below the map. */
+:root{
+  --bg:#eef0f3; --panel:#f8f9fb; --line:#d3d8e0; --fg:#1a2030; --muted:#5d6779;
+  --accent:#2f5fb3; --cold:#9aa4b5; --warm:#d9891a; --hot:#c8321e; --prize:#1f9d8a; --ct:#0c0e12;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:Inter,system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12151b; --panel:#1a1e27; --line:#2d3441; --fg:#e4e8ef; --muted:#939db0;
+  --accent:#7fa8f0; --cold:#566073; --warm:#eaa13a; --hot:#ff6a4d; --prize:#44c9b4; --ct:#07080a; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#12151b; --panel:#1a1e27; --line:#2d3441; --fg:#e4e8ef; --muted:#939db0;
+  --accent:#7fa8f0; --cold:#566073; --warm:#eaa13a; --hot:#ff6a4d; --prize:#44c9b4; --ct:#07080a; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
+.wrap{max-width:1280px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+h1{font-family:var(--display);font-weight:600;font-size:24px;margin:0;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:65ch}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.stats b{color:var(--fg);font-weight:600}
+.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+h2{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:0;color:var(--muted)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+button{font:500 12px var(--body);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:4px;padding:5px 9px;cursor:pointer}
+button:hover{border-color:var(--accent)} button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+button:focus-visible,tr:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#map{display:block;width:100%;aspect-ratio:4/3;max-width:100%;cursor:grab;touch-action:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:8px 12px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;align-items:center}
+.ramp{width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--cold),var(--warm),var(--hot))}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--prize);margin-right:5px}
+.list{max-height:780px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{position:sticky;top:0;background:var(--panel);text-align:right;font-weight:500;color:var(--muted);font-size:12px;padding:7px 10px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line)}
+tbody tr{cursor:pointer} tbody tr:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+tbody tr.sel{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.bar{display:inline-block;height:8px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.tag{font-size:11px;border:1px solid var(--prize);color:var(--prize);border-radius:3px;padding:0 4px;margin-left:6px}
+.detail{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;padding:12px}
+@media (max-width:640px){.detail{grid-template-columns:minmax(0,1fr)}}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.read{position:relative;background:var(--ct);border-radius:4px;overflow:hidden;aspect-ratio:1}
+.read canvas{position:absolute;inset:0;width:100%;height:100%}
+.read span{position:absolute;left:6px;top:5px;font:500 11px var(--mono);color:#fff;background:rgba(0,0,0,.55);padding:1px 5px;border-radius:3px}
+.read.ink{outline:2px solid var(--warm)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:0;align-content:start}
+dt{color:var(--muted)} dd{margin:0;font-family:var(--mono);font-size:13px;overflow-wrap:anywhere}
+.note{color:var(--muted);font-size:12.5px;max-width:70ch;margin:0}
+</style>
+<div class="wrap">
+  <header>
+    <h1 id="h1">Ink Prospector</h1>
+    <p>Every patch the mesh-free scan grew, placed where it sits in the scroll and coloured by its one-sided text score.</p>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="grid">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <section class="panel">
+        <div class="ph"><h2>Scroll map</h2>
+          <div class="seg" role="group" aria-label="View">
+            <button id="v3d" aria-pressed="true">3D</button><button id="vtop" aria-pressed="false">Top (x–y)</button><button id="vside" aria-pressed="false">Side (x–z)</button><button id="vprize" aria-pressed="true">Known text</button>
+          </div></div>
+        <canvas id="map" tabindex="0" aria-label="3D map of scanned patches. Drag to rotate, scroll to zoom, click a patch to open it."></canvas>
+        <div class="legend"><span>text score</span><span class="ramp"></span><span id="rampmax"></span><span id="klegend"><i class="dot"></i><span id="klabel"></span></span><span>drag to rotate · wheel to zoom · click a patch</span></div>
+      </section>
+      <section class="panel">
+        <div class="ph"><h2>Patch read</h2><span id="dtitle" style="font-family:var(--mono)"></span></div>
+        <div class="detail">
+          <div class="reads"><div class="read" id="ra"><canvas width="256" height="256"></canvas><span>side a (+normal)</span></div><div class="read" id="rb"><canvas width="256" height="256"></canvas><span>side b (−normal)</span></div></div>
+          <dl id="dl"></dl>
+        </div>
+      </section>
+    </div>
+    <section class="panel">
+      <div class="ph"><h2>Hit list</h2><span id="count" style="color:var(--muted)"></span></div>
+      <div class="list"><table><thead><tr><th>patch</th><th>text score</th><th>bright a / b</th><th>cm²</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+  </div>
+  <p class="note">Reader V3 output on 17 layers rendered along each patch's own normals, read in both directions. Ink sits on one face of a sheet, so the score counts letter-sized bright blobs on one side minus the other. A high score marks a place to look, not confirmed text: only patches tagged “known” lie on text that has been independently read.</p>
+</div>
+<script>
+(async function(){
+const D = await (await fetch('data.json')).json(); const P = D.patches, um = D.um, KN = D.known || D.prize || []; P.forEach(p => { if(p.known === undefined) p.known = p.prize || 0; });
+document.getElementById('h1').textContent = 'Ink Prospector · ' + (D.title || D.scroll || 'scan'); document.title = 'Ink Prospector ' + (D.title || D.scroll || '');
+document.getElementById('klabel').textContent = D.known_label || 'known text'; if(!KN.length){ document.getElementById('klegend').hidden = true; document.getElementById('vprize').hidden = true; }
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex = h => { h = h.replace('#',''); return [0,2,4].map(i => parseInt(h.substr(i,2),16)); };
+const maxTs = Math.max(...P.map(p => p.ts));
+function col(t){ const a = hex(css('--cold')), b = hex(css('--warm')), c = hex(css('--hot')); t = Math.min(1, t / (maxTs * 0.8));
+  const [u,v,w] = t < .5 ? [a,b,t*2] : [b,c,(t-.5)*2]; return `rgb(${u.map((x,i)=>Math.round(x+(v[i]-x)*w)).join(',')})`; }
+// bounds, in voxels (z,y,x)
+let lo=[1e9,1e9,1e9], hi=[-1e9,-1e9,-1e9];
+P.forEach(p => { for(let i=0;i<p.pts.length;i+=3) for(let k=0;k<3;k++){ lo[k]=Math.min(lo[k],p.pts[i+k]); hi[k]=Math.max(hi[k],p.pts[i+k]); } });
+const ctr = lo.map((v,k)=>(v+hi[k])/2), span = Math.max(...hi.map((v,k)=>v-lo[k]));
+const area = P.reduce((s,p)=>s+p.area,0);
+document.getElementById('stats').innerHTML = `<span><b>${P.length}</b> patches</span><span><b>${area.toFixed(0)} cm²</b> of sheet read</span><span>box <b>${((hi[2]-lo[2])*um/1000).toFixed(1)} × ${((hi[1]-lo[1])*um/1000).toFixed(1)} × ${((hi[0]-lo[0])*um/1000).toFixed(1)} mm</b> (x · y · z)</span><span><b>${P.filter(p=>p.known>.1).length}</b> patches on known text</span>`;
+document.getElementById('rampmax').textContent = '0 → ' + (maxTs*0.8).toFixed(2) + '+'; document.getElementById('count').textContent = 'ranked by text score';
+// camera
+let yaw=-0.6, pitch=0.5, zoom=1, sel=null, showPrize=true;
+const cv = document.getElementById('map'), g = cv.getContext('2d');
+function proj(z,y,x){ const X=(x-ctr[2])/span, Y=(y-ctr[1])/span, Z=-(z-ctr[0])/span;  // scroll axis (z) drawn upward
+  const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+  const x1=X*cy-Y*sy, y1=X*sy+Y*cy; const y2=y1*sp - Z*cp, z2=y1*cp+Z*sp; const s=cv.width*0.62*zoom;
+  return [cv.width/2 + x1*s, cv.height/2 - (-y2)*s*-1, z2]; }
+let screen=[];
+function draw(){ const r=cv.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1); if(cv.width!==Math.round(r.width*dpr)){ cv.width=Math.round(r.width*dpr); cv.height=Math.round(r.height*dpr); }
+  g.clearRect(0,0,cv.width,cv.height); const line=css('--line'), fg=css('--muted'), dpx=dpr;
+  // box wireframe
+  g.strokeStyle=line; g.lineWidth=dpx; const c8=[]; for(let i=0;i<8;i++) c8.push(proj(i&1?hi[0]:lo[0], i&2?hi[1]:lo[1], i&4?hi[2]:lo[2]));
+  [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b])=>{ g.beginPath(); g.moveTo(c8[a][0],c8[a][1]); g.lineTo(c8[b][0],c8[b][1]); g.stroke(); });
+  g.fillStyle=fg; g.font=`${11*dpx}px IBM Plex Mono, monospace`;
+  const lab=(i,t)=>{ const w=g.measureText(t).width; g.fillText(t,Math.max(4*dpx,Math.min(cv.width-w-4*dpx,c8[i][0]+4*dpx)),Math.max(12*dpx,c8[i][1]-4*dpx)); }; lab(0,`z ${lo[0]} y ${lo[1]} x ${lo[2]}`); lab(7,`z ${hi[0]} y ${hi[1]} x ${hi[2]}`);
+  if(showPrize){ g.fillStyle=css('--prize'); for(let i=0;i<KN.length;i+=3){ const q=proj(KN[i],KN[i+1],KN[i+2]); g.fillRect(q[0]-dpx,q[1]-dpx,2*dpx,2*dpx); } }
+  const order=P.map((p,i)=>[proj(p.c[0],p.c[1],p.c[2])[2],i]).sort((a,b)=>a[0]-b[0]); screen=[];
+  order.forEach(([_,i])=>{ const p=P[i]; g.fillStyle=col(p.ts); g.globalAlpha = sel===null||sel===i ? 0.95 : 0.5; const s=(sel===i?3.2:2.2)*dpx;
+    for(let k=0;k<p.pts.length;k+=3){ const q=proj(p.pts[k],p.pts[k+1],p.pts[k+2]); g.fillRect(q[0]-s/2,q[1]-s/2,s,s); }
+    const c=proj(p.c[0],p.c[1],p.c[2]); screen.push([c[0],c[1],i]);
+    if(sel===i){ g.globalAlpha=1; g.strokeStyle=css('--fg'); g.lineWidth=1.5*dpx; g.beginPath(); g.arc(c[0],c[1],14*dpx,0,7); g.stroke(); } });
+  g.globalAlpha=1; }
+function pick(ex,ey){ const r=cv.getBoundingClientRect(), k=cv.width/r.width, x=(ex-r.left)*k, y=(ey-r.top)*k; let best=null,bd=(28*k)**2;
+  screen.forEach(([sx,sy,i])=>{ const d=(sx-x)**2+(sy-y)**2; if(d<bd){bd=d;best=i;} }); return best; }
+let drag=null, moved=false;
+cv.addEventListener('pointerdown',e=>{ drag=[e.clientX,e.clientY,yaw,pitch]; moved=false; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag[0], dy=e.clientY-drag[1]; if(Math.abs(dx)+Math.abs(dy)>4) moved=true; yaw=drag[2]+dx*0.008; pitch=Math.max(-1.57,Math.min(1.57,drag[3]+dy*0.008)); setView(null); draw(); });
+cv.addEventListener('pointerup',e=>{ if(!moved){ const i=pick(e.clientX,e.clientY); if(i!==null) select(i,true); } drag=null; });
+cv.addEventListener('wheel',e=>{ e.preventDefault(); zoom=Math.max(.5,Math.min(6,zoom*(e.deltaY<0?1.12:0.89))); draw(); },{passive:false});
+cv.addEventListener('keydown',e=>{ const k={ArrowLeft:[-.1,0],ArrowRight:[.1,0],ArrowUp:[0,-.1],ArrowDown:[0,.1]}[e.key]; if(k){ e.preventDefault(); yaw+=k[0]; pitch=Math.max(-1.57,Math.min(1.57,pitch+k[1])); draw(); } });
+const vb={v3d:[-0.6,0.5],vtop:[0,1.5707],vside:[0,0]};
+function setView(id){ Object.keys(vb).forEach(k=>document.getElementById(k).setAttribute('aria-pressed',k===id)); if(id){ [yaw,pitch]=vb[id]; draw(); } }
+Object.keys(vb).forEach(k=>document.getElementById(k).onclick=()=>setView(k));
+document.getElementById('vprize').onclick=e=>{ showPrize=!showPrize; e.target.setAttribute('aria-pressed',showPrize); draw(); };
+// list
+const rows=document.getElementById('rows'); const atlas=new Image(); atlas.src='atlas.jpg';
+rows.innerHTML=P.map((p,i)=>`<tr tabindex="0" data-i="${i}"><td>${p.id}${p.known>.1?'<span class="tag">known</span>':''}</td><td><span class="bar" style="width:${Math.round(46*p.ts/maxTs)}px;background:${col(p.ts)}"></span>${p.ts.toFixed(3)}</td><td>${p.fa.toFixed(3)} / ${p.fb.toFixed(3)}</td><td>${p.area.toFixed(2)}</td></tr>`).join('');
+rows.addEventListener('click',e=>{ const tr=e.target.closest('tr'); if(tr) select(+tr.dataset.i,false); });
+rows.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const tr=e.target.closest('tr'); if(tr) select(+tr.dataset.i,false); } });
+function select(i,scroll){ sel=i; const p=P[i]; rows.querySelectorAll('tr').forEach(tr=>tr.classList.toggle('sel',+tr.dataset.i===i));
+  if(scroll){ const tr=rows.querySelector(`tr[data-i="${i}"]`), box=tr.closest('.list'); box.scrollTop=tr.offsetTop-box.clientHeight/2; }
+  document.getElementById('dtitle').textContent=p.id;
+  const a=document.getElementById('ra'), b=document.getElementById('rb'); a.classList.toggle('ink',p.side==='a'); b.classList.toggle('ink',p.side==='b');
+  const paint=()=>[a,b].forEach((el,k)=>el.firstElementChild.getContext('2d').drawImage(atlas,(i%6)*512+k*256,Math.floor(i/6)*256,256,256,0,0,256,256));
+  if(atlas.complete&&atlas.naturalWidth) paint(); else atlas.addEventListener('load',()=>{ if(sel===i) paint(); },{once:true});
+  const mm=v=>(v*um/1000).toFixed(1);
+  document.getElementById('dl').innerHTML=[['text score',p.ts.toFixed(4)+' (side '+p.side+')'],['bright share','a '+p.fa.toFixed(3)+' · b '+p.fb.toFixed(3)],['seed z y x',p.seed.join(' ')],['centre z y x',p.c.join(' ')],['centre, mm',mm(p.c[0])+' · '+mm(p.c[1])+' · '+mm(p.c[2])],['normal z y x',p.n.join(' ')],['sheet tracked',Math.round(p.tr*100)+'%'],['area',p.area.toFixed(2)+' cm²'],['on known text',p.known>.1?Math.round(p.prize*100)+'% of nodes':'no']].map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+  draw(); }
+new ResizeObserver(draw).observe(cv);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ draw(); });
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+select(P.findIndex(p=>p.known>.1) >= 0 ? P.findIndex(p=>p.known>.1) : 0, true);
+})();
+</script>
