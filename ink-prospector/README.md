@@ -82,6 +82,22 @@ On PHerc0306B, the scroll whose First Letters text was awarded in November 2026:
 - **Found blind.** In a 64-seed scan of an 8.6 mm cube with no pointing, the patch on the prize sheet ranked first of
   51 by one-sided brightness. Over 177 patches from that scan and a wider one it ranks first by the text score.
 
+## Screening a whole scroll or a dense box
+
+Two shell runners wrap `scan` for long jobs, one shard per call, resume-safe, and print `ALL_SEEDS_DONE` when finished
+(set `MAXP` to cap new patches per call and loop the same line). Run `bash setup.sh <workdir>` first.
+
+```sh
+bash run_whole.sh <workdir> <scroll in scrolls.json> 0/4 [spacing=800]          # sparse lattice through the whole volume
+bash run_box.sh <workdir> <scroll> <tag> 0/4 <spacing> z0 z1 y0 y1 x0 x1        # dense pass over one box
+python3 judge_whole.py <workdir>/data/runs/whole-<scroll>                       # HIT / NOTHING by the rule below
+python3 sheet_whole.py <run dir> 24 top24.png                                   # contact sheet of the best candidates
+```
+
+The rule for a candidate: at least 2% confident one-sided ink (the `stroke_a`/`stroke_b` columns) with the other face
+under a third of that. A whole scroll at 800 vx spacing is hundreds of patches at about 100 s each, so split it over
+machines with `--shard`. The scroll must have an entry in `scrolls.json`.
+
 ## Limits
 
 - **A hit is a place to look, not a reading.** The reader responds to strokes and to some dense papyrus. On scrolls
@@ -102,7 +118,7 @@ On PHerc0306B, the scroll whose First Letters text was awarded in November 2026:
 ## Files
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
-`build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`.
+`run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`.
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
