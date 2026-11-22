@@ -31,8 +31,11 @@ $P spread --scroll PHerc0306B --seed 9381 3281 4275 --side a --out demo-spread  
 For a GPU, build with `--build-arg TORCH_INDEX=https://download.pytorch.org/whl/cu124`, run with `--gpus all` and add
 `--device cuda` to `scan`.
 
-Without Docker: `bash setup.sh ~/prospector` builds the same work folder (venv, pinned reader code, weights with a
-sha256 check, smoke test), then `PROSPECTOR_HOME=~/prospector ~/prospector/venv/bin/python prospect.py ...`.
+Without Docker: `bash setup.sh ~/prospector` builds the work folder (venv, pinned reader code, weights with a sha256
+check, smoke test). Then run from this folder: `PROSPECTOR_HOME=~/prospector ~/prospector/venv/bin/python prospect.py ...`.
+Outputs (`runs/`, contact sheets, viewer pages) are written relative to the folder you run from.
+
+`python -m pytest -q test_smoke.py` checks the scoring and ranking code without network access.
 
 To split a scan over machines, give each the same command with `--shard 0/4`, `--shard 1/4`, and so on. The seed order
 is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders.
