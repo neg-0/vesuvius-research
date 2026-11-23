@@ -90,6 +90,12 @@ On PHerc0306B, the scroll whose First Letters text was awarded in November 2026:
 - **Found blind.** In a 64-seed scan of an 8.6 mm cube with no pointing, the patch on the prize sheet ranked first of
   51 by one-sided brightness. Over 177 patches from that scan and a wider one it ranks first by the text score.
 
+On PHerc0343, the scroll whose First Letters were awarded in October 2026, with the default settings and no pointing:
+
+- **Found blind.** In two 8.6 mm boxes around the awarded letters, the best patch on the awarded sheet ranked 2nd of 43
+  and 2nd of 46 by the text score. A patch counts as on the sheet when at least half of it lies within 8 voxels of the
+  winner's published mesh (Nieuwlaar, `pherc343-first-letters`); the rule was set before the runs.
+
 ## Screening a whole scroll or a dense box
 
 Two shell runners wrap `scan` for long jobs, one shard per call, resume-safe, and print `ALL_SEEDS_DONE` when finished
@@ -122,6 +128,10 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 - Grid spacing drifts from 4.0 to about 4.3 voxels far from the seed, and seams appear where wavefronts meet.
 - It depends on the public surface prediction. Where that is blobby (crushed regions), patches track poorly.
 - Speed: about 100 s per patch on 4 CPU cores. A sparse pass over a whole scroll is about 4,500 patches.
+- The default 250 vx lattice can miss a sheet. Shifting the 306B demo box by 75 vx on every axis left no patch on the
+  prize sheet at spacing 250 (three settings tried). At `--spacing 150 --half-nodes 48` a patch landed on it in both
+  boxes, for less CPU (about 8 s per patch), but the best one ranked lower (6th of 211 and 9th of 228, against 3rd of 51
+  for the default in the unshifted box). No setting tried beat the defaults in both boxes, so they are unchanged.
 
 ## Files
 
