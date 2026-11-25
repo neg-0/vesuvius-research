@@ -1,0 +1,45 @@
+name: ink-prospector VC round trip
+# Grows the example Prospector hits with Volume Cartographer's own tracer and renders one, inside the published
+# VC image, on the public PHerc0306B volumes. Checks that VC reads Prospector's tifxyz and can build on it.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ["ink-prospector/vc_export.py", "ink-prospector/export_tifxyz.py", "ink-prospector/examples/**", ".github/workflows/ink-prospector-vc.yml"]
+jobs:
+  vc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    container: ghcr.io/scrollprize/villa/volume-cartographer:edge
+    defaults:
+      run:
+        working-directory: ink-prospector/examples/vc-306b
+    steps:
+      - uses: actions/checkout@v4
+      - name: Grow each hit with vc_grow_seg_from_seed --resume
+        run: |
+          mkdir -p grown
+          M7=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/representations/predictions/surfaces/20250521133212-surface-20260413222639-surface-m7-L0-th0.2.zarr
+          for d in paths/*/; do
+            s=$(basename "$d")
+            vc_grow_seg_from_seed -v "$M7" -t grown -p params.json --resume "paths/$s" --segment-name "${s}_grown" 2>&1 | tail -15
+          done
+          ls -R grown | head -40
+      - name: Compare sizes (nodes before and after)
+        run: |
+          for d in grown/*/; do
+            s=$(basename "$d"); echo "$s: $(wc -c < "paths/${s%_grown}/x.tif") bytes before, $(wc -c < "$d/x.tif") bytes after"
+            cat "$d/meta.json" | head -c 600; echo
+          done
+      - name: Render the first hit with vc_render_tifxyz
+        run: |
+          CT=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/volumes/20250521133212-8.640um-1.2m-116keV-masked.zarr
+          s=$(ls paths | head -1); mkdir -p render
+          vc_render_tifxyz -v render_cache --remote-url "$CT" -s "paths/$s" --scale 1 -g 1 --voxel-size 17.28 --voxel-unit micrometer --tif-output render/ 2>&1 | tail -10
+          ls -la render
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vc-round-trip
+          path: |
+            ink-prospector/examples/vc-306b/grown
+            ink-prospector/examples/vc-306b/render

@@ -1,0 +1,37 @@
+{
+ "uuid": "prospector_demo-0",
+ "name": "prospector_demo-0",
+ "type": "seg",
+ "format": "tifxyz",
+ "scale": [
+  0.05,
+  0.05
+ ],
+ "bbox": [
+  [
+   3039.58154296875,
+   2114.22119140625,
+   8861.1025390625
+  ],
+  [
+   3944.47265625,
+   2846.52587890625,
+   9885.447265625
+  ]
+ ],
+ "area_vx2": 952400.0,
+ "invalid_value": -1.0,
+ "scroll": "PHerc0306B",
+ "scan": "20250521133212-8.640um-1.2m-116keV-masked.zarr",
+ "source": "Ink Prospector patch grown on the m7 surface prediction; level-0 voxel coordinates",
+ "prospector": {
+  "rank": 3,
+  "text_score": 0.0017,
+  "ink_face": "b",
+  "seed_zyx": [
+   9375,
+   2525,
+   3525
+  ]
+ }
+}

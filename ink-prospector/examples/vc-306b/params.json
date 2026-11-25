@@ -1,0 +1,6 @@
+{
+ "mode": "seed",
+ "generations": 40,
+ "cache_size": 2000000000,
+ "thread_limit": 4
+}

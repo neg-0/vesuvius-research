@@ -12,9 +12,11 @@ def meta(d):
     return {}
 def patches(paths, um=None):
     """Usable patches of all folders, best text score first. Each: dict with id, dir, base path, scores."""
-    rows = []
-    for d in scan_dirs(paths):
+    rows = []; dirs = scan_dirs(paths)
+    multi = len({os.path.dirname(d.rstrip("/")) for d in dirs if os.path.basename(d.rstrip("/")).startswith("shard-")}) > 1
+    for d in dirs:
         u = um or meta(d).get("um") or 8.64; seen = set(); tag = os.path.basename(d.rstrip("/")).replace("shard-", "s")
+        if multi and tag != os.path.basename(d.rstrip("/")): tag = os.path.basename(os.path.dirname(d.rstrip("/"))) + "-" + tag   # several runs: keep ids apart
         for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t"):
             base = os.path.join(d, f"p{int(r['id']):04d}")
             if r["status"] != "ok" or r["id"] in seen or not os.path.exists(base + "_a.png") or r["frac_a"] == r["frac_b"]: continue

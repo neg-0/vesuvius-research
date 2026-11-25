@@ -1,0 +1,4 @@
+rank	id	text_score	ink_face	x	y	z	nodes	tifxyz
+1	demo-1	0.0142	b	3556.6	2769.4	9605.0	2199	paths/prospector_demo-1
+2	demo-2	0.0098	b	4328.8	3045.6	9361.3	2393	paths/prospector_demo-2
+3	demo-0	0.0017	b	3484.8	2531.7	9383.1	2381	paths/prospector_demo-0

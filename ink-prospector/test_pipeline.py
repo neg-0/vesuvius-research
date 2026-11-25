@@ -120,3 +120,41 @@ def test_judge_whole_rule(tmp_path):
     (d / "scores.tsv").write_text(head + "\n".join(rows) + "\n")
     out = subprocess.run([sys.executable, os.path.join(HERE, "judge_whole.py"), str(tmp_path / "whole")], capture_output=True, text=True, check=True).stdout
     assert "HITS" in out and "p0001" in out and "p0002" not in out and "p0003" not in out and "'no_sheet': 1" in out
+
+
+def _fake_run(folder, pid, z0, ts_blobs):
+    """A scan folder with one ok patch: a flat 41x41 node grid on z = z0 and face images from test_smoke's blobs."""
+    from test_smoke import blobs, blank, save
+    os.makedirs(folder, exist_ok=True); G = 41; ii, jj = np.mgrid[:G, :G]
+    P = np.stack([np.full((G, G), z0, np.float32), 1000 + 4 * ii, 2000 + 4 * jj], -1).astype(np.float32); ok = np.ones((G, G), bool); ok[:3] = False
+    np.savez(os.path.join(folder, f"p{pid:04d}.npz"), P=P, ok=ok, n0=np.array([1.0, 0, 0]))
+    save(os.path.join(folder, f"p{pid:04d}_a.png"), blobs(ts_blobs)); save(os.path.join(folder, f"p{pid:04d}_b.png"), blank())
+    with open(os.path.join(folder, "scores.tsv"), "a") as f:
+        if f.tell() == 0: f.write("id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\n")
+        f.write(f"{pid}\t{z0}\t1080\t2080\tok\t0.9\t0.5\t0.20\t0.01\n")
+
+
+def test_export_every_keeps_vc_step(tmp_path):
+    G = 41; ii, jj = np.mgrid[:G, :G]; P = np.stack([np.full((G, G), 9.0), 4.0 * ii, 4.0 * jj], -1); ok = np.ones((G, G), bool); ok[:2] = False
+    from export_tifxyz import write_tifxyz
+    n = write_tifxyz(P, ok, str(tmp_path / "s"), every=5)
+    x = tifffile.imread(tmp_path / "s" / "x.tif"); y = tifffile.imread(tmp_path / "s" / "y.tif")
+    assert json.load(open(tmp_path / "s" / "meta.json"))["scale"] == [0.05, 0.05]
+    assert np.allclose(np.diff(x, axis=1), 20) and np.allclose(np.diff(y, axis=0), 20) and n == x.size   # 20 vx apart, all tracked
+
+
+def test_vc_export_and_run_ids(tmp_path):
+    for run, z0 in (("runA", 500), ("runB", 700)):
+        _fake_run(str(tmp_path / run / "shard-0"), 1, z0, [(64, 64), (64, 192), (192, 64), (192, 192)])
+    ids = [p["id"] for p in runs.patches([str(tmp_path / "runA"), str(tmp_path / "runB")])]
+    assert sorted(ids) == ["runA-s0-1", "runB-s0-1"]                                # no clash between runs
+    out = tmp_path / "vc"
+    subprocess.check_call([sys.executable, os.path.join(HERE, "vc_export.py"), str(out), str(tmp_path / "runA"), str(tmp_path / "runB"), "--m7", "S/m7.zarr"])
+    pc = json.load(open(out / "prospector_hits.json"))
+    assert pc["vc_pointcollections_json_version"] == "1"
+    pts = pc["collections"]["1"]["points"]; assert len(pts) == 2
+    for p in pts.values():
+        x, y, z = p["p"]; assert z in (500.0, 700.0) and 1000 <= y <= 1160 and 2000 <= x <= 2160   # x y z, on the sheet
+    sh = (out / "grow.sh").read_text()
+    assert "--resume paths/prospector_runA-s0-1" in sh and "vesuvius-challenge-open-data" in sh and "S/m7.zarr" in sh
+    assert json.load(open(out / "paths" / "prospector_runA-s0-1" / "meta.json"))["scale"] == [0.05, 0.05]
