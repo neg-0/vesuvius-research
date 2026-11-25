@@ -158,3 +158,20 @@ def test_vc_export_and_run_ids(tmp_path):
     sh = (out / "grow.sh").read_text()
     assert "--resume paths/prospector_runA-s0-1 " in sh and "vesuvius-challenge-open-data" in sh and "S/m7.zarr" in sh
     assert json.load(open(out / "paths" / "prospector_runA-s0-1" / "meta.json"))["scale"] == [0.05, 0.05]
+
+
+def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
+    # A VC-style tifxyz: 20-voxel grid (scale 0.05) on the plane z = 300, two invalid nodes (-1 and z = 0).
+    from export_tifxyz import write_tifxyz
+    import score_tifxyz
+    G0, G1 = 6, 9; ii, jj = np.mgrid[:G0, :G1]
+    P = np.stack([np.full((G0, G1), 300.0), 1000 + 20.0 * ii, 2000 + 20.0 * jj], -1); ok = np.ones((G0, G1), bool)
+    write_tifxyz(P, ok, str(tmp_path / "seg"), step=20.0)
+    z = tifffile.imread(tmp_path / "seg" / "z.tif"); z[0, 0] = 0; tifffile.imwrite(tmp_path / "seg" / "z.tif", z)
+    Q, qok, step = score_tifxyz.load_tifxyz(str(tmp_path / "seg"))
+    assert step == pytest.approx(20.0) and Q.shape == (G0, G1, 3) and not qok[0, 0] and qok.sum() == G0 * G1 - 1
+    D, valid, Nd = score_tifxyz.to_dense(Q, qok, step)
+    assert D.shape == ((G0 - 1) * 20, (G1 - 1) * 20, 3)                          # rectangular grids work
+    assert np.allclose(D[valid][:, 0], 300, atol=0.5) and abs(abs(Nd[valid][:, 0]).mean() - 1) < 1e-3
+    Q2, ok2, _ = score_tifxyz.load_tifxyz(str(tmp_path / "seg"), crop=(1, 4, 2, 7))
+    assert Q2.shape == (3, 5, 3) and ok2.all()

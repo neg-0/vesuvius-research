@@ -21,6 +21,13 @@ def side(img, um_px, edge_mm=0.35, lo_mm=0.3, hi_mm=6.0, thr=190):
         h = (sl[0].stop - sl[0].start) * um_px / 1000; w = (sl[1].stop - sl[1].start) * um_px / 1000
         if lo_mm <= max(h, w) <= hi_mm: keep += (lab[sl] == i).sum()
     return keep / valid.sum(), valid
+def stroke(o, valid):
+    """Stroke-likeness: share of valid area that is bright, thin (lost under a 24 px opening) ink."""
+    b = (o > 0.5) & valid
+    if b.sum() == 0: return 0.0
+    d = ndi.zoom(b.astype(np.uint8), 0.25, order=0).astype(bool)
+    thin = d & ~ndi.binary_opening(d, structure=np.ones((13, 13), bool))   # 13 px at ds4 ~ 0.45 mm stroke width cap
+    return float(thin.sum() / max(ndi.zoom(valid.astype(np.uint8), 0.25, order=0).sum(), 1))
 def score(png_a, png_b, um=8.64, ds=4):
     a = np.asarray(Image.open(png_a)); b = np.asarray(Image.open(png_b))
     ta, _ = side(a, um * ds); tb, _ = side(b, um * ds)

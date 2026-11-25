@@ -59,6 +59,7 @@ straight from disk does not work, because the page loads `data.json`).
 | `rank DIR... [-n N] [--sheet PNG]` | Lists patches by text score and writes a contact sheet of the best side of each. |
 | `spread --scroll S --seed z y x --side a\|b --out DIR` | Grows one large patch (`--half-nodes` 320 = 22 mm) from a hit and reads it at full resolution, averaging four turned and mirrored reads (the result then does not depend on how the patch happens to be turned; it does not recover more ink). `scan --fuse` does the same per patch at 4x the read time. |
 | `python3 export_tifxyz.py pNNNN.npz OUT.tifxyz [--scroll S --scan ID]` | Writes one grown patch as a tifxyz surface (x.tif, y.tif, z.tif, meta.json, scale 0.25) so a hit can be opened in VC3D or used as a starting surface. Checked on 46 real PHerc0343 patches: villa's own reader (`vesuvius.tifxyz.read_tifxyz`) gives back the exact coordinates and valid mask, and the files are float32 single-band TIFFs with -1 for untracked nodes, the layout VC3D's C++ loader reads. Not yet opened in the VC3D GUI. |
+| `python3 score_tifxyz.py --scroll S --out DIR SEG... [--crop r0 r1 c0 c1]` | Reads and scores surfaces that already exist: any tifxyz segment (VC3D segments, segments grown with `grow.sh`, community or whole-scroll sheets). Writes a scan folder, so `rank`, `viewer`, `stitch` and `vc_export.py` work on it. Checked: a Prospector patch exported to tifxyz and read back gives the same ink map as the scan (r = 0.9999, bright share 0.0381 vs 0.0382). At VC's 20-voxel grid (`--every 5`) the surface between nodes is interpolated and the reads come out weaker (0.030 vs 0.038 on that patch). |
 | `stitch DIR... --out OUT [--top N]` | Joins patches that lie on the same sheet into one flat map per sheet (`sheetK_ink.png`, `sheetK_back.png`, `sheets.json`), for the sheets holding the top N hits. |
 | `viewer DIR... --out SITE [--known x.tif y.tif z.tif r0 r1 c0 c1 label]` | Builds a self-contained page: 3D map of all patches, hit list, both-side reads. `--known` overlays a surface with known text. |
 
@@ -177,7 +178,7 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
 `export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`;
-`vc_export.py`; tests `test_smoke.py` and `test_pipeline.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
+`vc_export.py`, `score_tifxyz.py`; tests `test_smoke.py` and `test_pipeline.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).

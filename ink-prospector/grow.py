@@ -91,16 +91,16 @@ def _refresh_normals(P, N, U, V, ok):
     U[m] = Ut; V[m] = Vt * s
 
 def densify(P, ok, step):
-    """Coarse grid -> dense (H,W,3) points, validity, unit normals. Holes are filled smoothly for sampling only."""
-    G = P.shape[0]; w = ok.astype(np.float64)
+    """Coarse (G0,G1,3) grid with nodes `step` voxels apart -> dense 1-voxel (H,W,3) points, validity, unit normals. Holes are filled smoothly for sampling only."""
+    G0, G1 = P.shape[:2]; w = ok.astype(np.float64)
     Pz = np.where(ok[..., None], P, 0.0)
     num = np.stack([ndi.gaussian_filter(Pz[..., k], 1.0) for k in range(3)], -1); den = ndi.gaussian_filter(w, 1.0)
     Ps = np.where(den[..., None] > 0.05, num / np.maximum(den[..., None], 1e-6), np.nan)
     bad = np.isnan(Ps[..., 0])
     if bad.any():
         ind = ndi.distance_transform_edt(bad, return_distances=False, return_indices=True); Ps = Ps[tuple(ind)]
-    s = int(step); H = (G - 1) * s
-    yy, xx = np.mgrid[0:H, 0:H] / s
+    s = int(step); H, W = (G0 - 1) * s, (G1 - 1) * s
+    yy, xx = np.mgrid[0:H, 0:W] / s
     D = np.stack([ndi.map_coordinates(Ps[..., k], [yy, xx], order=3, mode="nearest") for k in range(3)], -1)
     valid = ndi.map_coordinates(w, [yy, xx], order=1, mode="nearest") > 0.6
     dI, dJ = np.gradient(D, axis=0), np.gradient(D, axis=1)

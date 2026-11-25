@@ -7,6 +7,7 @@ import argparse, os, sys, time, json, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lazyvol import LazyVol
 import grow, reader
+from textscore import stroke
 from scipy.spatial import cKDTree
 from scipy import ndimage as ndi
 from PIL import Image
@@ -39,14 +40,6 @@ for i in sorted(done):
     if os.path.exists(f):
         g = np.load(f); covered.append(g["P"][g["ok"]][::4])
 if covered: tree = cKDTree(np.concatenate(covered))
-
-def stroke(o, valid):
-    """Stroke-likeness: share of valid area that is bright, thin (lost under a 24 px opening) ink."""
-    b = (o > 0.5) & valid
-    if b.sum() == 0: return 0.0
-    d = ndi.zoom(b.astype(np.uint8), 0.25, order=0).astype(bool)
-    thin = d & ~ndi.binary_opening(d, structure=np.ones((13, 13), bool))   # 13 px at ds4 ~ 0.45 mm stroke width cap
-    return float(thin.sum() / max(ndi.zoom(valid.astype(np.uint8), 0.25, order=0).sum(), 1))
 
 n_made = 0
 for i in mine:
