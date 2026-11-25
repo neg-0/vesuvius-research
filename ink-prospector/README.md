@@ -46,7 +46,9 @@ each other's patches, so two shards can grow the same sheet; `rank` lists both a
 
 ## Try it without installing
 
-`demo/` is the viewer built from a blind scan of PHerc0306B (126 patches, 77 cm2). With GitHub Pages on, it is at https://neg-0.github.io/vesuvius-research/ink-prospector/demo/. Locally: `python3 -m http.server -d demo 8000`.
+[`demo/`](demo/) is the viewer built from a blind scan of PHerc0306B (126 patches, 77 cm2). To open it, clone the repo and run
+`python3 -m http.server -d demo 8000`, then open http://localhost:8000 (opening `index.html` straight from disk does not
+work, because the page loads `data.json`).
 
 ## Commands
 
