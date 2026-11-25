@@ -1,5 +1,4 @@
-"""Smoke tests for the Ink Prospector tool. No network. Run from projects/vesuvius/prospector:
-   python -m pytest -q <path to this file>
+"""Smoke tests for the Ink Prospector tool. No network. Run from this folder: python -m pytest -q
 """
 import csv, os
 import numpy as np

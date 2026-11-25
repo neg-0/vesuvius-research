@@ -1,12 +1,19 @@
-"""Lazy, chunk-cached reader for public OME-zarr v2 uint8 volumes with trilinear point sampling."""
-import json, os, urllib.request, urllib.error, numpy as np
+"""Lazy, chunk-cached reader for OME-Zarr v2 uint8 volumes with trilinear point sampling.
+
+`path` is a path inside the Vesuvius Challenge open-data bucket (as in scrolls.json), a full http(s) URL of a zarr, or a
+local zarr folder. `level` picks the pyramid level (the subfolder 0, 1, ...). Chunks that do not exist read as zeros."""
+import json, os, time, urllib.request, urllib.error, numpy as np
 from concurrent.futures import ThreadPoolExecutor
 BASE = "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/"
 
 class LazyVol:
     def __init__(self, path, level=0, base=BASE, cache_dir=None, threads=24):
-        self.url = f"{base}{path}/{level}"
-        meta = json.load(urllib.request.urlopen(f"{self.url}/.zarray"))
+        self.local = os.path.isdir(path)
+        root = path.rstrip("/") if self.local or path.startswith(("http://", "https://")) else f"{base}{path}"
+        self.url = f"{root}/{level}"
+        meta = json.loads(self._read(f"{self.url}/.zarray") or b"null")
+        if meta is None: raise FileNotFoundError(f"no zarr array at {self.url}")
+        if meta.get("dtype") not in ("|u1", "<u1", "u1"): raise ValueError(f"{self.url}: dtype {meta.get('dtype')}, expected uint8")
         self.shape = np.array(meta["shape"]); self.chunk = np.array(meta["chunks"])
         self.sep = meta.get("dimension_separator", "."); self.comp = meta["compressor"]
         self.codec = None
@@ -16,16 +23,27 @@ class LazyVol:
         if cache_dir: os.makedirs(cache_dir, exist_ok=True)
         self.nch = (self.shape + self.chunk - 1) // self.chunk
 
+    def _read(self, url):
+        """Bytes of one zarr key; None if it does not exist. Other errors (network) are retried, then raised, so a
+        flaky connection never turns into silently empty CT."""
+        if self.local:
+            try: return open(url, "rb").read()
+            except FileNotFoundError: return None
+        err = None
+        for k in range(5):
+            try: return urllib.request.urlopen(url, timeout=120).read()
+            except urllib.error.HTTPError as e:
+                if e.code in (403, 404): return None
+                err = e
+            except Exception as e: err = e
+            time.sleep(2 ** k)
+        raise IOError(f"could not read {url}: {err}")
+
     def _get(self, key):
         i, j, k = key
         fn = os.path.join(self.cache_dir, f"{i}_{j}_{k}.npy") if self.cache_dir else None
         if fn and os.path.exists(fn): return key, np.load(fn)
-        url = f"{self.url}/{i}{self.sep}{j}{self.sep}{k}"; raw = None
-        for _ in range(5):
-            try: raw = urllib.request.urlopen(url, timeout=120).read(); break
-            except urllib.error.HTTPError as e:
-                if e.code in (403, 404): break
-            except Exception: pass
+        raw = self._read(f"{self.url}/{i}{self.sep}{j}{self.sep}{k}")
         if raw is None: arr = None
         else:
             self.bytes += len(raw)

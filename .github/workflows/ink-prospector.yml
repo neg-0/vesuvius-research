@@ -1,0 +1,20 @@
+name: ink-prospector tests
+on:
+  push:
+    paths: ["ink-prospector/**", ".github/workflows/ink-prospector.yml"]
+  pull_request:
+    paths: ["ink-prospector/**", ".github/workflows/ink-prospector.yml"]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "numpy>=2.2.6,<2.3" scipy pillow tifffile pytest
+      - run: python -m pytest -q
+        working-directory: ink-prospector
