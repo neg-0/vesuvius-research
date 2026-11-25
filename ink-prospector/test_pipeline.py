@@ -156,5 +156,5 @@ def test_vc_export_and_run_ids(tmp_path):
     for p in pts.values():
         x, y, z = p["p"]; assert z in (500.0, 700.0) and 1000 <= y <= 1160 and 2000 <= x <= 2160   # x y z, on the sheet
     sh = (out / "grow.sh").read_text()
-    assert "--resume paths/prospector_runA-s0-1" in sh and "vesuvius-challenge-open-data" in sh and "S/m7.zarr" in sh
+    assert "--resume paths/prospector_runA-s0-1 " in sh and "vesuvius-challenge-open-data" in sh and "S/m7.zarr" in sh
     assert json.load(open(out / "paths" / "prospector_runA-s0-1" / "meta.json"))["scale"] == [0.05, 0.05]

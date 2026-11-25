@@ -48,12 +48,14 @@ def main(argv=None):
         n = write_tifxyz(g["P"], ok, d, every=a.every, scroll=meta0.get("scroll") or "", scan=os.path.basename(meta0.get("ct", "")),
                          extra={"prospector": {"rank": k + 1, "text_score": round(p["ts"], 4), "ink_face": p["side"], "seed_zyx": p["seed"]}})
         hits.append(dict(rank=k + 1, id=p["id"], ts=p["ts"], side=p["side"], xyz=centre(g["P"], ok), nodes=n, path=sid))
-        lines.append(f'vc_grow_seg_from_seed -v "$M7" -t grown -p params.json --resume paths/{sid} --segment-name {sid}_grown || true')
+        lines.append(f'vc_grow_seg_from_seed -v "$M7" -t grown/{sid}_grown -p params.json --resume paths/{sid} --segment-name {sid}_grown || true')
     json.dump(point_collection(hits), open(os.path.join(a.out, "prospector_hits.json"), "w"), indent=1)
     with open(os.path.join(a.out, "hits.tsv"), "w") as f:
         f.write("rank\tid\ttext_score\tink_face\tx\ty\tz\tnodes\ttifxyz\n")
         for h in hits: f.write(f"{h['rank']}\t{h['id']}\t{h['ts']:.4f}\t{h['side']}\t{h['xyz'][0]:.1f}\t{h['xyz'][1]:.1f}\t{h['xyz'][2]:.1f}\t{h['nodes']}\tpaths/{h['path']}\n")
-    json.dump({"mode": "seed", "generations": a.generations, "cache_size": 2000000000, "thread_limit": 4}, open(os.path.join(a.out, "params.json"), "w"), indent=1)
+    # voxelsize: remote volumes are not probed for it, and without it VC computes 0 cm2 and discards the surface
+    json.dump({"mode": "seed", "generations": a.generations, "voxelsize": float(meta0.get("um") or P[0]["um"]), "min_area_cm": 0,
+               "cache_size": 2000000000, "thread_limit": 4}, open(os.path.join(a.out, "params.json"), "w"), indent=1)
     with open(os.path.join(a.out, "grow.sh"), "w") as f:
         f.write("#!/usr/bin/env bash\n# Grow each Prospector hit into a larger segment with VC's tracer, on the surface prediction.\n"
                 "# Run from this folder. Output: grown/<id>_grown/ (tifxyz, opens in VC3D).\nset -u\ncd \"$(dirname \"$0\")\"\n"
