@@ -1,0 +1,45 @@
+{
+ "vc_pointcollections_json_version": "1",
+ "collections": {
+  "1": {
+   "name": "prospector hits",
+   "points": {
+    "1": {
+     "p": [
+      3556.57421875,
+      2769.438232421875,
+      9604.9619140625
+     ],
+     "creation_time": 0,
+     "wind_a": null
+    },
+    "2": {
+     "p": [
+      4328.8212890625,
+      3045.62744140625,
+      9361.330078125
+     ],
+     "creation_time": 0,
+     "wind_a": null
+    },
+    "3": {
+     "p": [
+      3484.751220703125,
+      2531.734130859375,
+      9383.115234375
+     ],
+     "creation_time": 0,
+     "wind_a": null
+    }
+   },
+   "metadata": {
+    "winding_is_absolute": true
+   },
+   "color": [
+    1.0,
+    0.35,
+    0.1
+   ]
+  }
+ }
+}

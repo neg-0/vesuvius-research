@@ -1,0 +1,43 @@
+name: ink-prospector VC round trip
+# Grows the example Prospector hits with Volume Cartographer's own tracer and renders one, inside the published
+# VC image, on the public PHerc0306B volumes. Checks that VC reads Prospector's tifxyz and can build on it.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ["ink-prospector/vc_export.py", "ink-prospector/export_tifxyz.py", "ink-prospector/examples/**", ".github/workflows/ink-prospector-vc.yml"]
+jobs:
+  vc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    container: ghcr.io/scrollprize/villa/volume-cartographer:edge
+    defaults:
+      run:
+        working-directory: ink-prospector/examples/vc-306b
+    steps:
+      - uses: actions/checkout@v4
+      - name: Grow each hit with grow.sh (vc_grow_seg_from_seed --resume)
+        run: |
+          ./grow.sh > grow.log 2>&1 || true
+          grep -E "Resuming|generated surface|saving|discarding|ERROR" grow.log || tail -30 grow.log
+      - name: Check every hit grew into a saved, larger segment
+        run: |
+          for d in paths/*/; do
+            s=$(basename "$d"); g="grown/${s}_grown"
+            test -f "$g/x.tif" -a -f "$g/meta.json" || { echo "MISSING $g"; exit 1; }
+            echo "$s: x.tif $(wc -c < "paths/$s/x.tif") bytes -> $(wc -c < "$g/x.tif") bytes"
+            grep -o '"area_cm2"[^,]*' "$g/meta.json" || true
+          done
+      - name: Render the first grown segment with vc_render_tifxyz
+        run: |
+          CT=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/volumes/20250521133212-8.640um-1.2m-116keV-masked.zarr
+          s=$(ls grown | head -1); mkdir -p render
+          vc_render_tifxyz -v render_cache --remote-url "$CT" -s "grown/$s" --scale 1 -g 1 --voxel-size 17.28 --voxel-unit micrometer --tif-output render/ 2>&1 | tail -10
+          ls -la render; test -s render/00.tif
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vc-round-trip
+          path: |
+            ink-prospector/examples/vc-306b/grown
+            ink-prospector/examples/vc-306b/render
+            ink-prospector/examples/vc-306b/grow.log

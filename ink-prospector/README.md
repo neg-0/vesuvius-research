@@ -65,6 +65,28 @@ straight from disk does not work, because the page loads `data.json`).
 Scrolls are named in `scrolls.json` (CT volume, surface prediction, voxel size). Add an entry, or pass `--ct`, `--m7`
 and `--um`. Coordinates are level-0 voxels, z y x.
 
+## Taking hits into Volume Cartographer (VC3D)
+
+VC3D, the Volume Cartographer GUI in [ScrollPrize/villa](https://github.com/ScrollPrize/villa/tree/main/volume-cartographer),
+is where segments are traced, edited and rendered. `vc_export.py` hands the best hits to it:
+
+```sh
+python3 vc_export.py vc-hits runs/demo -n 10        # top 10 patches by text score
+cd vc-hits && ./grow.sh                             # needs VC's tools (e.g. ghcr.io/scrollprize/villa/volume-cartographer:edge)
+```
+
+- `paths/prospector_<id>/`: each hit as a tifxyz surface at every 5th node, a 20-voxel grid, which is the step VC's
+  tracer uses. `meta.json` carries the rank, text score and inked face.
+- `prospector_hits.json`: a VC3D point collection with one point per hit (x y z on the sheet, at the patch centre),
+  to jump to each hit in the viewer.
+- `grow.sh`: `vc_grow_seg_from_seed --resume` on each hit, on the scroll's surface prediction. VC's tracer then grows
+  the Prospector patch into a larger segment (`grown/prospector_<id>_grown/`) that VC3D opens and `vc_render_tifxyz`
+  renders. `generations` in `params.json` is the total generation count to stop at.
+- `hits.tsv`: the same list as a table.
+
+`examples/vc-306b/` is this output for three patches of a short PHerc0306B scan. The `ink-prospector VC round trip`
+GitHub Actions workflow runs `grow.sh`'s commands and `vc_render_tifxyz` on it inside the published VC image.
+
 ## Formats
 
 - **In:** OME-Zarr v2 uint8 volumes, read chunk by chunk with no full download. `--ct` and `--m7` take a path in the
@@ -155,7 +177,7 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
 `export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`;
-tests `test_smoke.py` and `test_pipeline.py`; `demo/` (a built viewer page) and `docs/` (the README figures).
+`vc_export.py`; tests `test_smoke.py` and `test_pipeline.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
