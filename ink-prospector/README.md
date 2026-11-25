@@ -25,7 +25,7 @@ $P scan --scroll PHerc0306B --box 9000 10000 2400 3400 3400 4400 --out demo     
 $P rank demo -n 12 --sheet demo-top12.png                                       # ranked hit list + contact sheet
 $P viewer demo --out demo-site --title PHerc0306B                                # 3D map page
 python3 -m http.server -d demo-site 8000                                         # open http://localhost:8000
-$P spread --scroll PHerc0306B --seed 9381 3281 4275 --side a --out demo-spread   # 28 mm patch around a hit
+$P spread --scroll PHerc0306B --seed 9381 3281 4275 --side a --out demo-spread   # 22 mm patch around a hit
 ```
 
 For a GPU, build with `--build-arg TORCH_INDEX=https://download.pytorch.org/whl/cu124`, run with `--gpus all` and add
@@ -35,10 +35,14 @@ Without Docker: `bash setup.sh ~/prospector` builds the work folder (venv, pinne
 check, smoke test). Then run from this folder: `PROSPECTOR_HOME=~/prospector ~/prospector/venv/bin/python prospect.py ...`.
 Outputs (`runs/`, contact sheets, viewer pages) are written relative to the folder you run from.
 
-`python -m pytest -q test_smoke.py` checks the scoring and ranking code without network access.
+`python -m pytest -q` (in this folder; needs numpy, scipy, pillow, tifffile and pytest, no torch or network) runs the
+tests: the text score and ranking, the volume reader on local zarrs, seed snapping, growth and rendering on a
+synthetic tilted sheet, the tifxyz export, and the whole-scroll hit rule. They check the code, not what it finds on
+real data; that is under "What has been checked" below.
 
 To split a scan over machines, give each the same command with `--shard 0/4`, `--shard 1/4`, and so on. The seed order
-is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders.
+is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders. Shards do not see
+each other's patches, so two shards can grow the same sheet; `rank` lists both and `stitch` joins them.
 
 ## Try it without installing
 
@@ -58,11 +62,22 @@ is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder wi
 Scrolls are named in `scrolls.json` (CT volume, surface prediction, voxel size). Add an entry, or pass `--ct`, `--m7`
 and `--um`. Coordinates are level-0 voxels, z y x.
 
+## Formats
+
+- **In:** OME-Zarr v2 uint8 volumes, read chunk by chunk with no full download. `--ct` and `--m7` take a path in the
+  Vesuvius Challenge open-data bucket (as in `scrolls.json`), a full http(s) URL of a zarr, or a local zarr folder.
+  `--m7` is a surface prediction on the same voxel grid as the CT (the public m7 surface predictions are). Missing
+  chunks read as zero; a network error that persists after five retries stops the run rather than reading as empty CT.
+- **Out:** tifxyz surfaces (`export_tifxyz.py`, the format VC3D and villa's `vesuvius.tifxyz` read), node grids as
+  `.npz`, ink maps as 8-bit PNG (ink score 0.25 or less and no data are 0, 0.5 is 128, 0.75 or more is 255), and
+  `scores.tsv` / `sheets.json` tables.
+
 ## Output of a scan
 
 - `scores.tsv`: one row per seed. `status` is `ok`, `no_sheet` (no surface near the seed), `covered` (sheet already
   scanned), `small` (under 15% tracked) or `masked` (sheet in masked CT). `frac_a`/`frac_b` are the share of pixels
-  above 0.5 on each face.
+  above 0.5 on each face, `p995_a`/`p995_b` the 99.5th percentile of the read, `stroke_a`/`stroke_b` the share of thin
+  bright strokes (used by `judge_whole.py`), and `secs` the time per patch.
 - `pNNNN.npz`: `P` (grid of 3D nodes, z y x, 4 vx apart), `ok` (tracked nodes), `n0` (sheet normal at the seed).
 - `pNNNN_a.png`, `pNNNN_b.png`: the ink read on each face at quarter resolution. Face a is read along `+n0`.
 - `run.json`: the scroll, box and settings.
@@ -136,7 +151,8 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 ## Files
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
-`export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`.
+`export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`;
+tests `test_smoke.py` and `test_pipeline.py`; `demo/` (a built viewer page) and `docs/` (the README figures).
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
