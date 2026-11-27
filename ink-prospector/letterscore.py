@@ -101,8 +101,10 @@ def score_maps(ink, back, valid=None, um=7.91, **kw):
     conf = sum(f["n"] for f in F); share = sum(f["n"] for f in F if f["letter"]) / conf if conf else 0.0
     ratio = s_back / s_ink if s_ink > 0 else 1.0
     hz = halo(ink, valid, lab, R, um, **p)
-    letters = bool(row >= p["min_row"] and share >= p["min_form_share"] and ratio < p["max_back"] and hz <= p["max_halo"])
-    return dict(letters=letters, score=round(max(0.0, row * share * (1 - ratio) * (1 - hz)), 4), row=int(row), halo=round(hz, 4),
+    fails = [k for k, bad in (("row", row < p["min_row"]), ("forms", share < p["min_form_share"]),
+                              ("two-sided", ratio >= p["max_back"]), ("halo", hz > p["max_halo"])) if bad]
+    letters = not fails
+    return dict(letters=letters, fails=",".join(fails) or "-", score=round(max(0.0, row * share * (1 - ratio) * (1 - hz)), 4), row=int(row), halo=round(hz, 4),
                 letter_forms=int(sum(f["letter"] for f in F)), forms=len(F), form_share=round(share, 4),
                 ink_share=round(s_ink, 5), back_share=round(s_back, 5), back_ratio=round(ratio, 4))
 
@@ -131,7 +133,7 @@ def main(argv=None):
     if a.dirs:
         rows = [(d, score_dir(d, a.um, a.block, **kw)) for d in a.dirs]
         rows.sort(key=lambda t: -t[1]["score"])
-        cols = ["letters", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
+        cols = ["letters", "fails", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
         print("dir\t" + "\t".join(cols))
         for d, r in rows: print(os.path.basename(os.path.normpath(d)) + "\t" + "\t".join(str(r[c]) for c in cols))
         return
