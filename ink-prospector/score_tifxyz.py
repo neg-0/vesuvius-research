@@ -62,7 +62,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("surfaces", nargs="+"); ap.add_argument("--out", required=True)
     ap.add_argument("--scroll"); ap.add_argument("--ct"); ap.add_argument("--um", type=float); ap.add_argument("--ct-level", type=int, default=0)
-    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--min-nodes", type=int); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
+    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
     if a.scroll:
@@ -72,7 +72,7 @@ def main(argv=None):
     um = a.um or 8.64; os.makedirs(a.out, exist_ok=True); t0 = time.time()
     json.dump(dict(scroll=a.scroll, ct=a.ct, um=um, source="score_tifxyz", surfaces=a.surfaces, crop=a.crop, tile=a.tile), open(os.path.join(a.out, "run.json"), "w"), indent=1)
     import reader
-    ct = LazyVol(a.ct, level=a.ct_level); cm = reader.load_reader(a.weights, a.villa)
+    ct = LazyVol(a.ct, level=a.ct_level, max_cache_gb=a.max_cache_gb); cm = reader.load_reader(a.weights, a.villa)
     tsv = os.path.join(a.out, "scores.tsv"); names = os.path.join(a.out, "surfaces.tsv")
     with open(tsv, "w") as f: f.write("id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\tp995_a\tp995_b\tstroke_a\tstroke_b\tsecs\n")
     with open(names, "w") as f: f.write("id\ttifxyz\tr0\tr1\tc0\tc1\n")

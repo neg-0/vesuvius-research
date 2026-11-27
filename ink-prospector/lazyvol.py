@@ -3,11 +3,14 @@
 `path` is a path inside the Vesuvius Challenge open-data bucket (as in scrolls.json), a full http(s) URL of a zarr, or a
 local zarr folder. `level` picks the pyramid level (the subfolder 0, 1, ...). Chunks that do not exist read as zeros."""
 import json, os, time, urllib.request, urllib.error, numpy as np
+from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 BASE = "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/"
 
 class LazyVol:
-    def __init__(self, path, level=0, base=BASE, cache_dir=None, threads=24):
+    def __init__(self, path, level=0, base=BASE, cache_dir=None, threads=24, max_cache_gb=None):
+        """max_cache_gb: keep at most this many GB of chunks in memory, dropping the least recently used ones (the
+        chunks of the current read are always kept). None keeps everything."""
         self.local = os.path.isdir(path)
         root = path.rstrip("/") if self.local or path.startswith(("http://", "https://")) else f"{base}{path}"
         self.url = f"{root}/{level}"
@@ -19,9 +22,10 @@ class LazyVol:
         self.codec = None
         if self.comp is not None:
             import numcodecs; self.codec = numcodecs.get_codec(self.comp)
-        self.cache = {}; self.threads = threads; self.cache_dir = cache_dir; self.bytes = 0
+        self.cache = OrderedDict(); self.threads = threads; self.cache_dir = cache_dir; self.bytes = 0
         if cache_dir: os.makedirs(cache_dir, exist_ok=True)
         self.nch = (self.shape + self.chunk - 1) // self.chunk
+        self.max_chunks = None if not max_cache_gb else max(1, int(max_cache_gb * 1e9 // int(np.prod(self.chunk))))
 
     def _read(self, url):
         """Bytes of one zarr key; None if it does not exist. Other errors (network) are retried, then raised, so a
@@ -54,10 +58,16 @@ class LazyVol:
 
     def ensure(self, keys):
         need = [k for k in keys if k not in self.cache]
-        if not need: return
-        with ThreadPoolExecutor(self.threads) as ex:
-            for key, arr in ex.map(self._get, need):
-                self.cache[key] = None if (arr is None or arr.size == 0) else arr
+        if self.max_chunks:
+            for k in keys:
+                if k in self.cache: self.cache.move_to_end(k)
+        if need:
+            with ThreadPoolExecutor(self.threads) as ex:
+                for key, arr in ex.map(self._get, need):
+                    self.cache[key] = None if (arr is None or arr.size == 0) else arr
+        if self.max_chunks and len(self.cache) > self.max_chunks:
+            keep = set(keys)
+            for k in [k for k in self.cache if k not in keep][:len(self.cache) - self.max_chunks]: del self.cache[k]
 
     def _corner(self, idx):
         """idx: (3,N) int -> uint8 values (0 outside / missing)."""
