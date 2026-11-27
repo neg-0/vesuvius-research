@@ -11,8 +11,13 @@ bands. Steps:
      median form height), neighbours no more than `max_gap` form sizes apart (centre to centre)
   4. haze: the share of all confident ink that belongs to letter-like forms (`form_share`)
   5. one-sidedness: confident share on the back face / ink face
-`letters` is True when the row holds >= `min_row` forms, form_share >= `min_form_share` and back/ink < `max_back`.
-`score` = forms in the row x form_share x (1 - back/ink), clipped at 0; it ranks maps, `letters` is the pass rule.
+  6. halo: for each form in the row, the share of a `ring_mm` ring around it (outside the joined form) where ink is
+     above `halo_lo`; `halo` is the median over the row. Letters stand on clean papyrus; haze cut into letter-sized
+     pieces by the threshold sits in a sea of half-confident ink, so its ring is mostly lit.
+`letters` is True when the row holds >= `min_row` forms, form_share >= `min_form_share`, back/ink < `max_back` and
+halo <= `max_halo`.
+`score` = forms in the row x form_share x (1 - back/ink) x (1 - halo), clipped at 0; it ranks maps, `letters` is the
+pass rule.
 Strict by design: letters blurred together into one word-sized form are not counted, so a fail does not rule text out.
 
 usage: letterscore.py <prob_ink.npy> <prob_back.npy> [valid.npy] --um U       (maps from followup.py or reader.run_stack)
@@ -25,12 +30,13 @@ import numpy as np
 from scipy import ndimage as ndi
 
 DEFAULTS = dict(thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.7, max_stroke_mm=1.2, line_tol=0.35, max_gap=2.0,
-                min_row=4, min_form_share=0.35, max_back=1 / 3)
+                min_row=4, min_form_share=0.35, max_back=1 / 3, ring_mm=0.3, halo_lo=0.4, max_halo=0.5)
 
 
-def forms(ink, valid, um, thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.7, max_stroke_mm=1.2, **_):
+def forms(ink, valid, um, thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.7, max_stroke_mm=1.2, labels=False, **_):
     """Connected forms of confident ink after joining strokes closer than join_mm. Returns a list of dicts
-    (centre in mm, height/width in mm, fill, letter-like flag, confident pixel count)."""
+    (centre in mm, height/width in mm, fill, letter-like flag, confident pixel count, label id); with labels=True also
+    the label image of the joined forms."""
     A = (ink > thr) & valid
     r = max(1, int(round(join_mm * 1000 / um / 2)))
     J = ndi.binary_dilation(A, structure=np.ones((3, 3), bool), iterations=r)
@@ -45,18 +51,29 @@ def forms(ink, valid, um, thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elon
         size = max(h, w); elong = max(h, w) / max(min(h, w), um / 1000)
         stroke = 2 * float(np.percentile(E[sl][m], 90)) * um / 1000            # stroke width (90th pct), mm
         out.append(dict(y=(sl[0].start + ys.mean()) * um / 1000, x=(sl[1].start + xs.mean()) * um / 1000, h=h, w=w,
-                        fill=fill, stroke=stroke, n=k,
+                        fill=fill, stroke=stroke, n=k, lab=i, sl=sl,
                         letter=bool(lo_mm <= size <= hi_mm and elong <= max_elong and fill <= max_fill and stroke <= max_stroke_mm)))
-    return out
+    return (out, lab) if labels else out
+
+
+def halo(ink, valid, lab, F, um, ring_mm=0.3, halo_lo=0.4, **_):
+    """Median over forms F of the share of a ring_mm ring around each joined form (outside every joined form) where ink
+    > halo_lo. Near 0 for strokes on clean papyrus, near 1 for haze pieces."""
+    r = max(1, int(round(ring_mm * 1000 / um))); J = lab > 0; out = []
+    for f in F:
+        sl = tuple(slice(max(0, a.start - r - 1), a.stop + r + 1) for a in f["sl"])
+        m = lab[sl] == f["lab"]; ring = ndi.binary_dilation(m, iterations=r) & ~J[sl] & valid[sl]
+        if ring.any(): out.append(float((ink[sl][ring] > halo_lo).mean()))
+    return float(np.median(out)) if out else 0.0
 
 
 def best_row(F, line_tol=0.35, max_gap=2.0, **_):
     """Largest set of letter-like forms on one straight line with no gap above max_gap form heights. Returns (count,
-    indices)."""
+    the forms)."""
     L = sorted([f for f in F if f["letter"]], key=lambda f: -f["n"])[:300]      # cap the pair search on busy maps
-    if len(L) < 2: return len(L), list(range(len(L)))
+    if len(L) < 2: return len(L), L
     P = np.array([[f["x"], f["y"]] for f in L]); H = float(np.median([max(f["h"], f["w"]) for f in L]))
-    best = (1, [0])
+    best = (1, [0])                                                       # (count, indices into L); returns the forms
     for i in range(len(L)):
         for j in range(i + 1, len(L)):
             d = P[j] - P[i]; nd = np.linalg.norm(d)
@@ -70,7 +87,7 @@ def best_row(F, line_tol=0.35, max_gap=2.0, **_):
                 if k == len(t) or t[k] - t[k - 1] > max_gap * H:
                     if k - s > best[0]: best = (k - s, [int(q) for q in idx[s:k]])
                     s = k
-    return best
+    return best[0], [L[q] for q in best[1]]
 
 
 def score_maps(ink, back, valid=None, um=7.91, **kw):
@@ -80,11 +97,12 @@ def score_maps(ink, back, valid=None, um=7.91, **kw):
     valid = np.ones(ink.shape, bool) if valid is None else np.asarray(valid, bool)
     nv = max(1, int(valid.sum()))
     s_ink = float(((ink > p["thr"]) & valid).sum() / nv); s_back = float(((back > p["thr"]) & valid).sum() / nv)
-    F = forms(ink, valid, um, **p); row, idx = best_row(F, **p)
+    F, lab = forms(ink, valid, um, labels=True, **p); row, R = best_row(F, **p)
     conf = sum(f["n"] for f in F); share = sum(f["n"] for f in F if f["letter"]) / conf if conf else 0.0
     ratio = s_back / s_ink if s_ink > 0 else 1.0
-    letters = bool(row >= p["min_row"] and share >= p["min_form_share"] and ratio < p["max_back"])
-    return dict(letters=letters, score=round(max(0.0, row * share * (1 - ratio)), 4), row=int(row),
+    hz = halo(ink, valid, lab, R, um, **p)
+    letters = bool(row >= p["min_row"] and share >= p["min_form_share"] and ratio < p["max_back"] and hz <= p["max_halo"])
+    return dict(letters=letters, score=round(max(0.0, row * share * (1 - ratio) * (1 - hz)), 4), row=int(row), halo=round(hz, 4),
                 letter_forms=int(sum(f["letter"] for f in F)), forms=len(F), form_share=round(share, 4),
                 ink_share=round(s_ink, 5), back_share=round(s_back, 5), back_ratio=round(ratio, 4))
 
@@ -113,7 +131,7 @@ def main(argv=None):
     if a.dirs:
         rows = [(d, score_dir(d, a.um, a.block, **kw)) for d in a.dirs]
         rows.sort(key=lambda t: -t[1]["score"])
-        cols = ["letters", "score", "row", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
+        cols = ["letters", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
         print("dir\t" + "\t".join(cols))
         for d, r in rows: print(os.path.basename(os.path.normpath(d)) + "\t" + "\t".join(str(r[c]) for c in cols))
         return
