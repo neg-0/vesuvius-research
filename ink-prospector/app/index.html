@@ -63,6 +63,9 @@ textarea{min-height:60px;resize:vertical}
 a{color:var(--accent)} .muted{color:var(--muted)} .mono{font-family:var(--mono)} .err{color:var(--hot)}
 pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/1.4 var(--mono);max-height:50vh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;border-radius:0 0 6px 6px}
 .empty{padding:24px 12px;color:var(--muted)}
+.sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.sheet figure{margin:0;display:flex;flex-direction:column;gap:6px} .sheet img{width:100%;background:var(--ct);border-radius:4px;image-rendering:auto}
+.sheet figcaption{font-size:12.5px;color:var(--muted)}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px;display:none;max-width:90vw}
 </style>
 <div class="wrap">
@@ -103,6 +106,10 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
         </table></div>
       </div>
       <div class="panel" id="detail"><div class="empty">Pick a patch to see both faces at full size.</div></div>
+    </div>
+    <div class="panel" id="sheets-panel" style="margin-top:16px" hidden>
+      <div class="ph"><h2>Stitched sheets</h2><span class="muted">patches on the same sheet joined into one flat map, ink face above its back face (<span class="mono">prospect.py stitch</span>)</span></div>
+      <div class="pb sheets" id="sheets"></div>
     </div>
   </section>
 
@@ -184,7 +191,13 @@ async function loadRun(full) {
   $('#run-actions').innerHTML = (run ? `<button data-a="stop" data-j="${run.id}">Stop</button>` : last && last.state !== 'done' ? `<button data-a="resume" data-j="${last.id}">Resume</button>` : '')
     + (last ? `<a class="btn" href="#job/${last.id}">Log</a>` : '')
     + `<a class="btn" href="/api/runs/${encodeURIComponent(name)}/tsv" download="${esc(name)}-ranked.tsv">Ranked TSV</a>`
-    + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button>`;
+    + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button><button data-a="stitch">${r.sheets && r.sheets.length ? 'Restitch' : 'Stitch'} sheets</button>`;
+  const sh = r.sheets || [], key = JSON.stringify(sh.map(x => [x.sheet, x.ink, x.area_cm2]));
+  $('#sheets-panel').hidden = !sh.length;
+  if (key !== cur.sheetKey) { cur.sheetKey = key; $('#sheets').innerHTML = sh.map(x => `<div class="sheet"><figure>
+      <a href="${x.ink}" target="_blank" rel="noopener"><img loading="lazy" alt="sheet ${x.sheet} ink face" src="${x.ink}"></a>
+      <a href="${x.back}" target="_blank" rel="noopener"><img loading="lazy" alt="sheet ${x.sheet} back face" src="${x.back}"></a>
+      <figcaption><b>Sheet ${x.sheet}</b> · ${x.patches.length} patches from ${esc(x.root)} · ${x.height_mm} × ${x.width_mm} mm · ${x.area_cm2} cm²${x.ls === null || x.ls === undefined ? '' : ` · letters ${x.ls.toFixed(2)} (${x.lrow} in a row${x.letters ? ', passes' : ''})`}</figcaption></figure></div>`).join(''); }
   if (DEMO) $('#run-actions').innerHTML = `<a class="btn" href="${r.viewer}">3D viewer</a>`;
   $('#run-actions').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, b.dataset.j, name));
   if (!full && P.length === r.patches) return;
@@ -263,7 +276,7 @@ $('#go').onclick = async () => {
 /* jobs */
 async function act(a, id, run) {
   try {
-    if (a === 'viewer') { const j = await api('/api/runs/' + encodeURIComponent(run) + '/viewer', {}); toast('Building the 3D viewer…'); location.hash = 'job/' + j.id; return; }
+    if (a === 'viewer' || a === 'stitch') { const j = await api('/api/runs/' + encodeURIComponent(run) + '/' + a, {}); toast(a === 'viewer' ? 'Building the 3D viewer…' : 'Stitching the sheets of the top 30 hits…'); location.hash = 'job/' + j.id; return; }
     await api(`/api/jobs/${id}/${a}`, {}); toast(a === 'stop' ? 'Stopping' : 'Resumed'); refresh(true);
   } catch (e) { toast(e.message, true); }
 }
@@ -278,7 +291,8 @@ async function loadJobs() {
   if (cur.job && !$('#tab-jobs').hidden) {
     const j = await api(`/api/jobs/${cur.job}?tail=300`), lg = $('#log'), atEnd = lg.scrollTop + lg.clientHeight >= lg.scrollHeight - 4;
     $('#logpanel').hidden = false; $('#log-title').textContent = `${j.kind} · ${j.state}${j.exit !== null ? ' · exit ' + j.exit : ''}`;
-    $('#log-actions').innerHTML = j.kind !== 'viewer' && j.out ? `<a class="btn" href="#run/${encodeURIComponent(j.out.split('/').pop())}">Open run</a>` : j.kind === 'viewer' && j.state === 'done' ? `<a class="btn" href="#run/${encodeURIComponent(j.out.split('/').pop())}">Back to run</a>` : '';
+    const rn = j.out ? j.out.replace(/\/_stitch$/, '').split('/').pop() : '';
+    $('#log-actions').innerHTML = rn ? `<a class="btn" href="#run/${encodeURIComponent(rn)}">Open run</a>` : '';
     lg.textContent = (j.log || []).join('\n'); if (atEnd) lg.scrollTop = lg.scrollHeight;
   }
 }

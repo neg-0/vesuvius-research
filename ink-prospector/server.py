@@ -47,13 +47,25 @@ class App:
         d = joblib.inside(self.runs, name); P = self.patches(name)
         rows, groups = runlib.status([d]) if runlib.scan_dirs([d]) else ([], [])
         done = sum(r["done"] for r in rows); exp = [r["expected"] for r in rows]
-        js = [j for j in self.jobs.list() if j["out"] == d and j["kind"] != "viewer"]
+        js = [j for j in self.jobs.list() if j["out"] == d and j["kind"] not in ("viewer", "stitch")]
         m = runlib.meta(runlib.scan_dirs([d])[0]) if runlib.scan_dirs([d]) else {}
         return dict(name=name, patches=len(P), area=round(sum(p["area"] for p in P), 2), best=round(P[0]["ts"], 4) if P else None,
                     scored=done, expected=sum(exp) if exp and None not in exp else None, shards=len(rows),
                     missing=sum(len(g["missing"]) for g in groups), scroll=m.get("scroll"), source=m.get("source", "scan"),
                     viewer=self.url(os.path.join(d, "_viewer", "index.html")) if os.path.exists(os.path.join(d, "_viewer", "index.html")) else None,
-                    jobs=[dict(id=j["id"], state=j["state"], kind=j["kind"]) for j in js])
+                    jobs=[dict(id=j["id"], state=j["state"], kind=j["kind"]) for j in js], sheets=self.sheets(d))
+
+    def sheets(self, d):
+        """Stitched sheets of a run (prospect.py stitch into <run>/_stitch), with image URLs and letterscore on each."""
+        f = os.path.join(d, "_stitch", "sheets.json")
+        if not os.path.exists(f): return []
+        um = (runlib.meta(runlib.scan_dirs([d])[0]) if runlib.scan_dirs([d]) else {}).get("um") or 8.64; out = []
+        for s in json.load(open(f)):
+            base = os.path.join(d, "_stitch", f"sheet{s['sheet']}")
+            if not os.path.exists(base + "_ink.png"): continue
+            L = runlib.letters(dict(base=base, side="ink", um=um), faces=("ink", "back")) or {}
+            out.append(dict(s, ink=self.url(base + "_ink.png"), back=self.url(base + "_back.png"), ls=L.get("score"), lrow=L.get("row"), letters=L.get("letters")))
+        return out
 
     def tsv(self, name):
         """The ranked table of `prospect.py rank --tsv`, with PNG paths relative to the runs folder."""
@@ -99,9 +111,11 @@ class Handler(BaseHTTPRequestHandler):
         if method == "GET" and r == ["scrolls"]: return self.send(200, json.load(open(os.path.join(HERE, "scrolls.json"))))
         if method == "GET" and r == ["runs"]: return self.send(200, [A.run_info(n) for n in A.run_names()])
         if len(r) >= 2 and r[0] == "runs":
-            name = "/".join(r[1:-1]) if r[-1] in ("patches", "viewer", "tsv") else "/".join(r[1:])
+            name = "/".join(r[1:-1]) if r[-1] in ("patches", "viewer", "tsv", "stitch") else "/".join(r[1:])
             if method == "GET" and r[-1] == "patches": return self.send(200, A.patch_rows(name, int(q.get("n", ["200"])[0])))
             if method == "GET" and r[-1] == "tsv": return self.send(200, A.tsv(name), "text/tab-separated-values; charset=utf-8")
+            if method == "POST" and r[-1] == "stitch":
+                return self.send(200, A.jobs.create(dict(kind="stitch", runs=[name], out=name + "/_stitch", top=self.body().get("top", 30))))
             if method == "POST" and r[-1] == "viewer": return self.send(200, A.jobs.create(dict(kind="viewer", runs=[name], **self.body())))
             if method == "GET": return self.send(200, A.run_info(name))
         if r == ["jobs"]:
