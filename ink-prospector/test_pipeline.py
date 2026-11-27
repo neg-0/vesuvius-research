@@ -209,6 +209,33 @@ def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
     assert Q2.shape == (3, 5, 3) and ok2.all()
 
 
+
+def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
+    # A stub reader (no torch) that counts calls: a resumed run must redo only the patch whose score row is missing.
+    import types
+    from export_tifxyz import write_tifxyz
+    import score_tifxyz
+    calls = []
+    stub = types.SimpleNamespace(load_reader=lambda *a: None,
+                                 run_stack=lambda cm, st, **kw: calls.append(1) or st[8].astype(np.float32) / 255)
+    monkeypatch.setitem(sys.modules, "reader", stub)
+    vol, _ = sheet(); ct = write_zarr(str(tmp_path / "ct.zarr"), vol)
+    G = 13; ii, jj = np.mgrid[:G, :G]
+    P = np.stack([48 + 0.15 * (16 + 4.0 * ii - 48), 16 + 4.0 * ii, 16 + 4.0 * jj], -1)
+    write_tifxyz(P, np.ones((G, G), bool), str(tmp_path / "seg"), step=4.0)
+    out = str(tmp_path / "scan"); args = [str(tmp_path / "seg"), "--out", out, "--ct", ct, "--tile", "7", "--um", "8"]
+    score_tifxyz.main(args); first = open(out + "/scores.tsv").readlines(); n = len(first) - 1
+    assert n == 4 and len(calls) == 2 * n
+    open(out + "/scores.tsv", "w").writelines(first[:-1])                    # cut off before the last patch's score
+    calls.clear(); score_tifxyz.main(args + ["--resume"])
+    again = open(out + "/scores.tsv").readlines()
+    assert len(calls) == 2 and len(again) == len(first)
+    assert [l.split("\t")[:13] for l in again] == [l.split("\t")[:13] for l in first]   # same rows, same values
+    assert len(open(out + "/surfaces.tsv").readlines()) == n + 1
+    calls.clear(); score_tifxyz.main(args + ["--resume"]); assert not calls      # nothing left to do
+    with pytest.raises(SystemExit):                                              # a different tiling is refused
+        score_tifxyz.main(args[:-3] + ["5", "--um", "8", "--resume"])
+
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     from PIL import Image, ImageDraw
     from scipy import ndimage as ndi
