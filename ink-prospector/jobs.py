@@ -60,6 +60,13 @@ def _device(f):
     return ["--device", d]
 
 
+def _cache(f):
+    """Chunk cache cap per process: 2 GB unless the job names one (0 = uncapped). Uncapped, one scan passed 6 GB and
+    two shards plus a score job got OOM-killed on a 16 GB machine."""
+    g = _num(f, "max_cache_gb", float, 2.0)
+    return ["--max-cache-gb", str(g)] if g else []
+
+
 def argv_scan(runs, f):
     box = _num(f, "box", int, n=6)
     if not box or len(box) != 6: raise BadJob("box: six integers z0 z1 y0 y1 x0 x1")
@@ -67,7 +74,7 @@ def argv_scan(runs, f):
     a = [PY, os.path.join(HERE, "prospect.py"), "scan", *_scroll(f), "--box", *map(str, box), "--out", out, "--shard", s, *_device(f),
          "--spacing", str(_num(f, "spacing", int, 250)), "--half-nodes", str(_num(f, "half_nodes", int, 128))]
     if f.get("max_patches"): a += ["--max-patches", str(_num(f, "max_patches"))]
-    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
+    a += _cache(f)
     if f.get("fuse"): a.append("--fuse")
     return a, out
 
@@ -84,7 +91,7 @@ def argv_score(runs, f):
         c = _num(f, "crop", int, n=4)
         if len(c) != 4: raise BadJob("crop: four integers r0 r1 c0 c1")
         a += ["--crop", *map(str, c)]
-    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
+    a += _cache(f)
     if f.get("fuse"): a.append("--fuse")
     return a + [os.path.abspath(p) for p in surf], run
 
@@ -132,7 +139,7 @@ def argv_auto(runs, f):
         a += ["--box", *map(str, b)]
     for k, d in (("spacing", 800), ("workers", 2), ("leads", 10), ("spread", 3)):
         a += ["--" + k, str(_num(f, k, int, d))]
-    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
+    a += _cache(f)
     if f.get("sweep"): a += ["--sweep", inside(runs, f["sweep"])]
     return a, os.path.join(runs, f"{name}-{sc[0] if sc else 'scroll'}")
 
@@ -178,6 +185,9 @@ class Jobs:
         d = self._d(jid); job = json.load(open(os.path.join(d, "job.json")))
         if self.get(jid)["state"] == "running": raise BadJob(f"job {jid} is running")
         argv = list(job["argv"])
+        if resume:                                                      # rebuild from the fields, so fixes since the job began apply
+            try: argv = ARGV[job["kind"]](self.runs, job["fields"])[0]
+            except (BadJob, KeyError): pass
         if resume and job["kind"] == "score" and "--resume" not in argv: argv.insert(2, "--resume")
         for f in ("exit", "stop", "pid"):
             if os.path.exists(os.path.join(d, f)): os.remove(os.path.join(d, f))

@@ -105,7 +105,7 @@ def test_argv_matches_the_command_line(tmp_path):
     runs = str(tmp_path)
     a, out = joblib.argv_scan(runs, dict(scroll="PHerc0306B", box=[1, 2, 3, 4, 5, 6], out="b", shard="1/4", spacing=150))
     assert a[2:] == ["scan", "--scroll", "PHerc0306B", "--box", "1", "2", "3", "4", "5", "6", "--out", out, "--shard", "1/4", "--device", "cpu",
-                     "--spacing", "150", "--half-nodes", "128"] and out == os.path.join(runs, "b")
+                     "--spacing", "150", "--half-nodes", "128", "--max-cache-gb", "2.0"] and out == os.path.join(runs, "b")
     a, out = joblib.argv_score(runs, dict(scroll="PHerc1545", surfaces=["s1"], out="hx", shard="2/3", tile=64))
     assert a[a.index("--out") + 1] == os.path.join(runs, "hx", "shard-2") and out == os.path.join(runs, "hx") and a[-1] == os.path.abspath("s1")
     J = joblib.Jobs(runs); j = J.create(dict(kind="score", scroll="PHerc1545", surfaces=["missing"], out="hx2"))
@@ -113,6 +113,11 @@ def test_argv_matches_the_command_line(tmp_path):
     while J.get(j["id"])["state"] == "running" and time.time() - t < 30: time.sleep(0.1)
     assert J.get(j["id"])["state"] == "failed" and "--resume" not in j["run_argv"]          # no such surface
     assert "--resume" in J.resume(j["id"])["run_argv"]                                   # resuming a score job keeps what is scored
+    t = time.time()
+    while J.get(j["id"])["state"] == "running" and time.time() - t < 30: time.sleep(0.1)
+    d = os.path.join(runs, ".jobs", j["id"]); job = json.load(open(os.path.join(d, "job.json")))   # a job from before the cache cap
+    job["argv"] = [v for v in job["argv"] if v not in ("--max-cache-gb", "2.0")]; json.dump(job, open(os.path.join(d, "job.json"), "w"))
+    assert "--max-cache-gb" in J.resume(j["id"])["run_argv"]                             # resume rebuilds the command from the fields
     with pytest.raises(joblib.BadJob): joblib.argv_spread(runs, dict(scroll="x", seed=[1, 2], out="s"))
 
 

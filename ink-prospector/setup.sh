@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Build a CPU work dir for the Ink Prospector outside the repo. Usage: bash setup.sh [workdir]   (default ~/prospector)
+# Build a CPU work dir for the Ink Prospector outside the repo. Usage: bash setup.sh [--fibre] [workdir]   (default ~/prospector)
+# --fibre also installs the AFV V2 papyrus-fibre model for fibre_snap.py (dynamic_network_architectures + 566 MB of weights)
 set -euo pipefail
+FIBRE=0; [ "${1:-}" = --fibre ] && { FIBRE=1; shift; }
 VILLA_COMMIT=47a9c37f6f8e99afdab47bb46ad425aa726f5dc0   # ScrollPrize/villa, branch merge-ink-pipelines
 W=${1:-$HOME/prospector}; HERE=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$W"/{code,data/weights,ext}; cp "$HERE"/*.py "$HERE"/scrolls.json "$W"/code/; mkdir -p "$W"/code/viewer "$W"/code/app; cp "$HERE"/viewer/index.html "$W"/code/viewer/; cp "$HERE"/app/index.html "$W"/code/app/
@@ -27,4 +29,15 @@ for i in 1 2 3 4 5 6; do
   case $m in cv2) m=opencv-python-headless;; yaml) m=PyYAML;; skimage) m=scikit-image;; nrrd) m=pynrrd;; PIL) m=pillow;; esac
   venv/bin/pip -q install "$m"
 done
+if [ $FIBRE = 1 ]; then
+  venv/bin/pip -q install "dynamic_network_architectures==0.4.4"
+  mkdir -p data/weights/afv-v2
+  for f in checkpoint_final.pth plans.json; do
+    [ -f data/weights/afv-v2/$f ] || curl -sSL -m 1800 -o data/weights/afv-v2/$f \
+      "https://huggingface.co/Qualzz20/afv_fiber_9um_v2/resolve/2a8a26a70754a5d90aeca91f9ef8e7130e6e4f81/$f"
+  done
+  (cd data/weights/afv-v2 && printf '%s\n' \
+    "b8519a4ce4044c93ed98af0c278628fdcdfdd8808275b3c8becd7211f38b7967  checkpoint_final.pth" \
+    "a81fd986d0812688de753a72360706897b0bd29e55fd1d6d0cb29f7e31063f65  plans.json" | sha256sum -c -)
+fi
 echo SETUP_OK "$W"
