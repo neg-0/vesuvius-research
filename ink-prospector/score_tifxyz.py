@@ -47,6 +47,12 @@ def _ok(x, y, z):
     return (z > 0) & (x != -1) & (y != -1) & np.isfinite(x) & np.isfinite(y) & np.isfinite(z)   # VC treats z <= 0 as invalid
 
 
+def eta(t_start, n_todo, k):
+    """'k of n this run, ~T left' after k patches of this run's n_todo, from the mean time per patch so far."""
+    left = (time.time() - t_start) / max(k, 1) * (n_todo - k)
+    return f"{k} of {n_todo} this run, ~" + (f"{left / 3600:.1f} h" if left >= 5400 else f"{left / 60:.0f} min") + " left"
+
+
 def valid_nodes(path, crop=None, rows=1024):
     """The ok mask of a tifxyz grid (or window), read in row blocks so a whole sheet never sits in memory at once."""
     x, y, z, _ = _read(os.path.abspath(path)); r0, r1, c0, c1 = crop or (0, x.shape[0], 0, x.shape[1])
@@ -151,11 +157,13 @@ def main(argv=None):
         area = valid.sum() * (um * 1e-4) ** 2
         open(tsv, "a").write("\t".join([str(i), f"{c[0]:.0f}", f"{c[1]:.0f}", f"{c[2]:.0f}", "ok"] + [f"{v:.4f}" for v in
                              (ok.mean(), area, res["a"][0], res["b"][0], res["a"][1], res["b"][1], res["a"][2], res["b"][2], time.time() - t)]) + "\n")
-        print(f"[{time.time() - t0:6.0f}s] {i + 1}/{len(jobs)} {path} {w}: {area:.2f} cm2 read, bright a/b {res['a'][0]:.3f}/{res['b'][0]:.3f}", flush=True)
+        print(f"[{time.time() - t0:6.0f}s] {i + 1}/{len(jobs)} {path} {w}: {area:.2f} cm2 read, bright a/b {res['a'][0]:.3f}/{res['b'][0]:.3f}"
+              f" | {eta(t1, len(todo), todo[i])}", flush=True)
         ct.drop(1500)
+    todo = {i: k + 1 for k, i in enumerate(i for i in range(len(jobs)) if i not in done and i % sn == si)}; t1 = time.time()
     failed = []
     for i, (path, win) in enumerate(jobs):
-        if i in done or i % sn != si: continue
+        if i not in todo: continue
         try: one(i, path, win)
         except Exception as e:                                           # a bad tile (CT fetch, corrupt grid) must not end a whole-sheet run
             failed.append(i); print(f"patch {i} ({path} {win}) failed: {type(e).__name__}: {e}", flush=True); ct.drop(1500)

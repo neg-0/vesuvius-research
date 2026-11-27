@@ -234,7 +234,7 @@ def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
 
 
 
-def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
+def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, capsys):
     # A stub reader (no torch) that counts calls: a resumed run must redo only the patch whose score row is missing.
     import types
     from export_tifxyz import write_tifxyz
@@ -250,6 +250,7 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     out = str(tmp_path / "scan"); args = [str(tmp_path / "seg"), "--out", out, "--ct", ct, "--tile", "7", "--um", "8"]
     score_tifxyz.main(args); first = open(out + "/scores.tsv").readlines(); n = len(first) - 1
     assert n == 4 and len(calls) == 2 * n
+    log = capsys.readouterr().out; assert "1 of 4 this run" in log and "4 of 4 this run, ~0 min left" in log   # progress and time left
     open(out + "/scores.tsv", "w").writelines(first[:-1])                    # cut off before the last patch's score
     calls.clear(); score_tifxyz.main(args + ["--resume"])
     again = open(out + "/scores.tsv").readlines()
