@@ -235,6 +235,13 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     calls.clear(); score_tifxyz.main(args + ["--resume"]); assert not calls      # nothing left to do
     with pytest.raises(SystemExit):                                              # a different tiling is refused
         score_tifxyz.main(args[:-3] + ["5", "--um", "8", "--resume"])
+    rows = {}                                                                    # two shards: every patch once, same values
+    for k in (0, 1):
+        calls.clear(); score_tifxyz.main(args[:2] + [out + f"-s{k}"] + args[3:] + ["--shard", f"{k}/2"])
+        got = [l.split("\t") for l in open(out + f"-s{k}/scores.tsv").readlines()[1:]]
+        assert len(calls) == 2 * len(got) and all(int(r[0]) % 2 == k for r in got)
+        rows.update({r[0]: r[:13] for r in got})
+    assert rows == {l.split("\t")[0]: l.split("\t")[:13] for l in first[1:]}
 
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     from PIL import Image, ImageDraw
