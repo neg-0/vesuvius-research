@@ -2,7 +2,7 @@
 """Ink Prospector command line.
 
   prospect.py scan   --scroll PHerc0306B --box z0 z1 y0 y1 x0 x1 --out runs/demo [--spacing 250] [--device cuda] [--shard i/n]
-  prospect.py rank   runs/demo [-n 20] [--sheet top.png]
+  prospect.py rank   runs/demo [-n 20] [--sheet top.png] [--tsv ranked.tsv]
   prospect.py status runs/sheet-s0 runs/sheet-s1 ...   (score_tifxyz progress: what each shard has left, ids no shard has)
   prospect.py spread --scroll PHerc0306B --seed z y x --side a --out runs/demo-spread [--half-nodes 320]
   prospect.py viewer runs/demo --out site [--title "PHerc0306B"]
@@ -24,7 +24,7 @@ def main():
     def common(p): p.add_argument("--scroll"); p.add_argument("--ct"); p.add_argument("--m7"); p.add_argument("--um", type=float); p.add_argument("--out", required=True)
     p = sub.add_parser("scan"); common(p); p.add_argument("--box", type=int, nargs=6, required=True); p.add_argument("--spacing", type=int, default=250)
     p.add_argument("--half-nodes", type=int, default=128); p.add_argument("--shard", default="0/1"); p.add_argument("--device", default="cpu"); p.add_argument("--max-patches", type=int); p.add_argument("--fuse", action="store_true")
-    p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet")
+    p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet"); p.add_argument("--tsv", help="write every usable patch, best first, to this table")
     p = sub.add_parser("spread"); common(p); p.add_argument("--seed", type=float, nargs=3, required=True); p.add_argument("--side", choices="ab", default="a"); p.add_argument("--half-nodes", type=int, default=320)
     p = sub.add_parser("status"); p.add_argument("run", nargs="+")
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
@@ -40,6 +40,8 @@ def main():
         sys.path.insert(0, HERE); import runs
         P = runs.patches([ab(r) for r in a.run]); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")
         for i, p in enumerate(P[:a.n]): print(f"{i + 1:3d}  {p['id']:>10}  text {p['ts']:.4f} side {p['side']}  bright a/b {p['fa']:.3f}/{p['fb']:.3f}  seed z y x {p['seed'][0]} {p['seed'][1]} {p['seed'][2]}" + (f"  {p['src']}" if p.get("src") else ""))
+        if a.tsv:
+            runs.write_tsv(P, a.tsv); print(f"table of {len(P)} patches: {a.tsv}")
         if a.sheet and not P: print("no usable patches, so no contact sheet")
         elif a.sheet:
             from PIL import Image

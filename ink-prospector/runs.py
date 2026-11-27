@@ -45,3 +45,12 @@ def status(paths):
             s["ids"] |= ids; s["shards"].add(si); s["dirs"].append(d)
     groups = [dict(jobs=s["jobs"], shards=s["n"], have=sorted(s["shards"]), missing=sorted(set(range(s["jobs"])) - s["ids"]), dirs=s["dirs"]) for s in sets.values()]
     return rows, groups
+COLS = ("rank", "id", "text_score", "side", "bright_a", "bright_b", "area_cm2", "tracked", "seed_z", "seed_y", "seed_x", "um", "src", "png")
+def write_tsv(P, path):
+    """All patches, best first, one row each: scores, seed, source tifxyz window and the ink-side PNG, for sorting and
+    merging runs in a spreadsheet or script."""
+    with open(path, "w") as f:
+        f.write("\t".join(COLS) + "\n")
+        for i, p in enumerate(P):
+            f.write("\t".join(map(str, (i + 1, p["id"], f"{p['ts']:.4f}", p["side"], f"{p['fa']:.4f}", f"{p['fb']:.4f}", f"{p['area']:.3f}", f"{p['tracked']:.3f}",
+                                         *p["seed"], p["um"], p.get("src", ""), f"{p['base']}_{p['side']}.png"))) + "\n")
