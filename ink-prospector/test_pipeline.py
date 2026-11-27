@@ -195,3 +195,36 @@ def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
     assert np.allclose(D[valid][:, 0], 300, atol=0.5) and abs(abs(Nd[valid][:, 0]).mean() - 1) < 1e-3
     Q2, ok2, _ = score_tifxyz.load_tifxyz(str(tmp_path / "seg"), crop=(1, 4, 2, 7))
     assert Q2.shape == (3, 5, 3) and ok2.all()
+
+
+def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
+    from PIL import Image, ImageDraw
+    from scipy import ndimage as ndi
+    import letterscore
+    um, N = 16.0, 1300; px = lambda mm: int(mm * 1000 / um)
+    strokes = [[(0, 1, .5, 0), (.5, 0, 1, 1), (.2, .6, .8, .6)], [(0, 0, 0, 1), (0, 0, 1, 0), (1, 0, 1, 1)], [(0, 0, 1, 0), (.5, 0, .5, 1)],
+               [(0, 0, 0, 1), (0, 0, .9, 0), (0, .5, .7, .5), (0, 1, .9, 1)], [(0, 0, 1, 1), (1, 0, 0, 1)]]
+    def glyphs(spots):
+        im = Image.new("F", (N, N), 0); d = ImageDraw.Draw(im); H = px(3.2)
+        for k, (y, x) in enumerate(spots):
+            for a, b, c, e in strokes[k % 5]:
+                d.line([(px(x) + a * H * .8, px(y) + b * H), (px(x) + c * H * .8, px(y) + e * H)], fill=0.95, width=25)
+        return np.asarray(im, np.float32)
+    z = np.zeros((N, N), np.float32); yy, xx = np.mgrid[:N, :N]
+    row = glyphs([(3, 1 + 4 * k) for k in range(5)])
+    ok = letterscore.score_maps(row, z, None, um)
+    assert ok["letters"] and ok["row"] == 5 and ok["form_share"] > 0.9
+    assert not letterscore.score_maps(row, row, None, um)["letters"]                      # two-sided
+    haze = np.clip(ndi.gaussian_filter(np.random.default_rng(0).normal(0, 1, (N, N)), 20) * 25 + 0.5, 0, 1).astype(np.float32)
+    assert not letterscore.score_maps(haze, z, None, um)["letters"]
+    blobs = np.zeros_like(z); bars = np.zeros_like(z)
+    for k in range(5):
+        blobs[(yy - px(4.5)) ** 2 + (xx - px(2.5 + 4 * k)) ** 2 < px(1.5) ** 2] = 0.95
+        bars[px(3):px(7.5), px(2 + 4 * k):px(2 + 4 * k) + 30] = 0.95
+    assert not letterscore.score_maps(blobs, z, None, um)["letters"]
+    assert not letterscore.score_maps(bars, z, None, um)["letters"]
+    scattered = glyphs([(1, 1), (6, 8), (2, 13), (7, 1.5), (5, 4.2)])
+    assert not letterscore.score_maps(scattered, z, None, um)["letters"]
+    np.save(tmp_path / "prob_v3_fwd.npy", z); np.save(tmp_path / "prob_v3_rev.npy", row)       # ink on the rev face
+    r = letterscore.score_dir(str(tmp_path), um)
+    assert r["face"] == "rev" and r["letters"]
