@@ -263,6 +263,11 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     T = list(csv.DictReader(open(tmp_path / "ranked.tsv"), delimiter="\t"))
     assert [t["id"] for t in T] == [p["id"] for p in P] and [int(t["rank"]) for t in T] == list(range(1, n + 1))
     assert all(os.path.exists(t["png"]) and t["src"] == p["src"] for t, p in zip(T, P))
+    runs.write_tsv(P, str(tmp_path / "ranked_l.tsv"), with_letters=True)          # letterscore columns on request
+    TL = list(csv.DictReader(open(tmp_path / "ranked_l.tsv"), delimiter="\t"))
+    assert [t["id"] for t in TL] == [t["id"] for t in T] and all(t["letters"] in ("True", "False") and t["fails"] for t in TL)
+    assert all(t["fails"] == "-" if t["letters"] == "True" else t["fails"] != "-" for t in TL)
+    assert all(float(t["letter_score"]) >= 0 for t in TL) and "letters" not in T[0]
     build_viewer.main([str(tmp_path / "view"), "t", out])
     D = json.load(open(tmp_path / "view" / "data.json")); assert {p["src"] for p in D["patches"]} == {p["src"] for p in P}
     assert all(len(p["full"]) == 2 and (tmp_path / "view" / p["full"][0]).exists() for p in D["patches"])   # full-size maps copied
