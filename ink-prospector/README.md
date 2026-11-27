@@ -44,6 +44,24 @@ To split a scan over machines, give each the same command with `--shard 0/4`, `-
 is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders. Shards do not see
 each other's patches, so two shards can grow the same sheet; `rank` lists both and `stitch` joins them.
 
+## The app
+
+`prospect.py serve --runs runs` starts a local app at http://127.0.0.1:8765 that drives the same commands from a browser:
+
+- **Runs:** every run folder under `--runs` with its progress (as `status`), patch count, area read and best text score.
+- **New run:** forms for a box scan, scoring tifxyz surfaces (VC3D segments, HerculeX sheets, `--tile`, `--crop`) and a
+  spread from a seed. Shards start as parallel jobs.
+- **Run page:** the ranked list (as `rank`) with both faces of every patch, full-size maps, the ranked TSV, and a button
+  that builds the 3D viewer for that run. A hit's seed can be sent straight to a spread.
+- **Jobs:** state and live log of every job; stop and resume. Resume runs the same command again (`--resume` for scored
+  surfaces), so only missing patches are done.
+
+Jobs run as ordinary processes and are recorded in `<runs>/.jobs/`, so they keep running, and the app shows how they
+ended, if the browser or the server is closed. The app uses the Python standard library only and listens on localhost,
+since it starts processes on the machine. With Docker:
+`docker run -p 127.0.0.1:8765:8765 -v "$PWD/runs:/work/runs" ink-prospector:cpu serve --runs runs --host 0.0.0.0`.
+Design and API: [`docs/APP.md`](docs/APP.md).
+
 ## Try it without installing
 
 **Live demo: https://neg-0.github.io/vesuvius-research/ink-prospector/demo/**, the viewer built from a blind scan of
@@ -62,6 +80,7 @@ straight from disk does not work, because the page loads `data.json`).
 | `python3 score_tifxyz.py --scroll S --out DIR SEG... [--crop r0 r1 c0 c1] [--tile N] [--max-cache-gb G] [--resume] [--shard i/n]` | Reads and scores surfaces that already exist: any tifxyz segment (VC3D segments, segments grown with `grow.sh`, community or whole-scroll sheets). Writes a scan folder, so `rank`, `viewer`, `stitch` and `vc_export.py` work on it. Checked: a Prospector patch exported to tifxyz and read back gives the same ink map as the scan (r = 0.9999, bright share 0.0381 vs 0.0382). At VC's 20-voxel grid (`--every 5`) the surface between nodes is interpolated and the reads come out weaker (0.030 vs 0.038 on that patch). `--tile N` cuts each surface into N x N-node tiles and scores each one as its own patch, so a whole-scroll sheet is ranked tile by tile with bounded memory; `surfaces.tsv` records each tile's grid window. `--max-cache-gb G` (also on `scan.py`) caps the CT chunks held in memory, dropping the least recently used; the render is byte-identical. Uncompressed tifxyz grids (HerculeX sheets, VC output) are memory-mapped, so each tile reads only its own rows: planning the tiles of a 1500 x 30000-node test sheet and loading 20 of them took 0.70 GB peak and 0.3 s, against 1.17 GB and 1.0 s when the whole grid was read. `--resume` keeps the patches an earlier run into the same `--out` already scored and scores only the rest, so a long whole-sheet run survives a restart (it refuses a folder made from other surfaces or tiles). A patch that throws (a failed chunk fetch, a corrupt grid) is logged and skipped rather than ending the run; the run then exits non-zero naming the failed ids, and `--resume` retries only those. `--shard i/n` scores only the patches whose id mod n is i, so n machines can split one sheet, each writing its own `--out`; ids stay global, and `rank`, `stitch` and `viewer` take all the shard folders at once. `prospect.py status DIR...` shows what each shard folder has left and which patch ids no folder has (a shard that was never started or got cut off); it exits 1 while anything is missing, so a script can wait on it. On a 2 x 2 cm window of PHerc1545 (4 CPUs, one run each) a 1 GB cap cut peak memory from 4.63 to 2.66 GB, with the same time (81 vs 84 s) and 2% more download. |
 | `python3 letterscore.py --dirs DIR... [--um U]` or `letterscore.py INK.npy BACK.npy [VALID.npy] --um U` | Scores how letter-like an ink map is: confident strokes are grouped into forms, a form counts if it is 2-5 mm, not a bar, not a filled blob and drawn in thin strokes, and the score is the longest row of such forms on one line times the share of ink they hold times (1 - back face / ink face). `letters` is the pass rule: at least 4 forms in a row, at least 35% of the ink in letter-like forms, back face under a third. `--dirs` ranks folders holding `prob_v3_fwd.npy`, `prob_v3_rev.npy`, `valid.npy` and `followup.json`. It is strict: letters blurred together into one word-sized form are not counted, so a fail does not rule text out; use it to rank and to flag strong rows for a look by eye. The defaults (stroke width up to 1.2 mm, ink filling up to 70% of a form's box) were set on hand-judged follow-up maps at about 37 um per pixel; other pixel sizes may need `--max-stroke-mm` and `--max-fill` checked. |
 | `stitch DIR... --out OUT [--top N]` | Joins patches that lie on the same sheet into one flat map per sheet (`sheetK_ink.png`, `sheetK_back.png`, `sheets.json`), for the sheets holding the top N hits. |
+| `serve [--runs DIR] [--port 8765] [--host H]` | Starts the app (see "The app" above). |
 | `viewer DIR... --out SITE [--known x.tif y.tif z.tif r0 r1 c0 c1 label] [--full N]` | Builds a self-contained page: 3D map of all patches, hit list, both-side reads. `--known` overlays a surface with known text. The detail panel links the full-size ink maps of the N best patches (`--full`, default 50, 0 for none), since the page itself holds 256 px thumbnails; for tifxyz runs it also names each tile's grid window. |
 
 Scrolls are named in `scrolls.json` (CT volume, surface prediction, voxel size). Add an entry, or pass `--ct`, `--m7`
@@ -179,7 +198,7 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
 `export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`;
-`vc_export.py`, `score_tifxyz.py`, `letterscore.py`; tests `test_smoke.py` and `test_pipeline.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
+`vc_export.py`, `score_tifxyz.py`, `letterscore.py`; the app `server.py`, `jobs.py`, `app/index.html`; tests `test_smoke.py`, `test_pipeline.py` and `test_app.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
