@@ -304,7 +304,10 @@ def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     z = np.zeros((N, N), np.float32); yy, xx = np.mgrid[:N, :N]
     row = glyphs([(3, 1 + 4 * k) for k in range(5)])
     ok = letterscore.score_maps(row, z, None, um)
-    assert ok["letters"] and ok["row"] == 5 and ok["form_share"] > 0.9
+    assert ok["letters"] and ok["row"] == 5 and ok["form_share"] > 0.9 and ok["halo"] < 0.05
+    fog = np.maximum(row, np.float32(0.5))                                                 # same strokes standing in half-confident haze
+    hz = letterscore.score_maps(fog, z, None, um)
+    assert hz["row"] == 5 and hz["halo"] > 0.9 and not hz["letters"] and hz["score"] < 0.1 * ok["score"]
     assert not letterscore.score_maps(row, row, None, um)["letters"]                      # two-sided
     haze = np.clip(ndi.gaussian_filter(np.random.default_rng(0).normal(0, 1, (N, N)), 20) * 25 + 0.5, 0, 1).astype(np.float32)
     assert not letterscore.score_maps(haze, z, None, um)["letters"]
