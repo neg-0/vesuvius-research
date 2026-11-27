@@ -126,7 +126,7 @@ GitHub Actions workflow runs `grow.sh`'s commands and `vc_render_tifxyz` on it i
 - **In:** OME-Zarr v2 uint8 volumes, read chunk by chunk with no full download. `--ct` and `--m7` take a path in the
   Vesuvius Challenge open-data bucket (as in `scrolls.json`), a full http(s) URL of a zarr, or a local zarr folder.
   `--m7` is a surface prediction on the same voxel grid as the CT (the public m7 surface predictions are). Missing
-  chunks read as zero; a network error that persists after five retries stops the run rather than reading as empty CT.
+  chunks read as zero; a network error that persists after five retries stops the run rather than reading as empty CT, and a remote chunk that arrives cut off (it does not decode) is fetched again up to three times before the run stops with its URL.
 - **Out:** tifxyz surfaces (`export_tifxyz.py`, the format VC3D and villa's `vesuvius.tifxyz` read), node grids as
   `.npz`, ink maps as 8-bit PNG (ink score 0.25 or less and no data are 0, 0.5 is 128, 0.75 or more is 255), and
   `scores.tsv` / `sheets.json` tables.
