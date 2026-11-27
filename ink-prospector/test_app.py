@@ -1,5 +1,6 @@
 """Tests for the app server and jobs (prospect.py serve). No network: jobs here are short python one-liners."""
 import json, os, sys, threading, time, urllib.error, urllib.request
+import numpy as np
 import pytest
 import jobs as joblib
 import server
@@ -104,7 +105,7 @@ def test_argv_matches_the_command_line(tmp_path):
     runs = str(tmp_path)
     a, out = joblib.argv_scan(runs, dict(scroll="PHerc0306B", box=[1, 2, 3, 4, 5, 6], out="b", shard="1/4", spacing=150))
     assert a[2:] == ["scan", "--scroll", "PHerc0306B", "--box", "1", "2", "3", "4", "5", "6", "--out", out, "--shard", "1/4", "--device", "cpu",
-                     "--spacing", "150", "--half-nodes", "128"] and out == os.path.join(runs, "b")
+                     "--spacing", "150", "--half-nodes", "128", "--max-cache-gb", "2.0"] and out == os.path.join(runs, "b")
     a, out = joblib.argv_score(runs, dict(scroll="PHerc1545", surfaces=["s1"], out="hx", shard="2/3", tile=64))
     assert a[a.index("--out") + 1] == os.path.join(runs, "hx", "shard-2") and out == os.path.join(runs, "hx") and a[-1] == os.path.abspath("s1")
     J = joblib.Jobs(runs); j = J.create(dict(kind="score", scroll="PHerc1545", surfaces=["missing"], out="hx2"))
@@ -112,7 +113,16 @@ def test_argv_matches_the_command_line(tmp_path):
     while J.get(j["id"])["state"] == "running" and time.time() - t < 30: time.sleep(0.1)
     assert J.get(j["id"])["state"] == "failed" and "--resume" not in j["run_argv"]          # no such surface
     assert "--resume" in J.resume(j["id"])["run_argv"]                                   # resuming a score job keeps what is scored
+    t = time.time()
+    while J.get(j["id"])["state"] == "running" and time.time() - t < 30: time.sleep(0.1)
+    d = os.path.join(runs, ".jobs", j["id"]); job = json.load(open(os.path.join(d, "job.json")))   # a job from before the cache cap
+    job["argv"] = [v for v in job["argv"] if v not in ("--max-cache-gb", "2.0")]; json.dump(job, open(os.path.join(d, "job.json"), "w"))
+    assert "--max-cache-gb" in J.resume(j["id"])["run_argv"]                             # resume rebuilds the command from the fields
     with pytest.raises(joblib.BadJob): joblib.argv_spread(runs, dict(scroll="x", seed=[1, 2], out="s"))
+    a, _ = joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", grow=2, vc_image="ghcr.io/scrollprize/villa/volume-cartographer:edge", snap=True))
+    t = a[a.index("--tracer") + 1]; assert a[a.index("--grow") + 1] == "2" and "--snap" in a and t.startswith("docker run") and t.endswith(":edge vc_grow_seg_from_seed")
+    with pytest.raises(joblib.BadJob): joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", grow=1, vc_image="x; rm -rf /"))
+    assert "--grow" not in joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", vc_image="x"))[0]
 
 
 def test_stitched_sheets_listed_and_stitch_job(app):
@@ -127,3 +137,39 @@ def test_stitched_sheets_listed_and_stitch_job(app):
     assert j["kind"] == "stitch" and j["argv"][j["argv"].index("--out") + 1] == str(st) and j["argv"][2:4] == ["stitch", str(runs / "demo")]
     wait(call, j["id"], ("done", "failed"))
     assert J(call("/api/runs/demo"))["jobs"] == []                       # a stitch job is not the run's own job
+
+
+def test_scan_runs_report_progress_from_box_and_shards(tmp_path):
+    import runs as runlib
+    run = tmp_path / "box"
+    for i in (0, 1):
+        _scan(str(run / f"shard-{i}"), ids=(i, i + 2) if i == 0 else (1,))
+    box = dict(scroll="X", box=[0, 1000, 0, 500, 0, 500], spacing=250, half_nodes=128)  # 4 x 2 x 2 = 16 lattice seeds
+    (run / "run.json").write_text(json.dumps(dict(box, shards=2)))
+    rows, groups = runlib.status([str(run)])
+    assert [(r["done"], r["expected"]) for r in rows] == [(2, 8), (1, 8)] and len(groups[0]["missing"]) == 13
+    (run / "run.json").write_text(json.dumps(box))                     # older run.json: no shard count, done only
+    rows, groups = runlib.status([str(run)])
+    assert [(r["done"], r["expected"]) for r in rows] == [(2, None), (1, None)] and groups == []
+
+
+def test_auto_runs_every_stage_on_an_existing_sweep(tmp_path):
+    import auto
+    src = tmp_path / "runs" / "scan"; _scan(str(src), ids=(1, 2, 3))
+    for i in (1, 2, 3):                                                  # node grids: flat 32 x 32 sheets, 4 voxels apart
+        g = np.stack(np.meshgrid(np.arange(32) * 4.0, np.arange(32) * 4.0, indexing="ij"), -1)
+        P = np.concatenate([np.full((32, 32, 1), 1000.0 * i), g + 3000], -1).astype(np.float32)
+        np.savez_compressed(src / f"p{i:04d}.npz", P=P, ok=np.ones((32, 32), bool), n0=np.array([1.0, 0, 0]))
+    (src / "run.json").write_text(json.dumps(dict(scroll="PHerc0306B", um=8.64)))
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0", "--leads", "2"])
+    run = tmp_path / "runs" / "t-PHerc0306B"; A = json.loads((run / "auto" / "auto.json").read_text())
+    assert all(A["stages"][k]["state"] == "done" for k in auto.STAGES if k != "grow") and A["stages"]["grow"]["state"] == "off", A["stages"]
+    best = A["stages"]["leads"]["best"]; assert {l["id"] for l in best} == {"scan-2", "scan-3"} and best[0]["ts"] >= best[1]["ts"]   # 2 best of 3
+    assert (run / "_viewer" / "index.html").exists() and len(list((run / "auto" / "vc" / "paths").iterdir())) == 2
+    assert f"| 1 | {best[0]['id']} |" in (run / "auto" / "REPORT.md").read_text()
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0"])   # resumes: all done
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--grow", "1", "--tracer", "no-such-tracer {dir}"])
+    A = json.loads((run / "auto" / "auto.json").read_text()); assert A["stages"]["grow"]["state"] == "skipped"
+    assert "Grow skipped: tracer 'no-such-tracer' not found" in (run / "auto" / "REPORT.md").read_text()
+    s = server.App(str(tmp_path / "runs")); info = s.auto(str(run))
+    assert info["report"] and [l["id"] for l in info["leads"]] == [l["id"] for l in best] and info["leads"][0]["png"].startswith("/files/")

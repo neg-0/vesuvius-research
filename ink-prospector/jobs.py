@@ -10,7 +10,7 @@ The wrapper (`python jobs.py _run <jobdir>`) runs the command and writes its exi
 still records how it ended if the server is stopped or restarted. Argument lists are built from typed fields per job
 kind (ARGV); nothing is passed through a shell.
 """
-import json, os, signal, subprocess, sys, time, uuid
+import json, os, re, signal, subprocess, sys, time, uuid
 HERE = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable
 
@@ -60,6 +60,13 @@ def _device(f):
     return ["--device", d]
 
 
+def _cache(f):
+    """Chunk cache cap per process: 2 GB unless the job names one (0 = uncapped). Uncapped, one scan passed 6 GB and
+    two shards plus a score job got OOM-killed on a 16 GB machine."""
+    g = _num(f, "max_cache_gb", float, 2.0)
+    return ["--max-cache-gb", str(g)] if g else []
+
+
 def argv_scan(runs, f):
     box = _num(f, "box", int, n=6)
     if not box or len(box) != 6: raise BadJob("box: six integers z0 z1 y0 y1 x0 x1")
@@ -67,6 +74,7 @@ def argv_scan(runs, f):
     a = [PY, os.path.join(HERE, "prospect.py"), "scan", *_scroll(f), "--box", *map(str, box), "--out", out, "--shard", s, *_device(f),
          "--spacing", str(_num(f, "spacing", int, 250)), "--half-nodes", str(_num(f, "half_nodes", int, 128))]
     if f.get("max_patches"): a += ["--max-patches", str(_num(f, "max_patches"))]
+    a += _cache(f)
     if f.get("fuse"): a.append("--fuse")
     return a, out
 
@@ -83,7 +91,7 @@ def argv_score(runs, f):
         c = _num(f, "crop", int, n=4)
         if len(c) != 4: raise BadJob("crop: four integers r0 r1 c0 c1")
         a += ["--crop", *map(str, c)]
-    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
+    a += _cache(f)
     if f.get("fuse"): a.append("--fuse")
     return a + [os.path.abspath(p) for p in surf], run
 
@@ -116,7 +124,35 @@ def argv_viewer(runs, f):
             "--full", str(_num(f, "full", int, 50))], src[0]
 
 
-ARGV = dict(scan=argv_scan, score=argv_score, spread=argv_spread, stitch=argv_stitch, viewer=argv_viewer)
+def argv_auto(runs, f):
+    sc = f.get("scrolls") or f.get("scroll")
+    if isinstance(sc, str): sc = sc.split()
+    if not sc and not (f.get("ct") and f.get("m7")): raise BadJob("scrolls: one or more names from scrolls.json (or ct and m7)")
+    name = f.get("out"); inside(runs, name)
+    a = [PY, os.path.join(HERE, "auto.py"), "--out", name, "--runs", runs, *_device(f)]
+    if sc: a += ["--scroll", *map(str, sc)]
+    for k in ("ct", "m7"):
+        if f.get(k): a += ["--" + k, str(f[k])]
+    if f.get("box"):
+        b = _num(f, "box", int, n=6)
+        if len(b) != 6: raise BadJob("box: six integers z0 z1 y0 y1 x0 x1")
+        a += ["--box", *map(str, b)]
+    for k, d in (("spacing", 800), ("workers", 2), ("leads", 10), ("spread", 3)):
+        a += ["--" + k, str(_num(f, k, int, d))]
+    a += _cache(f)
+    if f.get("sweep"): a += ["--sweep", inside(runs, f["sweep"])]
+    if _num(f, "grow", int, 0):
+        a += ["--grow", str(_num(f, "grow", int))]
+        img = f.get("vc_image")                                         # the API takes an image name, not a command line
+        if img:
+            if not isinstance(img, str) or not re.fullmatch(r"[a-z0-9][a-z0-9._/-]*(:[A-Za-z0-9._-]+)?(@sha256:[0-9a-f]{64})?", img):
+                raise BadJob("vc_image: a Docker image name such as ghcr.io/scrollprize/villa/volume-cartographer:edge")
+            a += ["--tracer", f"docker run --rm --network host -e HTTPS_PROXY -e HTTP_PROXY -e NO_PROXY -v {{dir}}:{{dir}} -w {{dir}} {img} vc_grow_seg_from_seed"]
+        if f.get("snap"): a.append("--snap")
+    return a, os.path.join(runs, f"{name}-{sc[0] if sc else 'scroll'}")
+
+
+ARGV = dict(auto=argv_auto, scan=argv_scan, score=argv_score, spread=argv_spread, stitch=argv_stitch, viewer=argv_viewer)
 
 
 def _alive(pid):
@@ -157,6 +193,9 @@ class Jobs:
         d = self._d(jid); job = json.load(open(os.path.join(d, "job.json")))
         if self.get(jid)["state"] == "running": raise BadJob(f"job {jid} is running")
         argv = list(job["argv"])
+        if resume:                                                      # rebuild from the fields, so fixes since the job began apply
+            try: argv = ARGV[job["kind"]](self.runs, job["fields"])[0]
+            except (BadJob, KeyError): pass
         if resume and job["kind"] == "score" and "--resume" not in argv: argv.insert(2, "--resume")
         for f in ("exit", "stop", "pid"):
             if os.path.exists(os.path.join(d, f)): os.remove(os.path.join(d, f))

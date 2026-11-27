@@ -6,6 +6,7 @@
   prospect.py status runs/sheet-s0 runs/sheet-s1 ...   (score_tifxyz progress: what each shard has left, ids no shard has)
   prospect.py spread --scroll PHerc0306B --seed z y x --side a --out runs/demo-spread [--half-nodes 320]
   prospect.py viewer runs/demo --out site [--title "PHerc0306B"]
+  prospect.py auto   --scroll PHerc0306B [S ...] --out auto [--box ...] [--workers 2]   (whole pipeline unattended; auto.py)
   prospect.py serve  --runs runs [--port 8765]   (the app: start, watch, resume and browse runs in a browser; docs/APP.md)
 
 The work folder (PROSPECTOR_HOME, default: current folder) holds code/, data/weights/reader-v3.pth and ext/villa-mip,
@@ -25,23 +26,27 @@ def main():
     def common(p): p.add_argument("--scroll"); p.add_argument("--ct"); p.add_argument("--m7"); p.add_argument("--um", type=float); p.add_argument("--out", required=True)
     p = sub.add_parser("scan"); common(p); p.add_argument("--box", type=int, nargs=6, required=True); p.add_argument("--spacing", type=int, default=250)
     p.add_argument("--half-nodes", type=int, default=128); p.add_argument("--shard", default="0/1"); p.add_argument("--device", default="cpu"); p.add_argument("--max-patches", type=int); p.add_argument("--fuse", action="store_true")
+    p.add_argument("--max-cache-gb", type=float, help="cap on CT/m7 chunks held in memory per scan (uncapped, a scan can pass 6 GB)")
     p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet"); p.add_argument("--tsv", help="write every usable patch, best first, to this table")
     p = sub.add_parser("spread"); common(p); p.add_argument("--seed", type=float, nargs=3, required=True); p.add_argument("--side", choices="ab", default="a"); p.add_argument("--half-nodes", type=int, default=320)
     p = sub.add_parser("status"); p.add_argument("run", nargs="+")
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
     p = sub.add_parser("viewer"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--title", default=""); p.add_argument("--full", type=int, default=50, help="copy full-size ink maps of the N best patches (0: none)")
     p.add_argument("--known", nargs="+", help="x.tif y.tif z.tif r0 r1 c0 c1 [label]: surface with known text")
+    p = sub.add_parser("auto", add_help=False); p.add_argument("rest", nargs=argparse.REMAINDER)
     p = sub.add_parser("serve"); p.add_argument("--runs", default="runs", help="folder holding the run folders (made if missing)")
     p.add_argument("--host", default="127.0.0.1"); p.add_argument("--port", type=int, default=8765)
     a = ap.parse_args(); ab = os.path.abspath
+    if a.cmd == "auto": sys.exit(run("auto.py", *a.rest))
     if a.cmd == "serve":
         sys.path.insert(0, HERE); import server
         return server.main(a.runs, a.host, a.port)
     if a.cmd == "scan":
         s = scroll(a); n = int(a.shard.split("/")[1]); out = ab(a.out) if n == 1 else os.path.join(ab(a.out), "shard-" + a.shard.split("/")[0]); os.makedirs(out, exist_ok=True)
-        json.dump(dict(scroll=a.scroll, box=a.box, spacing=a.spacing, half_nodes=a.half_nodes, **s), open(os.path.join(ab(a.out), "run.json"), "w"), indent=1)
+        json.dump(dict(scroll=a.scroll, box=a.box, spacing=a.spacing, half_nodes=a.half_nodes, shards=n, **s), open(os.path.join(ab(a.out), "run.json"), "w"), indent=1)
         sys.exit(run("scan.py", "--ct", s["ct"], "--m7", s["m7"], "--out", out, "--box", *a.box, "--spacing", a.spacing, "--half-nodes", a.half_nodes, "--shard", a.shard,
-                     "--device", a.device, "--ct-level", s.get("ct_level", 0), "--um", s.get("um", 0), *(["--max-patches", a.max_patches] if a.max_patches else []), *(["--fuse"] if a.fuse else [])))
+                     "--device", a.device, "--ct-level", s.get("ct_level", 0), "--um", s.get("um", 0), *(["--max-patches", a.max_patches] if a.max_patches else []), *(["--fuse"] if a.fuse else []),
+                     *(["--max-cache-gb", a.max_cache_gb] if a.max_cache_gb else [])))
     if a.cmd == "rank":
         sys.path.insert(0, HERE); import runs
         P = runs.patches([ab(r) for r in a.run]); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")

@@ -44,7 +44,9 @@ class App:
     def url(self, path): return "/files/" + urllib.parse.quote(os.path.relpath(path, self.runs))
 
     def run_info(self, name):
-        d = joblib.inside(self.runs, name); P = self.patches(name)
+        d = joblib.inside(self.runs, name)
+        if not os.path.isdir(d) and any(j["out"] == d for j in self.jobs.list()): os.makedirs(d, exist_ok=True)   # a job just started on it
+        P = self.patches(name)
         rows, groups = runlib.status([d]) if runlib.scan_dirs([d]) else ([], [])
         done = sum(r["done"] for r in rows); exp = [r["expected"] for r in rows]
         js = [j for j in self.jobs.list() if j["out"] == d and j["kind"] not in ("viewer", "stitch")]
@@ -53,7 +55,23 @@ class App:
                     scored=done, expected=sum(exp) if exp and None not in exp else None, shards=len(rows),
                     missing=sum(len(g["missing"]) for g in groups), scroll=m.get("scroll"), source=m.get("source", "scan"),
                     viewer=self.url(os.path.join(d, "_viewer", "index.html")) if os.path.exists(os.path.join(d, "_viewer", "index.html")) else None,
-                    jobs=[dict(id=j["id"], state=j["state"], kind=j["kind"]) for j in js], sheets=self.sheets(d))
+                    jobs=[dict(id=j["id"], state=j["state"], kind=j["kind"]) for j in js], sheets=self.sheets(d), auto=self.auto(d))
+
+    def auto(self, d):
+        """Auto mode state (auto.py): stages, leads with their maps, spreads, report and the VC3D folder."""
+        f = os.path.join(d, "auto", "auto.json")
+        if not os.path.exists(f): return None
+        try: A = json.load(open(f))
+        except json.JSONDecodeError: return None                        # being rewritten
+        S = A.get("stages", {}); sp = {x["id"]: x for x in S.get("spread", {}).get("spreads", [])}
+        url = lambda p: self.url(p) if p and os.path.realpath(p).startswith(os.path.realpath(self.runs) + os.sep) and os.path.exists(p) else None
+        leads = [dict(l, png=url(l.get("png")), spread=dict(sp[l["id"]], png=url(sp[l["id"]].get("png"))) if l["id"] in sp else None)
+                 for l in S.get("leads", {}).get("best", [])]
+        G = S.get("grow", {}); gd = G.get("folder") or ""
+        grown = [dict(g, png=url(os.path.join(gd, f"p{int(g['id']):04d}_{g['side']}.png"))) for g in G.get("surfaces", [])]
+        rep = os.path.join(d, "auto", "REPORT.md"); vc = os.path.join(d, "auto", "vc")
+        return dict(grown=grown, stages={k: dict(state=v.get("state"), secs=v.get("secs"), error=v.get("error") or v.get("reason")) for k, v in S.items()}, leads=leads,
+                    sweep=S.get("sweep", {}), report=self.url(rep) if os.path.exists(rep) else None, vc=vc if os.path.isdir(vc) else None)
 
     def sheets(self, d):
         """Stitched sheets of a run (prospect.py stitch into <run>/_stitch), with image URLs and letterscore on each."""

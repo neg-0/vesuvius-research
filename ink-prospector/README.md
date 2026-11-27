@@ -44,6 +44,16 @@ To split a scan over machines, give each the same command with `--shard 0/4`, `-
 is fixed, runs are resume-safe, and `rank` and `viewer` accept the run folder with its `shard-*` subfolders. Shards do not see
 each other's patches, so two shards can grow the same sheet; `rank` lists both and `stitch` joins them.
 
+## Auto mode
+
+`prospect.py auto --scroll PHerc0306B [more scrolls] --out auto` runs the whole pipeline unattended, per scroll, into
+`runs/auto-<scroll>/`: a sweep of the whole volume (lattice at `--spacing`, default 800 vx, split over `--workers` local
+processes; `--box` limits it, `--sweep DIR` reuses an existing scan), the best one-sided leads by text score with their
+letter score (`auto/leads.tsv`), 22 mm fused reads of the top `--spread` leads, stitched sheets (`_stitch/`), the 3D viewer
+(`_viewer/`) and a VC3D hand-off of every lead and spread as tifxyz with a point collection and `grow.sh` (`auto/vc/`).
+`auto/auto.json` records each stage; running the same command again skips finished stages and resumes the sweep.
+`auto/REPORT.md` sums it up. In the app, "Auto: whole scroll" starts it and the run page shows the stages and leads.
+
 ## The app
 
 `prospect.py serve --runs runs` starts a local app at http://127.0.0.1:8765 that drives the same commands from a browser:
@@ -201,7 +211,7 @@ machines with `--shard`. The scroll must have an entry in `scrolls.json`.
 
 `prospect.py` (command line), `scan.py`, `spread.py`, `stitch.py`, `grow.py`, `lazyvol.py`, `reader.py`, `textscore.py`, `runs.py`,
 `export_tifxyz.py`, `run_whole.sh`, `run_box.sh`, `judge_whole.py`, `sheet_whole.py`, `build_viewer.py`, `viewer/index.html`, `scrolls.json`, `setup.sh`, `Dockerfile`;
-`vc_export.py`, `score_tifxyz.py`, `letterscore.py`; the app `server.py`, `jobs.py`, `app/index.html`; tests `test_smoke.py`, `test_pipeline.py` and `test_app.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
+`vc_export.py`, `score_tifxyz.py`, `letterscore.py`; the app `server.py`, `jobs.py`, `app/index.html`; auto mode `auto.py`; tests `test_smoke.py`, `test_pipeline.py` and `test_app.py`; `examples/vc-306b/` (VC hand-off example); `demo/` (a built viewer page) and `docs/` (the README figures).
 
 The Prospector's own code is MIT licensed (`LICENSE`). Third-party pieces keep their own terms: Reader V3 weights (Hugging Face `domenicor046/reader-v3`), villa code, and
 the scan data (Vesuvius Challenge open data).
