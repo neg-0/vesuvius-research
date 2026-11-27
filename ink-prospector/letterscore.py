@@ -131,11 +131,15 @@ def main(argv=None):
     for k, v in DEFAULTS.items(): ap.add_argument("--" + k.replace("_", "-"), dest=k, type=float, default=v)
     a = ap.parse_args(argv); kw = {k: getattr(a, k) for k in DEFAULTS}; kw["min_row"] = int(kw["min_row"])
     if a.dirs:
-        rows = [(d, score_dir(d, a.um, a.block, **kw)) for d in a.dirs]
+        rows, bad = [], []
+        for d in a.dirs:                                                  # one broken folder must not stop a batch of many
+            try: rows.append((d, score_dir(d, a.um, a.block, **kw)))
+            except Exception as e: bad.append(d); print(f"skipped {d}: {type(e).__name__}: {e}", file=sys.stderr)
         rows.sort(key=lambda t: -t[1]["score"])
         cols = ["letters", "fails", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
         print("dir\t" + "\t".join(cols))
         for d, r in rows: print(os.path.basename(os.path.normpath(d)) + "\t" + "\t".join(str(r[c]) for c in cols))
+        if bad: sys.exit(f"{len(bad)} folder(s) skipped: " + " ".join(bad))
         return
     if len(a.maps) < 2 or a.um is None: sys.exit("give <prob_ink.npy> <prob_back.npy> [valid.npy] --um U, or --dirs")
     v = np.load(a.maps[2]) if len(a.maps) > 2 else None
