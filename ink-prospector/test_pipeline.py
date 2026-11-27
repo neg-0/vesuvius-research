@@ -59,6 +59,17 @@ def test_lazyvol_missing_chunk_is_zero_and_dtype_checked(tmp_path):
     assert np.load(cd / "1_1_1.npy").shape == (32, 32, 32)
 
 
+def test_lazyvol_refetches_a_cut_off_chunk_and_names_a_broken_one(tmp_path):
+    vol = np.random.default_rng(2).integers(1, 255, (32, 32, 32), dtype=np.uint8)
+    lv = LazyVol(write_zarr(str(tmp_path / "v.zarr"), vol)); calls = []
+    def flaky(url):
+        calls.append(url); raw = open(url, "rb").read(); return raw[:len(raw) // 2] if len(calls) == 1 else raw
+    lv._read = flaky; lv.local = False                                            # act like a remote store
+    assert np.array_equal(lv.block((0, 0, 0), (32, 32, 32)), vol) and len(calls) == 2
+    lv2 = LazyVol(write_zarr(str(tmp_path / "w.zarr"), vol)); lv2._read = lambda url: b"junk"
+    with pytest.raises(IOError, match="does not decode"): lv2.block((0, 0, 0), (32, 32, 32))
+
+
 def test_seed_frame_snaps_to_sheet_and_none_off_sheet(tmp_path):
     vol, dist = sheet(); m7 = LazyVol(write_zarr(str(tmp_path / "m7.zarr"), vol))
     p0, n, U, V, *_ = grow.seed_frame(m7, np.array([52.0, 48.0, 48.0]))

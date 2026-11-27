@@ -49,12 +49,16 @@ class LazyVol:
         if fn and os.path.exists(fn):
             try: return key, np.load(fn)
             except (ValueError, OSError, EOFError): os.remove(fn)          # a half-written cache file: fetch the chunk again
-        raw = self._read(f"{self.url}/{i}{self.sep}{j}{self.sep}{k}")
-        if raw is None: arr = None
-        else:
+        url = f"{self.url}/{i}{self.sep}{j}{self.sep}{k}"
+        for n in range(1 if self.local else 3):                          # a cut-off transfer can arrive as a short 200: fetch again
+            raw = self._read(url); arr = None
+            if raw is None: break
             self.bytes += len(raw)
-            if self.codec is not None: raw = self.codec.decode(raw)
-            arr = np.frombuffer(raw, np.uint8).reshape(self.chunk)
+            try:
+                arr = np.frombuffer(self.codec.decode(raw) if self.codec is not None else raw, np.uint8).reshape(self.chunk); break
+            except Exception as e: err = e
+        else:
+            raise IOError(f"chunk {url} does not decode to {tuple(self.chunk)} uint8 ({err})")
         if fn:                                                           # write then rename, so a killed run never leaves a broken file
             tmp = f"{fn}.{os.getpid()}.{threading.get_ident()}.tmp"
             with open(tmp, "wb") as f: np.save(f, arr if arr is not None else np.zeros(0, np.uint8))
