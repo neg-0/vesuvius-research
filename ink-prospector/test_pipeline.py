@@ -251,6 +251,12 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, 
     score_tifxyz.main(args); first = open(out + "/scores.tsv").readlines(); n = len(first) - 1
     assert n == 4 and len(calls) == 2 * n
     log = capsys.readouterr().out; assert "1 of 4 this run" in log and "4 of 4 this run, ~0 min left" in log   # progress and time left
+    o2 = str(tmp_path / "chunked"); a2 = [x if x != out else o2 for x in args]; calls.clear()    # --limit: time-boxed chunks
+    score_tifxyz.main(a2 + ["--limit", "3"]); assert len(open(o2 + "/scores.tsv").readlines()) == 4 and len(calls) == 6
+    assert "1 patch(es) of this shard left" in capsys.readouterr().out
+    score_tifxyz.main(a2 + ["--resume", "--limit", "3"]); assert len(calls) == 8
+    cut = lambda L: sorted(r.split("\t")[:-1] for r in L[1:])                          # same rows as one full run (minus timing)
+    assert cut(open(o2 + "/scores.tsv").readlines()) == cut(first)
     open(out + "/scores.tsv", "w").writelines(first[:-1])                    # cut off before the last patch's score
     calls.clear(); score_tifxyz.main(args + ["--resume"])
     again = open(out + "/scores.tsv").readlines()
