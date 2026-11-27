@@ -67,6 +67,7 @@ def argv_scan(runs, f):
     a = [PY, os.path.join(HERE, "prospect.py"), "scan", *_scroll(f), "--box", *map(str, box), "--out", out, "--shard", s, *_device(f),
          "--spacing", str(_num(f, "spacing", int, 250)), "--half-nodes", str(_num(f, "half_nodes", int, 128))]
     if f.get("max_patches"): a += ["--max-patches", str(_num(f, "max_patches"))]
+    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
     if f.get("fuse"): a.append("--fuse")
     return a, out
 
@@ -131,6 +132,7 @@ def argv_auto(runs, f):
         a += ["--box", *map(str, b)]
     for k, d in (("spacing", 800), ("workers", 2), ("leads", 10), ("spread", 3)):
         a += ["--" + k, str(_num(f, k, int, d))]
+    if f.get("max_cache_gb"): a += ["--max-cache-gb", str(_num(f, "max_cache_gb", float))]
     if f.get("sweep"): a += ["--sweep", inside(runs, f["sweep"])]
     return a, os.path.join(runs, f"{name}-{sc[0] if sc else 'scroll'}")
 

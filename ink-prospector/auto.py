@@ -66,7 +66,8 @@ def sweep(a, sc, run, st):
     env = dict(os.environ, OMP_NUM_THREADS=str(max(1, (os.cpu_count() or 4) // n)))
     procs = [subprocess.Popen([PY, os.path.join(HERE, "scan.py"), "--ct", sc["ct"], "--m7", sc["m7"], "--out", os.path.join(run, f"shard-{i}"),
                               "--box", *map(str, box), "--spacing", str(a.spacing), "--half-nodes", str(a.half_nodes), "--shard", f"{i}/{n}",
-                              "--device", a.device, "--ct-level", str(sc.get("ct_level", 0)), "--um", str(sc.get("um") or 0)], env=env) for i in range(n)]
+                              "--device", a.device, "--ct-level", str(sc.get("ct_level", 0)), "--um", str(sc.get("um") or 0),
+                              "--max-cache-gb", str(a.max_cache_gb)], env=env) for i in range(n)]
     codes = [p.wait() for p in procs]
     if any(codes): raise RuntimeError(f"sweep: scan worker(s) exited {codes}; run the same command again to resume")
     return run
@@ -179,6 +180,7 @@ def main(argv=None):
     ap.add_argument("--out", required=True); ap.add_argument("--runs", default="runs"); ap.add_argument("--box", type=int, nargs=6)
     ap.add_argument("--spacing", type=int, default=800); ap.add_argument("--half-nodes", type=int, default=128); ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--leads", type=int, default=10); ap.add_argument("--spread", type=int, default=3); ap.add_argument("--spread-nodes", type=int, default=320)
+    ap.add_argument("--max-cache-gb", type=float, default=2.0, help="CT/m7 chunk cache per sweep worker (default 2 GB; uncapped a scan can pass 6 GB)")
     ap.add_argument("--device", default="cpu"); ap.add_argument("--sweep", help="use this existing scan or run folder instead of sweeping")
     a = ap.parse_args(argv)
     reg = json.load(open(os.path.join(HERE, "scrolls.json"))); todo = []
