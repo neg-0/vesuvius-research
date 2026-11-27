@@ -1,13 +1,17 @@
 """Build the viewer page for scan folders: <out>/index.html, data.json, atlas.jpg.
 
-usage: build_viewer.py <out> <title> <scan_or_run_dir> [...] [--known x.tif y.tif z.tif r0 r1 c0 c1 label]
+usage: build_viewer.py <out> <title> <scan_or_run_dir> [...] [--known x.tif y.tif z.tif r0 r1 c0 c1 label] [--full N]
 --known marks a surface with known text (tifxyz grid, optional row/col window) and tags patches lying on it.
+--full N copies the full-size ink maps of the N best patches (default 50, 0 for none) to <out>/full/, and the detail
+panel links them; the atlas only holds 256 px thumbnails.
 """
 import sys, os, json, shutil, numpy as np
 from PIL import Image
 import runs
 def main(argv):
     out, title = argv[0], argv[1]; rest = argv[2:]; known = None
+    full = 50
+    if "--full" in rest: k = rest.index("--full"); full = int(rest[k + 1]); rest = rest[:k] + rest[k + 2:]
     if "--known" in rest: k = rest.index("--known"); known = rest[k + 1:]; rest = rest[:k]
     P = runs.patches(rest); assert P, "no usable patches"
     os.makedirs(out, exist_ok=True); tree = None; kp = []; klabel = ""
@@ -25,7 +29,11 @@ def main(argv):
         for k, s in enumerate("ab"): atlas.paste(Image.open(f"{p['base']}_{s}.png").convert("L").resize((256, 256)), ((i % C) * 512 + k * 256, (i // C) * 256))
         on = 0.0
         if tree is not None: d, _ = tree.query(G[ok][::5], distance_upper_bound=6); on = float(np.isfinite(d).mean())
-        pats.append(dict(id=p["id"], seed=p["seed"], c=[int(v) for v in G[ok].mean(0)], n=[round(float(v), 2) for v in g["n0"]], tr=round(p["tracked"], 2),
+        fl = []
+        if i < full:                                                     # P is best first
+            os.makedirs(os.path.join(out, "full"), exist_ok=True)
+            for s in "ab": shutil.copy(f"{p['base']}_{s}.png", os.path.join(out, "full", f"{p['id']}_{s}.png")); fl.append(f"full/{p['id']}_{s}.png")
+        pats.append(dict(full=fl, id=p["id"], seed=p["seed"], c=[int(v) for v in G[ok].mean(0)], n=[round(float(v), 2) for v in g["n0"]], tr=round(p["tracked"], 2),
                          area=round(p["area"], 2), fa=round(p["fa"], 3), fb=round(p["fb"], 3), ts=round(p["ts"], 4), side=p["side"], known=round(on, 2), src=p.get("src", ""),
                          pts=[int(v) for v in G[::16, ::16][ok[::16, ::16]].reshape(-1)]))
     atlas.save(os.path.join(out, "atlas.jpg"), quality=75)
