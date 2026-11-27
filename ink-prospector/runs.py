@@ -42,16 +42,23 @@ def letters(p, faces=None):
 def status(paths):
     """Progress of score_tifxyz folders: per folder done/expected and missing ids, then per set of shards
     made from the same surfaces, the ids no folder has (a shard never run, or cut off). Folders without a
-    job count in run.json (older runs, scan.py runs) report done only."""
+    job count in run.json (older runs, scan.py runs) report done only. `prospect.py scan` runs count their lattice seeds
+    (from box and spacing in run.json, as scan.py lays them) and take the shard from the shard-i folder name."""
     rows, sets = [], {}
     for d in scan_dirs(paths):
         m = meta(d); n = m.get("jobs"); si, sn = (int(v) for v in str(m.get("shard") or "0/1").split("/"))
+        if n is None and m.get("box") and m.get("spacing"):                  # a prospect.py scan run
+            z0, z1, y0, y1, x0, x1 = m["box"]; S = int(m["spacing"])
+            n = len(range(z0 + S // 2, z1, S)) * len(range(y0 + S // 2, y1, S)) * len(range(x0 + S // 2, x1, S))
+            b = os.path.basename(d.rstrip("/")); sh = b.startswith("shard-") and b[6:].isdigit()
+            sn = int(m.get("shards") or (0 if sh else 1)); si = int(b[6:]) if sh else 0
+            if not 0 <= si < sn: n, si, sn = None, 0, 1                    # older run.json without a shard count
         ids = {int(r["id"]) for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t")}
         want = {i for i in range(n) if i % sn == si} if n is not None else None
         rows.append(dict(dir=d, done=len(ids & want) if want is not None else len(ids), expected=None if want is None else len(want),
                          missing=None if want is None else sorted(want - ids), shard=f"{si}/{sn}"))
         if n is not None:
-            k = json.dumps([m.get("surfaces"), m.get("crop"), m.get("tile"), n, sn]); s = sets.setdefault(k, dict(jobs=n, n=sn, ids=set(), shards=set(), dirs=[]))
+            k = json.dumps([m.get("surfaces"), m.get("crop"), m.get("tile"), m.get("box"), m.get("spacing"), n, sn]); s = sets.setdefault(k, dict(jobs=n, n=sn, ids=set(), shards=set(), dirs=[]))
             s["ids"] |= ids; s["shards"].add(si); s["dirs"].append(d)
     groups = [dict(jobs=s["jobs"], shards=s["n"], have=sorted(s["shards"]), missing=sorted(set(range(s["jobs"])) - s["ids"]), dirs=s["dirs"]) for s in sets.values()]
     return rows, groups

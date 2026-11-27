@@ -1,5 +1,6 @@
 """Tests for the app server and jobs (prospect.py serve). No network: jobs here are short python one-liners."""
 import json, os, sys, threading, time, urllib.error, urllib.request
+import numpy as np
 import pytest
 import jobs as joblib
 import server
@@ -127,3 +128,36 @@ def test_stitched_sheets_listed_and_stitch_job(app):
     assert j["kind"] == "stitch" and j["argv"][j["argv"].index("--out") + 1] == str(st) and j["argv"][2:4] == ["stitch", str(runs / "demo")]
     wait(call, j["id"], ("done", "failed"))
     assert J(call("/api/runs/demo"))["jobs"] == []                       # a stitch job is not the run's own job
+
+
+def test_scan_runs_report_progress_from_box_and_shards(tmp_path):
+    import runs as runlib
+    run = tmp_path / "box"
+    for i in (0, 1):
+        _scan(str(run / f"shard-{i}"), ids=(i, i + 2) if i == 0 else (1,))
+    box = dict(scroll="X", box=[0, 1000, 0, 500, 0, 500], spacing=250, half_nodes=128)  # 4 x 2 x 2 = 16 lattice seeds
+    (run / "run.json").write_text(json.dumps(dict(box, shards=2)))
+    rows, groups = runlib.status([str(run)])
+    assert [(r["done"], r["expected"]) for r in rows] == [(2, 8), (1, 8)] and len(groups[0]["missing"]) == 13
+    (run / "run.json").write_text(json.dumps(box))                     # older run.json: no shard count, done only
+    rows, groups = runlib.status([str(run)])
+    assert [(r["done"], r["expected"]) for r in rows] == [(2, None), (1, None)] and groups == []
+
+
+def test_auto_runs_every_stage_on_an_existing_sweep(tmp_path):
+    import auto
+    src = tmp_path / "runs" / "scan"; _scan(str(src), ids=(1, 2, 3))
+    for i in (1, 2, 3):                                                  # node grids: flat 32 x 32 sheets, 4 voxels apart
+        g = np.stack(np.meshgrid(np.arange(32) * 4.0, np.arange(32) * 4.0, indexing="ij"), -1)
+        P = np.concatenate([np.full((32, 32, 1), 1000.0 * i), g + 3000], -1).astype(np.float32)
+        np.savez_compressed(src / f"p{i:04d}.npz", P=P, ok=np.ones((32, 32), bool), n0=np.array([1.0, 0, 0]))
+    (src / "run.json").write_text(json.dumps(dict(scroll="PHerc0306B", um=8.64)))
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0", "--leads", "2"])
+    run = tmp_path / "runs" / "t-PHerc0306B"; A = json.loads((run / "auto" / "auto.json").read_text())
+    assert all(A["stages"][k]["state"] == "done" for k in auto.STAGES), A["stages"]
+    best = A["stages"]["leads"]["best"]; assert {l["id"] for l in best} == {"scan-2", "scan-3"} and best[0]["ts"] >= best[1]["ts"]   # 2 best of 3
+    assert (run / "_viewer" / "index.html").exists() and len(list((run / "auto" / "vc" / "paths").iterdir())) == 2
+    assert f"| 1 | {best[0]['id']} |" in (run / "auto" / "REPORT.md").read_text()
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0"])   # resumes: all done
+    s = server.App(str(tmp_path / "runs")); info = s.auto(str(run))
+    assert info["report"] and [l["id"] for l in info["leads"]] == [l["id"] for l in best] and info["leads"][0]["png"].startswith("/files/")

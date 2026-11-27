@@ -107,6 +107,10 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
       </div>
       <div class="panel" id="detail"><div class="empty">Pick a patch to see both faces at full size.</div></div>
     </div>
+    <div class="panel" id="auto-panel" style="margin-top:16px" hidden>
+      <div class="ph"><h2>Auto mode</h2><div class="row" id="auto-stages"></div></div>
+      <div class="pb" id="auto-body"></div>
+    </div>
     <div class="panel" id="sheets-panel" style="margin-top:16px" hidden>
       <div class="ph"><h2>Stitched sheets</h2><span class="muted">patches on the same sheet joined into one flat map, ink face above its back face (<span class="mono">prospect.py stitch</span>)</span></div>
       <div class="pb sheets" id="sheets"></div>
@@ -117,6 +121,7 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
     <div class="panel">
       <div class="ph"><h2>New run</h2>
         <div class="row" role="group" aria-label="Kind of run">
+          <button data-kind="auto">Auto: whole scroll</button>
           <button data-kind="scan" aria-pressed="true">Scan a box</button>
           <button data-kind="score">Score tifxyz surfaces</button>
           <button data-kind="spread">Spread from a seed</button>
@@ -194,6 +199,16 @@ async function loadRun(full) {
     + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button><button data-a="stitch">${r.sheets && r.sheets.length ? 'Restitch' : 'Stitch'} sheets</button>`;
   const sh = r.sheets || [], key = JSON.stringify(sh.map(x => [x.sheet, x.ink, x.area_cm2]));
   $('#sheets-panel').hidden = !sh.length;
+  const au = r.auto; $('#auto-panel').hidden = !au;
+  if (au) {
+    $('#auto-stages').innerHTML = ['sweep', 'leads', 'spread', 'stitch', 'viewer', 'vc'].map(k => { const s = au.stages[k]; return `<span class="st ${s ? s.state : ''}" title="${esc(s && s.error || '')}">${k}${s && s.secs ? ' ' + Math.round(s.secs / 60) + ' min' : ''}</span>`; }).join('')
+      + (au.report ? `<a class="btn" href="${au.report}" target="_blank" rel="noopener">Report</a>` : '');
+    $('#auto-body').innerHTML = (au.leads.length ? `<table><thead><tr><th>Lead</th><th>Ink face</th><th>Spread (22 mm, fused read)</th><th class="n">Text</th><th class="n">Letters</th><th>Seed z y x</th></tr></thead><tbody>${au.leads.map((l, i) => `<tr>
+        <td>${i + 1}<div class="muted mono">${esc(l.id)}</div></td><td>${l.png ? `<a href="${l.png}" target="_blank" rel="noopener"><img src="${l.png}" alt="" style="width:96px;height:96px;object-fit:cover;background:var(--ct);border-radius:3px"></a>` : ''}</td>
+        <td>${l.spread && l.spread.png ? `<a href="${l.spread.png}" target="_blank" rel="noopener"><img src="${l.spread.png}" alt="" style="height:160px;max-width:100%;background:var(--ct);border-radius:3px"></a>` : '<span class="muted">' + (l.spread ? 'failed' : 'not spread') + '</span>'}</td>
+        <td class="n">${l.ts.toFixed(4)}</td><td class="n">${l.ls == null ? '' : l.ls.toFixed(2)}${l.spread && l.spread.ls != null ? `<div class="muted">spread ${l.spread.ls.toFixed(2)}${l.spread.letters ? ' row' : ''}</div>` : ''}</td><td class="mono">${l.seed.join(' ')}</td></tr>`).join('')}</tbody></table>` : '<p class="muted" style="margin:0">Leads appear when the sweep is done.</p>')
+      + (au.vc ? `<p class="muted" style="margin:12px 0 0">For VC3D: <span class="mono">${esc(au.vc)}</span> holds every lead and spread as tifxyz (<span class="mono">paths/</span>), a point collection (<span class="mono">prospector_hits.json</span>) and <span class="mono">grow.sh</span> for VC's tracer.</p>` : '');
+  }
   if (key !== cur.sheetKey) { cur.sheetKey = key; $('#sheets').innerHTML = sh.map(x => `<div class="sheet"><figure>
       <a href="${x.ink}" target="_blank" rel="noopener"><img loading="lazy" alt="sheet ${x.sheet} ink face" src="${x.ink}"></a>
       <a href="${x.back}" target="_blank" rel="noopener"><img loading="lazy" alt="sheet ${x.sheet} back face" src="${x.back}"></a>
@@ -232,6 +247,10 @@ function pick(i) {
 /* new run forms */
 let scrolls = {}, kind = 'scan', pendingSpread = null;
 const F = {
+  auto: {help: 'Runs everything unattended for each scroll: sweeps the whole volume (or a box), ranks the patches, keeps the best one-sided leads, spreads the top ones into 22 mm reads, scores letters, stitches sheets, builds the 3D viewer and writes the leads as tifxyz for VC3D. Run it again to resume.',
+    fields: [['scrolls', 'Scrolls (space separated)', 'text', 'PHerc0306B', 'wide'], ['out', 'Run name prefix', 'text', 'auto'], ['box', 'Box z0 z1 y0 y1 x0 x1 (blank = whole scroll)', 'text', '', 'wide'],
+      ['spacing', 'Seed spacing (voxels)', 'number', 800], ['workers', 'Parallel workers', 'number', 2], ['leads', 'Leads to keep', 'number', 10], ['spread', 'Leads to spread', 'number', 3],
+      ['sweep', 'Use an existing run instead of sweeping (optional)', 'text', ''], ['device', 'Device', 'device']]},
   scan: {help: 'Seeds a lattice inside a box of the scroll, grows a patch on the surface prediction at each uncovered seed and reads both faces. Resume-safe. Shards split the seeds; each shard is its own job.',
     fields: [['scroll', 'Scroll', 'scroll'], ['out', 'Run name', 'text', 'pherc0306b-box'], ['box', 'Box z0 z1 y0 y1 x0 x1 (voxels)', 'text', '9000 9600 2400 3000 3600 4200', 'wide'],
       ['spacing', 'Seed spacing (voxels)', 'number', 250], ['half_nodes', 'Half-nodes per patch', 'number', 128], ['shards', 'Shards (parallel jobs)', 'number', 1],
@@ -261,15 +280,16 @@ const nums = s => s.trim().split(/[\s,]+/).filter(Boolean).map(Number);
 $('#go').onclick = async () => {
   const f = Object.fromEntries([...$('#form').elements].map(e => [e.name, e.type === 'checkbox' ? e.checked : e.value.trim()]));
   const job = {kind, scroll: f.scroll, out: f.out, device: f.device, fuse: f.fuse};
-  for (const k of ['spacing', 'half_nodes', 'max_patches', 'tile', 'max_cache_gb']) if (f[k]) job[k] = Number(f[k]);
+  for (const k of ['spacing', 'half_nodes', 'max_patches', 'tile', 'max_cache_gb', 'workers', 'leads', 'spread']) if (f[k]) job[k] = Number(f[k]);
+  if (f.scrolls) job.scrolls = f.scrolls.split(/\s+/).filter(Boolean); if (f.sweep) job.sweep = f.sweep;
   if (f.box) job.box = nums(f.box); if (f.crop) job.crop = nums(f.crop); if (f.seed) job.seed = nums(f.seed); if (f.side) job.side = f.side;
   if (f.surfaces !== undefined) job.surfaces = f.surfaces.split('\n').map(s => s.trim()).filter(Boolean);
-  const n = Math.max(1, Number(f.shards) || 1), msg = $('#form-msg'); msg.className = 'muted'; msg.textContent = 'Starting…';
+  const n = kind === 'auto' ? 1 : Math.max(1, Number(f.shards) || 1), msg = $('#form-msg'); msg.className = 'muted'; msg.textContent = 'Starting…';
   try {
     const made = [];
     for (let i = 0; i < n; i++) made.push(await api('/api/jobs', Object.assign({}, job, n > 1 ? {shard: `${i}/${n}`} : {})));
     msg.textContent = ''; toast(`Started ${made.length} job${made.length > 1 ? 's' : ''}`);
-    location.hash = kind === 'spread' ? 'job/' + made[0].id : 'run/' + encodeURIComponent(f.out);
+    location.hash = kind === 'spread' ? 'job/' + made[0].id : 'run/' + encodeURIComponent(kind === 'auto' ? made[0].out.split('/').pop() : f.out);
   } catch (e) { msg.className = 'err'; msg.textContent = e.message; }
 };
 

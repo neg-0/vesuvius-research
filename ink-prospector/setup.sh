@@ -3,7 +3,7 @@
 set -euo pipefail
 VILLA_COMMIT=47a9c37f6f8e99afdab47bb46ad425aa726f5dc0   # ScrollPrize/villa, branch merge-ink-pipelines
 W=${1:-$HOME/prospector}; HERE=$(cd "$(dirname "$0")" && pwd)
-mkdir -p "$W"/{code,data/weights,ext}; cp "$HERE"/*.py "$HERE"/scrolls.json "$W"/code/; mkdir -p "$W"/code/viewer; cp "$HERE"/viewer/index.html "$W"/code/viewer/
+mkdir -p "$W"/{code,data/weights,ext}; cp "$HERE"/*.py "$HERE"/scrolls.json "$W"/code/; mkdir -p "$W"/code/viewer "$W"/code/app; cp "$HERE"/viewer/index.html "$W"/code/viewer/; cp "$HERE"/app/index.html "$W"/code/app/
 cd "$W"
 [ -d venv ] || python3 -m venv venv
 venv/bin/pip -q install --index-url "${TORCH_INDEX:-https://download.pytorch.org/whl/cpu}" torch torchvision

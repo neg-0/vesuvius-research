@@ -116,7 +116,26 @@ def argv_viewer(runs, f):
             "--full", str(_num(f, "full", int, 50))], src[0]
 
 
-ARGV = dict(scan=argv_scan, score=argv_score, spread=argv_spread, stitch=argv_stitch, viewer=argv_viewer)
+def argv_auto(runs, f):
+    sc = f.get("scrolls") or f.get("scroll")
+    if isinstance(sc, str): sc = sc.split()
+    if not sc and not (f.get("ct") and f.get("m7")): raise BadJob("scrolls: one or more names from scrolls.json (or ct and m7)")
+    name = f.get("out"); inside(runs, name)
+    a = [PY, os.path.join(HERE, "auto.py"), "--out", name, "--runs", runs, *_device(f)]
+    if sc: a += ["--scroll", *map(str, sc)]
+    for k in ("ct", "m7"):
+        if f.get(k): a += ["--" + k, str(f[k])]
+    if f.get("box"):
+        b = _num(f, "box", int, n=6)
+        if len(b) != 6: raise BadJob("box: six integers z0 z1 y0 y1 x0 x1")
+        a += ["--box", *map(str, b)]
+    for k, d in (("spacing", 800), ("workers", 2), ("leads", 10), ("spread", 3)):
+        a += ["--" + k, str(_num(f, k, int, d))]
+    if f.get("sweep"): a += ["--sweep", inside(runs, f["sweep"])]
+    return a, os.path.join(runs, f"{name}-{sc[0] if sc else 'scroll'}")
+
+
+ARGV = dict(auto=argv_auto, scan=argv_scan, score=argv_score, spread=argv_spread, stitch=argv_stitch, viewer=argv_viewer)
 
 
 def _alive(pid):
