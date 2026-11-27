@@ -275,6 +275,12 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     assert R[1]["missing"] == [last] and Gs[0]["missing"] == [last]
     R, Gs = runs.status([out + "-s0"])                                           # shard 1 forgotten: its ids are missing
     assert R[0]["missing"] == [] and Gs[0]["missing"] == [1, 3] and Gs[0]["have"] == [0]
+    calls.clear(); stub.run_stack = lambda cm, st, **kw: calls.append(1) or st[8].astype(np.float32) / (510 if kw.get("reverse") else 255)
+    far = np.stack([5048 + 0.15 * (16 + 4.0 * ii - 48), 16 + 4.0 * ii, 16 + 4.0 * jj], -1); write_tifxyz(far, np.ones((G, G), bool), str(tmp_path / "far"), step=4.0)   # a sheet off the scan
+    score_tifxyz.main([str(tmp_path / "far"), "--out", out + "-far", "--ct", ct, "--tile", "7", "--um", "8"])
+    rows_far = [l.split("\t") for l in open(out + "-far/scores.tsv").readlines()[1:]]
+    assert not calls and len(rows_far) == n and all(r[4].strip() == "noct" for r in rows_far)   # skipped without a reader call
+    assert runs.status([out + "-far"])[0][0]["missing"] == [] and runs.patches([out + "-far"]) == []
     boom = {"n": 0}                                                              # a patch that throws does not end the run
     def flaky(cm, st, **kw):
         boom["n"] += 1
