@@ -26,7 +26,7 @@ def main(argv):
         on = 0.0
         if tree is not None: d, _ = tree.query(G[ok][::5], distance_upper_bound=6); on = float(np.isfinite(d).mean())
         pats.append(dict(id=p["id"], seed=p["seed"], c=[int(v) for v in G[ok].mean(0)], n=[round(float(v), 2) for v in g["n0"]], tr=round(p["tracked"], 2),
-                         area=round(p["area"], 2), fa=round(p["fa"], 3), fb=round(p["fb"], 3), ts=round(p["ts"], 4), side=p["side"], known=round(on, 2),
+                         area=round(p["area"], 2), fa=round(p["fa"], 3), fb=round(p["fb"], 3), ts=round(p["ts"], 4), side=p["side"], known=round(on, 2), src=p.get("src", ""),
                          pts=[int(v) for v in G[::16, ::16][ok[::16, ::16]].reshape(-1)]))
     atlas.save(os.path.join(out, "atlas.jpg"), quality=75)
     json.dump(dict(title=title, um=P[0]["um"], patches=pats, known=kp, known_label=klabel), open(os.path.join(out, "data.json"), "w"), separators=(",", ":"))

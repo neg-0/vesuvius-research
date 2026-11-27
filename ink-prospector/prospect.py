@@ -37,7 +37,7 @@ def main():
     if a.cmd == "rank":
         sys.path.insert(0, HERE); import runs
         P = runs.patches([ab(r) for r in a.run]); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")
-        for i, p in enumerate(P[:a.n]): print(f"{i + 1:3d}  {p['id']:>10}  text {p['ts']:.4f} side {p['side']}  bright a/b {p['fa']:.3f}/{p['fb']:.3f}  seed z y x {p['seed'][0]} {p['seed'][1]} {p['seed'][2]}")
+        for i, p in enumerate(P[:a.n]): print(f"{i + 1:3d}  {p['id']:>10}  text {p['ts']:.4f} side {p['side']}  bright a/b {p['fa']:.3f}/{p['fb']:.3f}  seed z y x {p['seed'][0]} {p['seed'][1]} {p['seed'][2]}" + (f"  {p['src']}" if p.get("src") else ""))
         if a.sheet and not P: print("no usable patches, so no contact sheet")
         elif a.sheet:
             from PIL import Image

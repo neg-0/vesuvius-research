@@ -17,10 +17,15 @@ def patches(paths, um=None):
     for d in dirs:
         u = um or meta(d).get("um") or 8.64; seen = set(); tag = os.path.basename(d.rstrip("/")).replace("shard-", "s")
         if multi and tag != os.path.basename(d.rstrip("/")): tag = os.path.basename(os.path.dirname(d.rstrip("/"))) + "-" + tag   # several runs: keep ids apart
+        src = {}                                                         # score_tifxyz folders: which tifxyz and grid window
+        if os.path.exists(os.path.join(d, "surfaces.tsv")):
+            for r in csv.DictReader(open(os.path.join(d, "surfaces.tsv")), delimiter="\t"):
+                src[r["id"]] = f"{os.path.basename(r['tifxyz'].rstrip('/'))} rows {r['r0']}-{r['r1']} cols {r['c0']}-{r['c1']}"
         for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t"):
             base = os.path.join(d, f"p{int(r['id']):04d}")
             if r["status"] != "ok" or r["id"] in seen or not os.path.exists(base + "_a.png") or r["frac_a"] == r["frac_b"]: continue
             seen.add(r["id"]); s, ta, tb = textscore.score(base + "_a.png", base + "_b.png", u)
             rows.append(dict(id=f"{tag}-{int(r['id'])}", dir=d, base=base, um=u, seed=[int(float(r[k])) for k in ("seed_z", "seed_y", "seed_x")],
-                             tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b"))
+                             tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b",
+                             src=src.get(r["id"], "")))
     return sorted(rows, key=lambda r: -r["ts"])
