@@ -305,7 +305,7 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     score_tifxyz.main(args[:2] + [bad] + args[3:] + ["--resume"])                # --resume retries only the failed one
     assert [l.split("\t")[:13] for l in sorted(open(bad + "/scores.tsv").readlines()[1:])] == [l.split("\t")[:13] for l in sorted(first[1:])]
 
-def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
+def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path, capsys):
     from PIL import Image, ImageDraw
     from scipy import ndimage as ndi
     import letterscore
@@ -340,3 +340,7 @@ def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     np.save(tmp_path / "prob_v3_fwd.npy", z); np.save(tmp_path / "prob_v3_rev.npy", row)       # ink on the rev face
     r = letterscore.score_dir(str(tmp_path), um)
     assert r["face"] == "rev" and r["letters"]
+    (tmp_path / "empty").mkdir()                                                          # a broken folder in a batch
+    with pytest.raises(SystemExit, match="1 folder"): letterscore.main(["--dirs", str(tmp_path / "empty"), str(tmp_path), "--um", str(um)])
+    out = capsys.readouterr()
+    assert "skipped" in out.err and out.out.splitlines()[1].startswith(tmp_path.name + "\tTrue")
