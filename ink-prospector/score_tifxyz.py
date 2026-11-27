@@ -78,7 +78,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("surfaces", nargs="+"); ap.add_argument("--out", required=True)
     ap.add_argument("--scroll"); ap.add_argument("--ct"); ap.add_argument("--um", type=float); ap.add_argument("--ct-level", type=int, default=0)
-    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--resume", action="store_true", help="keep patches already scored in --out and score only the rest"); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
+    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--resume", action="store_true", help="keep patches already scored in --out and score only the rest"); ap.add_argument("--shard", default="0/1", help="i/n: score only patches with id %% n == i (one --out per shard; ids stay global)"); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
     if a.scroll:
@@ -86,7 +86,7 @@ def main(argv=None):
         a.ct = a.ct or reg["ct"]; a.um = a.um or reg.get("um")
     if not a.ct: sys.exit("name a --scroll from scrolls.json or pass --ct")
     um = a.um or 8.64; os.makedirs(a.out, exist_ok=True); t0 = time.time()
-    json.dump(dict(scroll=a.scroll, ct=a.ct, um=um, source="score_tifxyz", surfaces=a.surfaces, crop=a.crop, tile=a.tile), open(os.path.join(a.out, "run.json"), "w"), indent=1)
+    json.dump(dict(scroll=a.scroll, ct=a.ct, um=um, source="score_tifxyz", surfaces=a.surfaces, crop=a.crop, tile=a.tile, shard=a.shard), open(os.path.join(a.out, "run.json"), "w"), indent=1)
     import reader
     ct = LazyVol(a.ct, level=a.ct_level, max_cache_gb=a.max_cache_gb); cm = reader.load_reader(a.weights, a.villa)
     tsv = os.path.join(a.out, "scores.tsv"); names = os.path.join(a.out, "surfaces.tsv")
@@ -106,8 +106,11 @@ def main(argv=None):
         bad = [i for i in done if i >= len(jobs) or not same_job(done[i][1], jobs[i])]
         if bad: sys.exit(f"--resume: {a.out} was made from other surfaces or tiles (patch {bad[0]} differs); use a new --out")
         print(f"--resume: {len(done)} of {len(jobs)} patches already scored, skipping them", flush=True)
+    si, sn = (int(v) for v in a.shard.split("/"))
+    if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
+    if sn > 1: print(f"shard {a.shard}: {sum(1 for i in range(len(jobs)) if i % sn == si)} of {len(jobs)} patches", flush=True)
     for i, (path, win) in enumerate(jobs):
-        if i in done: continue
+        if i in done or i % sn != si: continue
         t = time.time(); P, ok, step = load_tifxyz(path, win)
         w = win or (0, P.shape[0], 0, P.shape[1])
         open(names, "a").write(f"{i}\t{os.path.abspath(path)}\t{w[0]}\t{w[1]}\t{w[2]}\t{w[3]}\n")
