@@ -6,6 +6,7 @@
   prospect.py status runs/sheet-s0 runs/sheet-s1 ...   (score_tifxyz progress: what each shard has left, ids no shard has)
   prospect.py spread --scroll PHerc0306B --seed z y x --side a --out runs/demo-spread [--half-nodes 320]
   prospect.py viewer runs/demo --out site [--title "PHerc0306B"]
+  prospect.py serve  --runs runs [--port 8765]   (the app: start, watch, resume and browse runs in a browser; docs/APP.md)
 
 The work folder (PROSPECTOR_HOME, default: current folder) holds code/, data/weights/reader-v3.pth and ext/villa-mip,
 as made by setup.sh or the Docker image. Scrolls are named in scrolls.json; --ct/--m7/--um override it.
@@ -30,7 +31,12 @@ def main():
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
     p = sub.add_parser("viewer"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--title", default=""); p.add_argument("--full", type=int, default=50, help="copy full-size ink maps of the N best patches (0: none)")
     p.add_argument("--known", nargs="+", help="x.tif y.tif z.tif r0 r1 c0 c1 [label]: surface with known text")
+    p = sub.add_parser("serve"); p.add_argument("--runs", default="runs", help="folder holding the run folders (made if missing)")
+    p.add_argument("--host", default="127.0.0.1"); p.add_argument("--port", type=int, default=8765)
     a = ap.parse_args(); ab = os.path.abspath
+    if a.cmd == "serve":
+        sys.path.insert(0, HERE); import server
+        return server.main(a.runs, a.host, a.port)
     if a.cmd == "scan":
         s = scroll(a); n = int(a.shard.split("/")[1]); out = ab(a.out) if n == 1 else os.path.join(ab(a.out), "shard-" + a.shard.split("/")[0]); os.makedirs(out, exist_ok=True)
         json.dump(dict(scroll=a.scroll, box=a.box, spacing=a.spacing, half_nodes=a.half_nodes, **s), open(os.path.join(ab(a.out), "run.json"), "w"), indent=1)

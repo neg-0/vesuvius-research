@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ink Prospector</title>
+<style>
+/* Same tokens as viewer/index.html, so the app and the 3D viewer read as one tool. No external requests: works offline. */
+:root{
+  --bg:#eef0f3; --panel:#f8f9fb; --line:#d3d8e0; --fg:#1a2030; --muted:#5d6779;
+  --accent:#2f5fb3; --warm:#d9891a; --hot:#c8321e; --ok:#1f9d8a; --ct:#0c0e12;
+  --body:system-ui,-apple-system,"Segoe UI",sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12151b; --panel:#1a1e27; --line:#2d3441; --fg:#e4e8ef; --muted:#939db0;
+  --accent:#7fa8f0; --warm:#eaa13a; --hot:#ff6a4d; --ok:#44c9b4; --ct:#07080a; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#12151b; --panel:#1a1e27; --line:#2d3441; --fg:#e4e8ef; --muted:#939db0;
+  --accent:#7fa8f0; --warm:#eaa13a; --hot:#ff6a4d; --ok:#44c9b4; --ct:#07080a; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+h1{font-weight:600;font-size:22px;margin:0}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+h2{font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:0;color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.pb{padding:12px}
+button,.btn{font:500 12px var(--body);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:4px;padding:5px 10px;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{border-color:var(--accent)} button[aria-pressed="true"],button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,a:focus-visible,tr:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{position:sticky;top:0;background:var(--panel);text-align:left;font-weight:500;color:var(--muted);font-size:12px;padding:7px 10px;border-bottom:1px solid var(--line);z-index:1}
+td{padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right}
+tbody tr.click{cursor:pointer} tbody tr.click:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+tbody tr.sel{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.scroll{overflow:auto;max-height:72vh}
+.prog{width:140px;height:8px;border-radius:4px;background:var(--line);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px}
+.prog i{display:block;height:100%;background:var(--accent)}
+.st{font:500 11px var(--mono);border-radius:3px;padding:1px 6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.st.running{border-color:var(--accent);color:var(--accent)} .st.done{border-color:var(--ok);color:var(--ok)}
+.st.failed{border-color:var(--hot);color:var(--hot)} .st.stopped{border-color:var(--warm);color:var(--warm)}
+.thumbs{display:flex;gap:4px} .thumbs img{width:64px;height:64px;background:var(--ct);border-radius:3px;object-fit:cover}
+.thumbs img.ink{outline:2px solid var(--warm)}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.read{position:relative;background:var(--ct);border-radius:4px;overflow:hidden;aspect-ratio:1}
+.read img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.read span{position:absolute;left:6px;top:5px;font:500 11px var(--mono);color:#fff;background:rgba(0,0,0,.55);padding:1px 5px;border-radius:3px}
+.read.ink{outline:2px solid var(--warm)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:12px 0 0}
+dt{color:var(--muted)} dd{margin:0;font-family:var(--mono);font-size:13px;overflow-wrap:anywhere}
+form{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px 14px}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+label.wide{grid-column:1/-1}
+label.check{flex-direction:row;align-items:center;gap:6px}
+input,select,textarea{font:13px var(--mono);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-width:0}
+textarea{min-height:60px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+a{color:var(--accent)} .muted{color:var(--muted)} .mono{font-family:var(--mono)} .err{color:var(--hot)}
+pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/1.4 var(--mono);max-height:50vh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;border-radius:0 0 6px 6px}
+.empty{padding:24px 12px;color:var(--muted)}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px;display:none;max-width:90vw}
+</style>
+<div class="wrap">
+  <header>
+    <h1>Ink Prospector</h1>
+    <span class="muted" id="where"></span>
+    <nav aria-label="Sections">
+      <button data-tab="runs" aria-pressed="true">Runs</button>
+      <button data-tab="new">New run</button>
+      <button data-tab="jobs">Jobs</button>
+    </nav>
+  </header>
+
+  <section id="tab-runs">
+    <div class="panel">
+      <div class="ph"><h2>Runs</h2><span class="muted" id="runs-note">Every folder in the runs folder that holds a scan, scored surfaces or shards.</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Run</th><th>Scroll</th><th>Progress</th><th class="n">Patches</th><th class="n">cm² read</th><th class="n">Best text score</th><th>Job</th></tr></thead>
+        <tbody id="runs"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section id="tab-run" hidden>
+    <div class="panel">
+      <div class="ph">
+        <div class="row"><button id="back">← Runs</button><h2 id="run-title"></h2><span class="muted" id="run-sum"></span></div>
+        <div class="row" id="run-actions"></div>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="panel">
+        <div class="ph"><h2>Ranked patches</h2><span class="muted">best first, as <span class="mono">prospect.py rank</span>; orange = the face with ink</span></div>
+        <div class="scroll"><table>
+          <thead><tr><th>#</th><th>Faces a · b</th><th class="n">Text score</th><th>Side</th><th class="n">Bright a / b</th><th class="n">cm²</th><th>Seed z y x</th></tr></thead>
+          <tbody id="patches"></tbody>
+        </table></div>
+      </div>
+      <div class="panel" id="detail"><div class="empty">Pick a patch to see both faces at full size.</div></div>
+    </div>
+  </section>
+
+  <section id="tab-new" hidden>
+    <div class="panel">
+      <div class="ph"><h2>New run</h2>
+        <div class="row" role="group" aria-label="Kind of run">
+          <button data-kind="scan" aria-pressed="true">Scan a box</button>
+          <button data-kind="score">Score tifxyz surfaces</button>
+          <button data-kind="spread">Spread from a seed</button>
+        </div>
+      </div>
+      <div class="pb">
+        <p class="muted" id="kind-help" style="margin:0 0 12px"></p>
+        <form id="form" autocomplete="off"></form>
+        <div class="row" style="margin-top:14px"><button class="primary" id="go">Start</button><span id="form-msg" class="muted"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-jobs" hidden>
+    <div class="panel">
+      <div class="ph"><h2>Jobs</h2><span class="muted">Jobs keep running if this page or the server is closed. Resume runs the same command again; only missing patches are done.</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>State</th><th>Kind</th><th>Output</th><th>Started</th><th class="n">Attempts</th><th></th></tr></thead>
+        <tbody id="jobs"></tbody>
+      </table></div>
+    </div>
+    <div class="panel" id="logpanel" style="margin-top:16px" hidden>
+      <div class="ph"><h2 id="log-title">Log</h2><div class="row" id="log-actions"></div></div>
+      <pre class="log" id="log"></pre>
+    </div>
+  </section>
+</div>
+<div id="toast" role="status"></div>
+<script>
+const $ = s => document.querySelector(s), esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  const j = (r.headers.get('content-type') || '').includes('json') ? await r.json() : await r.text();
+  if (!r.ok) throw new Error(j.error || r.statusText); return j;
+}
+function toast(m, bad) { const t = $('#toast'); t.textContent = m; t.style.background = bad ? 'var(--hot)' : ''; t.style.display = 'block'; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = 'none', 4000); }
+const when = t => t ? new Date(t * 1000).toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : '';
+const state = s => `<span class="st ${esc(s)}">${esc(s)}</span>`;
+
+/* tabs, kept in the URL hash so reload and back work: #runs, #run/<name>, #new, #jobs, #job/<id> */
+function show(tab) { for (const s of document.querySelectorAll('section')) s.hidden = s.id !== 'tab-' + tab;
+  for (const b of document.querySelectorAll('nav button')) b.setAttribute('aria-pressed', b.dataset.tab === tab || (tab === 'run' && b.dataset.tab === 'runs')); }
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => location.hash = b.dataset.tab);
+$('#back').onclick = () => location.hash = 'runs';
+let cur = {run: null, job: null, sel: null};
+function route() {
+  const [t, ...rest] = (location.hash.slice(1) || 'runs').split('/'); const arg = decodeURIComponent(rest.join('/'));
+  cur.run = t === 'run' ? arg : null; cur.job = t === 'job' ? arg : cur.job;
+  if (t === 'new' && pendingSpread) { kind = 'spread'; drawForm(); }
+  show(t === 'job' ? 'jobs' : t); refresh(true);
+}
+window.addEventListener('hashchange', route);
+
+/* runs */
+async function loadRuns() {
+  const R = await api('/api/runs'), tb = $('#runs');
+  if (!R.length) { tb.innerHTML = `<tr><td colspan="7" class="empty">No runs yet. Start one under <a href="#new">New run</a>, or point <span class="mono">--runs</span> at a folder of scan folders.</td></tr>`; return; }
+  tb.innerHTML = R.map(r => { const pct = r.expected ? Math.round(100 * r.scored / r.expected) : null, j = r.jobs[0];
+    return `<tr class="click" tabindex="0" data-run="${esc(r.name)}"><td class="mono">${esc(r.name)}</td><td>${esc(r.scroll || '')}</td>
+      <td>${pct === null ? `<span class="muted">${r.scored} scored</span>` : `<span class="prog"><i style="width:${pct}%"></i></span>${r.scored} / ${r.expected}${r.shards > 1 ? ` · ${r.shards} shards` : ''}`}</td>
+      <td class="n">${r.patches}</td><td class="n">${r.area.toFixed(1)}</td><td class="n">${r.best === null ? '' : r.best.toFixed(4)}</td><td>${j ? state(j.state) : ''}</td></tr>`; }).join('');
+  tb.querySelectorAll('tr[data-run]').forEach(tr => { const go = () => location.hash = 'run/' + encodeURIComponent(tr.dataset.run); tr.onclick = go; tr.onkeydown = e => e.key === 'Enter' && go(); });
+}
+
+/* one run */
+let P = [];
+async function loadRun(full) {
+  const name = cur.run, r = await api('/api/runs/' + encodeURIComponent(name)); cur.scroll = r.scroll;
+  $('#run-title').textContent = name;
+  $('#run-sum').textContent = `${r.patches} patches · ${r.area.toFixed(1)} cm² · ${r.expected ? `${r.scored} of ${r.expected} scored` : `${r.scored} scored`}${r.missing ? ` · ${r.missing} missing` : ''}`;
+  const run = r.jobs.find(j => j.state === 'running'), last = r.jobs[0];
+  $('#run-actions').innerHTML = (run ? `<button data-a="stop" data-j="${run.id}">Stop</button>` : last && last.state !== 'done' ? `<button data-a="resume" data-j="${last.id}">Resume</button>` : '')
+    + (last ? `<a class="btn" href="#job/${last.id}">Log</a>` : '')
+    + `<a class="btn" href="/api/runs/${encodeURIComponent(name)}/tsv" download="${esc(name)}-ranked.tsv">Ranked TSV</a>`
+    + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button>`;
+  $('#run-actions').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, b.dataset.j, name));
+  if (!full && P.length === r.patches) return;
+  P = await api('/api/runs/' + encodeURIComponent(name) + '/patches?n=500');
+  const tb = $('#patches');
+  tb.innerHTML = P.length ? P.map((p, i) => `<tr class="click${cur.sel === p.id ? ' sel' : ''}" tabindex="0" data-i="${i}"><td>${p.rank}</td>
+      <td><div class="thumbs"><img loading="lazy" alt="face a" src="${p.a}" class="${p.side === 'a' ? 'ink' : ''}"><img loading="lazy" alt="face b" src="${p.b}" class="${p.side === 'b' ? 'ink' : ''}"></div></td>
+      <td class="n">${p.ts.toFixed(4)}</td><td>${p.side}</td><td class="n">${p.fa.toFixed(3)} / ${p.fb.toFixed(3)}</td><td class="n">${p.area.toFixed(2)}</td><td class="mono">${p.seed.join(' ')}</td></tr>`).join('')
+    : `<tr><td colspan="7" class="empty">No usable patches yet.</td></tr>`;
+  tb.querySelectorAll('tr[data-i]').forEach(tr => { const go = () => pick(+tr.dataset.i); tr.onclick = go; tr.onkeydown = e => e.key === 'Enter' && go(); });
+  if (cur.sel) { const i = P.findIndex(p => p.id === cur.sel); if (i >= 0) pick(i); }
+}
+function pick(i) {
+  const p = P[i]; cur.sel = p.id;
+  document.querySelectorAll('#patches tr').forEach(tr => tr.classList.toggle('sel', +tr.dataset.i === i));
+  $('#detail').innerHTML = `<div class="ph"><h2>#${p.rank} · ${esc(p.id)}</h2><div class="row"><a class="btn" href="${p.a}" target="_blank" rel="noopener">Face a</a><a class="btn" href="${p.b}" target="_blank" rel="noopener">Face b</a></div></div>
+    <div class="pb"><div class="reads">${['a', 'b'].map(s => `<div class="read${p.side === s ? ' ink' : ''}"><img alt="face ${s}" src="${p[s]}"><span>${s}${p.side === s ? ' · ink' : ''}</span></div>`).join('')}</div>
+    <dl>${[['text score', `${p.ts.toFixed(4)} (side ${p.side})`], ['bright share', `a ${p.fa.toFixed(3)} · b ${p.fb.toFixed(3)}`], ['seed z y x', p.seed.join(' ')],
+      ['sheet tracked', Math.round(p.tracked * 100) + '%'], ['area', p.area.toFixed(2) + ' cm²']].concat(p.src ? [['tifxyz window', p.src]] : [])
+      .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+    <p class="muted" style="margin:12px 0 0">A hit is a place to look, not a reading. Copy the seed into <a href="#new" data-spread="${p.seed.join(' ')}" data-side="${p.side}">Spread from a seed</a> to grow a larger patch here.</p></div>`;
+  $('#detail [data-spread]').onclick = e => { pendingSpread = {seed: e.target.dataset.spread, side: e.target.dataset.side, scroll: cur.scroll}; };
+}
+
+/* new run forms */
+let scrolls = {}, kind = 'scan', pendingSpread = null;
+const F = {
+  scan: {help: 'Seeds a lattice inside a box of the scroll, grows a patch on the surface prediction at each uncovered seed and reads both faces. Resume-safe. Shards split the seeds; each shard is its own job.',
+    fields: [['scroll', 'Scroll', 'scroll'], ['out', 'Run name', 'text', 'pherc0306b-box'], ['box', 'Box z0 z1 y0 y1 x0 x1 (voxels)', 'text', '9000 9600 2400 3000 3600 4200', 'wide'],
+      ['spacing', 'Seed spacing (voxels)', 'number', 250], ['half_nodes', 'Half-nodes per patch', 'number', 128], ['shards', 'Shards (parallel jobs)', 'number', 1],
+      ['max_patches', 'Max new patches per call', 'number', ''], ['device', 'Device', 'device'], ['fuse', 'Fused reads (4x slower, cleaner)', 'check']]},
+  score: {help: 'Reads any tifxyz surfaces on this machine (VC3D segments, HerculeX sheets, grown hits) and ranks them like a scan. Tile cuts a whole sheet into patches. Resume keeps what is scored.',
+    fields: [['scroll', 'Scroll', 'scroll'], ['out', 'Run name', 'text', 'sheet-scores'], ['surfaces', 'tifxyz folders, one per line', 'area', '', 'wide'],
+      ['tile', 'Tile (nodes, blank = whole surface)', 'number', 64], ['crop', 'Crop r0 r1 c0 c1 (optional)', 'text', ''], ['shards', 'Shards (parallel jobs)', 'number', 1],
+      ['max_cache_gb', 'CT cache cap (GB)', 'number', ''], ['device', 'Device', 'device'], ['fuse', 'Fused reads (4x slower, cleaner)', 'check']]},
+  spread: {help: 'Grows one large patch from a seed (for example a hit from a scan) and reads the chosen face.',
+    fields: [['scroll', 'Scroll', 'scroll'], ['out', 'Run name', 'text', 'spread'], ['seed', 'Seed z y x', 'text', ''], ['side', 'Face', 'side'], ['half_nodes', 'Half-nodes', 'number', 320]]},
+};
+function drawForm() {
+  document.querySelectorAll('[data-kind]').forEach(b => b.setAttribute('aria-pressed', b.dataset.kind === kind));
+  $('#kind-help').textContent = F[kind].help;
+  $('#form').innerHTML = F[kind].fields.map(([k, l, t, v, c]) => {
+    const inp = t === 'scroll' ? `<select name="${k}">${Object.keys(scrolls).filter(s => !s.startsWith('_')).map(s => `<option>${esc(s)}</option>`).join('')}</select>`
+      : t === 'device' ? `<select name="${k}"><option>cpu</option><option>cuda</option><option>mps</option></select>`
+      : t === 'side' ? `<select name="${k}"><option value="a">a</option><option value="b">b</option></select>`
+      : t === 'area' ? `<textarea name="${k}" placeholder="/data/PHerc1545/hx5-sheet">${esc(v)}</textarea>`
+      : t === 'check' ? `<input type="checkbox" name="${k}">` : `<input name="${k}" type="${t}" value="${esc(v)}"${t === 'number' ? ' min="0"' : ''}>`;
+    return t === 'check' ? `<label class="check">${inp}${l}</label>` : `<label class="${c || ''}">${l}${inp}</label>`; }).join('');
+  if (kind === 'spread' && pendingSpread) { $('#form [name=seed]').value = pendingSpread.seed; $('#form [name=side]').value = pendingSpread.side;
+    if (pendingSpread.scroll && scrolls[pendingSpread.scroll]) $('#form [name=scroll]').value = pendingSpread.scroll; pendingSpread = null; }
+}
+document.querySelectorAll('[data-kind]').forEach(b => b.onclick = () => { kind = b.dataset.kind; drawForm(); });
+const nums = s => s.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+$('#go').onclick = async () => {
+  const f = Object.fromEntries([...$('#form').elements].map(e => [e.name, e.type === 'checkbox' ? e.checked : e.value.trim()]));
+  const job = {kind, scroll: f.scroll, out: f.out, device: f.device, fuse: f.fuse};
+  for (const k of ['spacing', 'half_nodes', 'max_patches', 'tile', 'max_cache_gb']) if (f[k]) job[k] = Number(f[k]);
+  if (f.box) job.box = nums(f.box); if (f.crop) job.crop = nums(f.crop); if (f.seed) job.seed = nums(f.seed); if (f.side) job.side = f.side;
+  if (f.surfaces !== undefined) job.surfaces = f.surfaces.split('\n').map(s => s.trim()).filter(Boolean);
+  const n = Math.max(1, Number(f.shards) || 1), msg = $('#form-msg'); msg.className = 'muted'; msg.textContent = 'Starting…';
+  try {
+    const made = [];
+    for (let i = 0; i < n; i++) made.push(await api('/api/jobs', Object.assign({}, job, n > 1 ? {shard: `${i}/${n}`} : {})));
+    msg.textContent = ''; toast(`Started ${made.length} job${made.length > 1 ? 's' : ''}`);
+    location.hash = kind === 'spread' ? 'job/' + made[0].id : 'run/' + encodeURIComponent(f.out);
+  } catch (e) { msg.className = 'err'; msg.textContent = e.message; }
+};
+
+/* jobs */
+async function act(a, id, run) {
+  try {
+    if (a === 'viewer') { const j = await api('/api/runs/' + encodeURIComponent(run) + '/viewer', {}); toast('Building the 3D viewer…'); location.hash = 'job/' + j.id; return; }
+    await api(`/api/jobs/${id}/${a}`, {}); toast(a === 'stop' ? 'Stopping' : 'Resumed'); refresh(true);
+  } catch (e) { toast(e.message, true); }
+}
+async function loadJobs() {
+  const J = await api('/api/jobs'), tb = $('#jobs');
+  tb.innerHTML = J.length ? J.map(j => `<tr class="click${cur.job === j.id ? ' sel' : ''}" tabindex="0" data-j="${j.id}"><td>${state(j.state)}</td><td>${esc(j.kind)}${j.fields.shard ? ` <span class="muted">${esc(j.fields.shard)}</span>` : ''}</td>
+      <td class="mono">${esc((j.fields.out || (j.fields.runs || []).join(' ')))}</td><td>${when(j.started)}</td><td class="n">${j.attempts}</td>
+      <td>${j.state === 'running' ? `<button data-a="stop" data-j="${j.id}">Stop</button>` : j.state !== 'done' ? `<button data-a="resume" data-j="${j.id}">Resume</button>` : ''}</td></tr>`).join('')
+    : `<tr><td colspan="6" class="empty">No jobs yet.</td></tr>`;
+  tb.querySelectorAll('tr[data-j]').forEach(tr => { tr.onclick = e => { if (e.target.tagName !== 'BUTTON') location.hash = 'job/' + tr.dataset.j; }; tr.onkeydown = e => e.key === 'Enter' && (location.hash = 'job/' + tr.dataset.j); });
+  tb.querySelectorAll('button[data-a]').forEach(b => b.onclick = () => act(b.dataset.a, b.dataset.j));
+  if (cur.job && !$('#tab-jobs').hidden) {
+    const j = await api(`/api/jobs/${cur.job}?tail=300`), lg = $('#log'), atEnd = lg.scrollTop + lg.clientHeight >= lg.scrollHeight - 4;
+    $('#logpanel').hidden = false; $('#log-title').textContent = `${j.kind} · ${j.state}${j.exit !== null ? ' · exit ' + j.exit : ''}`;
+    $('#log-actions').innerHTML = j.kind !== 'viewer' && j.out ? `<a class="btn" href="#run/${encodeURIComponent(j.out.split('/').pop())}">Open run</a>` : j.kind === 'viewer' && j.state === 'done' ? `<a class="btn" href="#run/${encodeURIComponent(j.out.split('/').pop())}">Back to run</a>` : '';
+    lg.textContent = (j.log || []).join('\n'); if (atEnd) lg.scrollTop = lg.scrollHeight;
+  }
+}
+
+/* polling: every 3 s while the tab is visible */
+let busy = false;
+async function refresh(full) {
+  if (busy) return; busy = true;
+  try { if (!$('#tab-runs').hidden) await loadRuns(); if (!$('#tab-run').hidden && cur.run) await loadRun(full); if (!$('#tab-jobs').hidden) await loadJobs(); }
+  catch (e) { toast(e.message, true); } finally { busy = false; }
+}
+setInterval(() => document.visibilityState === 'visible' && refresh(false), 3000);
+(async () => { scrolls = await api('/api/scrolls'); $('#where').textContent = location.host; drawForm(); route(); })();
+</script>
