@@ -201,12 +201,15 @@ async function loadRun(full) {
   $('#sheets-panel').hidden = !sh.length;
   const au = r.auto; $('#auto-panel').hidden = !au;
   if (au) {
-    $('#auto-stages').innerHTML = ['sweep', 'leads', 'spread', 'stitch', 'viewer', 'vc'].map(k => { const s = au.stages[k]; return `<span class="st ${s ? s.state : ''}" title="${esc(s && s.error || '')}">${k}${s && s.secs ? ' ' + Math.round(s.secs / 60) + ' min' : ''}</span>`; }).join('')
+    $('#auto-stages').innerHTML = ['sweep', 'leads', 'spread', 'stitch', 'viewer', 'vc', 'grow'].map(k => { const s = au.stages[k]; if (k === 'grow' && (!s || s.state === 'off')) return ''; return `<span class="st ${s ? s.state : ''}" title="${esc(s && s.error || '')}">${k}${s && s.secs ? ' ' + Math.round(s.secs / 60) + ' min' : ''}</span>`; }).join('')
       + (au.report ? `<a class="btn" href="${au.report}" target="_blank" rel="noopener">Report</a>` : '');
     $('#auto-body').innerHTML = (au.leads.length ? `<table><thead><tr><th>Lead</th><th>Ink face</th><th>Spread (22 mm, fused read)</th><th class="n">Text</th><th class="n">Letters</th><th>Seed z y x</th></tr></thead><tbody>${au.leads.map((l, i) => `<tr>
         <td>${i + 1}<div class="muted mono">${esc(l.id)}</div></td><td>${l.png ? `<a href="${l.png}" target="_blank" rel="noopener"><img src="${l.png}" alt="" style="width:96px;height:96px;object-fit:cover;background:var(--ct);border-radius:3px"></a>` : ''}</td>
         <td>${l.spread && l.spread.png ? `<a href="${l.spread.png}" target="_blank" rel="noopener"><img src="${l.spread.png}" alt="" style="height:160px;max-width:100%;background:var(--ct);border-radius:3px"></a>` : '<span class="muted">' + (l.spread ? 'failed' : 'not spread') + '</span>'}</td>
         <td class="n">${l.ts.toFixed(4)}</td><td class="n">${l.ls == null ? '' : l.ls.toFixed(2)}${l.spread && l.spread.ls != null ? `<div class="muted">spread ${l.spread.ls.toFixed(2)}${l.spread.letters ? ' row' : ''}</div>` : ''}</td><td class="mono">${l.seed.join(' ')}</td></tr>`).join('')}</tbody></table>` : '<p class="muted" style="margin:0">Leads appear when the sweep is done.</p>')
+      + ((au.grown || []).length ? `<h3 style="margin:16px 0 6px">Grown with VC's tracer, read whole</h3><table><thead><tr><th>Surface</th><th>Ink face</th><th class="n">Area cm²</th><th class="n">Text</th><th class="n">Letters</th><th class="n">Fibre shift (vx)</th></tr></thead><tbody>${au.grown.map(g => `<tr>
+        <td class="mono">${esc(g.surface)}</td><td>${g.png ? `<a href="${g.png}" target="_blank" rel="noopener"><img src="${g.png}" alt="" style="height:160px;max-width:100%;background:var(--ct);border-radius:3px"></a>` : ''}</td>
+        <td class="n">${g.area}</td><td class="n">${g.ts.toFixed(4)}</td><td class="n">${g.ls == null ? '' : g.ls.toFixed(2)}${g.letters ? ' row' : ''}</td><td class="n">${g.shift == null ? '' : g.shift}</td></tr>`).join('')}</tbody></table>` : '')
       + (au.vc ? `<p class="muted" style="margin:12px 0 0">For VC3D: <span class="mono">${esc(au.vc)}</span> holds every lead and spread as tifxyz (<span class="mono">paths/</span>), a point collection (<span class="mono">prospector_hits.json</span>) and <span class="mono">grow.sh</span> for VC's tracer.</p>` : '');
   }
   if (key !== cur.sheetKey) { cur.sheetKey = key; $('#sheets').innerHTML = sh.map(x => `<div class="sheet"><figure>
@@ -247,10 +250,11 @@ function pick(i) {
 /* new run forms */
 let scrolls = {}, kind = 'scan', pendingSpread = null;
 const F = {
-  auto: {help: 'Runs everything unattended for each scroll: sweeps the whole volume (or a box), ranks the patches, keeps the best one-sided leads, spreads the top ones into 22 mm reads, scores letters, stitches sheets, builds the 3D viewer and writes the leads as tifxyz for VC3D. Run it again to resume.',
+  auto: {help: 'Runs everything unattended for each scroll: sweeps the whole volume (or a box), ranks the patches, keeps the best one-sided leads, spreads the top ones into 22 mm reads, scores letters, stitches sheets, builds the 3D viewer and writes the leads as tifxyz for VC3D. Optionally grows the best leads with VC\'s tracer, snaps them onto the papyrus fibres and reads them whole. Run it again to resume.',
     fields: [['scrolls', 'Scrolls (space separated)', 'text', 'PHerc0306B', 'wide'], ['out', 'Run name prefix', 'text', 'auto'], ['box', 'Box z0 z1 y0 y1 x0 x1 (blank = whole scroll)', 'text', '', 'wide'],
       ['spacing', 'Seed spacing (voxels)', 'number', 800], ['workers', 'Parallel workers', 'number', 2], ['leads', 'Leads to keep', 'number', 10], ['spread', 'Leads to spread', 'number', 3],
-      ['sweep', 'Use an existing run instead of sweeping (optional)', 'text', ''], ['max_cache_gb', 'Chunk cache cap per worker (GB)', 'number', 2], ['device', 'Device', 'device']]},
+      ['sweep', 'Use an existing run instead of sweeping (optional)', 'text', ''], ['max_cache_gb', 'Chunk cache cap per worker (GB)', 'number', 2], ['device', 'Device', 'device'],
+      ['grow', 'Leads to grow with VC\'s tracer (0 = off)', 'number', 0], ['vc_image', 'VC Docker image (blank = vc_grow_seg_from_seed on PATH)', 'text', '', 'wide'], ['snap', 'Fibre-snap grown surfaces (AFV V2)', 'check']]},
   scan: {help: 'Seeds a lattice inside a box of the scroll, grows a patch on the surface prediction at each uncovered seed and reads both faces. Resume-safe. Shards split the seeds; each shard is its own job.',
     fields: [['scroll', 'Scroll', 'scroll'], ['out', 'Run name', 'text', 'pherc0306b-box'], ['box', 'Box z0 z1 y0 y1 x0 x1 (voxels)', 'text', '9000 9600 2400 3000 3600 4200', 'wide'],
       ['spacing', 'Seed spacing (voxels)', 'number', 250], ['half_nodes', 'Half-nodes per patch', 'number', 128], ['shards', 'Shards (parallel jobs)', 'number', 1],

@@ -119,6 +119,10 @@ def test_argv_matches_the_command_line(tmp_path):
     job["argv"] = [v for v in job["argv"] if v not in ("--max-cache-gb", "2.0")]; json.dump(job, open(os.path.join(d, "job.json"), "w"))
     assert "--max-cache-gb" in J.resume(j["id"])["run_argv"]                             # resume rebuilds the command from the fields
     with pytest.raises(joblib.BadJob): joblib.argv_spread(runs, dict(scroll="x", seed=[1, 2], out="s"))
+    a, _ = joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", grow=2, vc_image="ghcr.io/scrollprize/villa/volume-cartographer:edge", snap=True))
+    t = a[a.index("--tracer") + 1]; assert a[a.index("--grow") + 1] == "2" and "--snap" in a and t.startswith("docker run") and t.endswith(":edge vc_grow_seg_from_seed")
+    with pytest.raises(joblib.BadJob): joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", grow=1, vc_image="x; rm -rf /"))
+    assert "--grow" not in joblib.argv_auto(runs, dict(scrolls="PHerc0306B", out="t", vc_image="x"))[0]
 
 
 def test_stitched_sheets_listed_and_stitch_job(app):
@@ -159,10 +163,13 @@ def test_auto_runs_every_stage_on_an_existing_sweep(tmp_path):
     (src / "run.json").write_text(json.dumps(dict(scroll="PHerc0306B", um=8.64)))
     auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0", "--leads", "2"])
     run = tmp_path / "runs" / "t-PHerc0306B"; A = json.loads((run / "auto" / "auto.json").read_text())
-    assert all(A["stages"][k]["state"] == "done" for k in auto.STAGES), A["stages"]
+    assert all(A["stages"][k]["state"] == "done" for k in auto.STAGES if k != "grow") and A["stages"]["grow"]["state"] == "off", A["stages"]
     best = A["stages"]["leads"]["best"]; assert {l["id"] for l in best} == {"scan-2", "scan-3"} and best[0]["ts"] >= best[1]["ts"]   # 2 best of 3
     assert (run / "_viewer" / "index.html").exists() and len(list((run / "auto" / "vc" / "paths").iterdir())) == 2
     assert f"| 1 | {best[0]['id']} |" in (run / "auto" / "REPORT.md").read_text()
     auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--spread", "0"])   # resumes: all done
+    auto.main(["--scroll", "PHerc0306B", "--out", "t", "--runs", str(tmp_path / "runs"), "--sweep", str(src), "--grow", "1", "--tracer", "no-such-tracer {dir}"])
+    A = json.loads((run / "auto" / "auto.json").read_text()); assert A["stages"]["grow"]["state"] == "skipped"
+    assert "Grow skipped: tracer 'no-such-tracer' not found" in (run / "auto" / "REPORT.md").read_text()
     s = server.App(str(tmp_path / "runs")); info = s.auto(str(run))
     assert info["report"] and [l["id"] for l in info["leads"]] == [l["id"] for l in best] and info["leads"][0]["png"].startswith("/files/")

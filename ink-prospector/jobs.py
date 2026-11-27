@@ -10,7 +10,7 @@ The wrapper (`python jobs.py _run <jobdir>`) runs the command and writes its exi
 still records how it ended if the server is stopped or restarted. Argument lists are built from typed fields per job
 kind (ARGV); nothing is passed through a shell.
 """
-import json, os, signal, subprocess, sys, time, uuid
+import json, os, re, signal, subprocess, sys, time, uuid
 HERE = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable
 
@@ -141,6 +141,14 @@ def argv_auto(runs, f):
         a += ["--" + k, str(_num(f, k, int, d))]
     a += _cache(f)
     if f.get("sweep"): a += ["--sweep", inside(runs, f["sweep"])]
+    if _num(f, "grow", int, 0):
+        a += ["--grow", str(_num(f, "grow", int))]
+        img = f.get("vc_image")                                         # the API takes an image name, not a command line
+        if img:
+            if not isinstance(img, str) or not re.fullmatch(r"[a-z0-9][a-z0-9._/-]*(:[A-Za-z0-9._-]+)?(@sha256:[0-9a-f]{64})?", img):
+                raise BadJob("vc_image: a Docker image name such as ghcr.io/scrollprize/villa/volume-cartographer:edge")
+            a += ["--tracer", f"docker run --rm --network host -e HTTPS_PROXY -e HTTP_PROXY -e NO_PROXY -v {{dir}}:{{dir}} -w {{dir}} {img} vc_grow_seg_from_seed"]
+        if f.get("snap"): a.append("--snap")
     return a, os.path.join(runs, f"{name}-{sc[0] if sc else 'scroll'}")
 
 

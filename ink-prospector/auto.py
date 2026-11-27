@@ -2,6 +2,7 @@
 
 usage: auto.py --scroll S [S ...] --out NAME [--runs runs] [--box z0 z1 y0 y1 x0 x1] [--spacing 800] [--workers 2]
                [--leads 10] [--spread 3] [--device cpu] [--sweep DIR]
+               [--grow N [--tracer CMD] [--snap [--afv DIR]]]
 (prospect.py auto calls this; run from the work folder, PROSPECTOR_HOME.)
 
 For each scroll, into <runs>/<NAME>-<scroll>/ (a normal run folder, so rank, status, viewer and the app all read it):
@@ -15,6 +16,10 @@ For each scroll, into <runs>/<NAME>-<scroll>/ (a normal run folder, so rank, sta
   5. viewer   builds the 3D viewer page (_viewer/).
   6. vc       writes the leads and the spread patches as tifxyz surfaces, a VC3D point collection and grow.sh (auto/vc/),
               as vc_export.py: open auto/vc/paths/* in VC3D, or grow them with VC's tracer.
+  7. grow     (--grow N) grows the best N leads with VC's tracer (vc_grow_seg_from_seed, or --tracer CMD, e.g. the
+              villa volume-cartographer Docker image) into auto/vc/grown/, with --snap moves each grown surface onto
+              the papyrus fibres (fibre_snap.py, AFV V2 model), then reads and scores every grown surface
+              (auto/grow/scored/, a score_tifxyz run with letterscore). Skipped when no tracer is found.
 auto/auto.json records each stage (done, seconds, what it made); a stage that is done is skipped on the next call, so
 running the same command again resumes. auto/REPORT.md sums it up.
 """
@@ -22,7 +27,7 @@ import argparse, csv, json, os, subprocess, sys, time
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import runs as runlib
-STAGES = ("sweep", "leads", "spread", "stitch", "viewer", "vc")
+STAGES = ("sweep", "leads", "spread", "stitch", "viewer", "vc", "grow")
 PY = sys.executable
 
 
@@ -135,6 +140,49 @@ def vc(a, src, st, spreads, sc):
     st.mark("vc", "done", folder=d, spreads=n)
 
 
+def tracer_cmd(a, d):
+    """The tracer command as a list, {dir} replaced by the vc folder (for a Docker -v mount), or None if not found."""
+    import shlex, shutil
+    cmd = [w.replace("{dir}", d) for w in shlex.split(a.tracer)]
+    return cmd if cmd and shutil.which(cmd[0]) else None
+
+
+def grow(a, sc, st):
+    import vc_export
+    d = os.path.join(st.dir, "vc"); cmd = tracer_cmd(a, d)
+    if not cmd: st.mark("grow", "skipped", reason=f"tracer {a.tracer.split()[0]!r} not found (install VC3D or pass --tracer)"); return
+    m7 = sc["m7"]
+    if not (m7.startswith(("http://", "https://", "s3://")) or os.path.isdir(m7)): m7 = vc_export.BUCKET + m7
+    hits = list(csv.DictReader(open(os.path.join(d, "hits.tsv")), delimiter="\t"))[:a.grow]
+    os.makedirs(os.path.join(d, "grown"), exist_ok=True); st.mark("grow", "running", leads=len(hits)); surf = []
+    for h in hits:
+        sid = os.path.basename(h["tifxyz"]); g = f"grown/{sid}_grown"
+        if not os.path.exists(os.path.join(d, g, "meta.json")):
+            log(f"grow {sid}"); subprocess.call(cmd + ["-v", m7, "-t", g, "-p", "params.json", "--resume", f"paths/{sid}", "--segment-name", f"{sid}_grown"], cwd=d)
+        if not os.path.exists(os.path.join(d, g, "meta.json")): log(f"grow {sid}: tracer made nothing"); continue
+        surf.append(os.path.join(d, g))
+        if a.snap:
+            sn = os.path.join(d, "grown", f"{sid}_snapped")
+            if not os.path.exists(os.path.join(sn, "snap.json")):
+                c = subprocess.call([PY, os.path.join(HERE, "fibre_snap.py"), surf[-1], "--out", sn, "--ct", sc["ct"], "--afv", a.afv,
+                                     "--cache", os.path.join(st.dir, "afv-tiles")])
+                if c: log(f"fibre snap {sid} failed ({c})"); continue
+            surf.append(sn)
+    if not surf: st.mark("grow", "failed", error="the tracer grew no surface"); return
+    out = os.path.join(st.dir, "grow", "scored")
+    c = subprocess.call([PY, os.path.join(HERE, "score_tifxyz.py"), "--out", out, "--ct", sc["ct"], *(["--um", str(sc["um"])] if sc.get("um") else []),
+                         "--device", a.device, "--max-cache-gb", str(a.max_cache_gb), "--resume", *surf])
+    if c: st.mark("grow", "failed", error=f"score_tifxyz exit {c}"); return
+    rows = []; tif = {r["id"]: r["tifxyz"] for r in csv.DictReader(open(os.path.join(out, "surfaces.tsv")), delimiter="\t")}
+    for p in runlib.patches([out]):
+        sp = tif.get(str(p["id"]), "")
+        r = runlib.letters(p) or {}
+        snap = json.load(open(os.path.join(sp, "snap.json"))) if sp and os.path.exists(os.path.join(sp, "snap.json")) else None
+        rows.append(dict(id=p["id"], surface=os.path.basename(sp) or p.get("src", ""), area=round(p["area"], 3), ts=round(p["ts"], 4), side=p["side"],
+                         ls=r.get("score"), letters=r.get("letters"), shift=snap and snap["shift_abs_mean"]))
+    st.mark("grow", "done", surfaces=rows, folder=out)
+
+
 def report(run, st, sc):
     S = st.s["stages"]; L = S.get("leads", {}).get("best", []); sp = {s["id"]: s for s in S.get("spread", {}).get("spreads", [])}
     sw = S.get("sweep", {})
@@ -143,6 +191,12 @@ def report(run, st, sc):
     for i, p in enumerate(L):
         s = sp.get(p["id"], {})
         lines.append(f"| {i + 1} | {p['id']} | {p['ts']} | {p.get('ls')} | {s.get('ls', '')}{' (row)' if s.get('letters') else ''} | {p['side']} | {' '.join(map(str, p['seed']))} |")
+    G = S.get("grow", {})
+    if G.get("surfaces"):
+        lines += ["", "Grown with VC's tracer (and fibre-snapped where named so), then read whole:", "",
+                  "| surface | area cm2 | text score | letters | mean fibre shift vx |", "|---|---|---|---|---|"]
+        lines += [f"| {g['surface']} | {g['area']} | {g['ts']} | {g['ls']} | {g['shift'] if g['shift'] is not None else ''} |" for g in G["surfaces"]]
+    elif G.get("state") == "skipped": lines += ["", f"Grow skipped: {G.get('reason')}."]
     lines += ["", "Open in VC3D: copy `auto/vc/paths/*` into a volpkg's `paths/` (or open them directly) and load "
               "`auto/vc/prospector_hits.json` as a point collection; `auto/vc/grow.sh` grows each lead with VC's tracer.",
               "3D map: `_viewer/index.html` (serve the folder). Stitched sheets: `_stitch/`. A lead is a place to look, not a reading."]
@@ -167,6 +221,9 @@ def run_scroll(a, sc):
                 c = subprocess.call([PY, os.path.join(HERE, "build_viewer.py"), os.path.join(run, "_viewer"), f"{sc['name']} auto", src, "--full", "50"])
                 st.mark("viewer", "done" if c == 0 else "failed", exit=c)
             elif k == "vc": vc(a, src, st, st.s["stages"].get("spread", {}).get("spreads", []), sc)
+            elif k == "grow":
+                if not a.grow: st.mark("grow", "off"); continue
+                grow(a, sc, st)
             st.s["stages"][k]["secs"] = round(time.time() - t); st.save()
         except Exception as e:
             st.mark(k, "failed", error=f"{type(e).__name__}: {e}"); report(run, st, sc); raise
@@ -181,6 +238,10 @@ def main(argv=None):
     ap.add_argument("--spacing", type=int, default=800); ap.add_argument("--half-nodes", type=int, default=128); ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--leads", type=int, default=10); ap.add_argument("--spread", type=int, default=3); ap.add_argument("--spread-nodes", type=int, default=320)
     ap.add_argument("--max-cache-gb", type=float, default=2.0, help="CT/m7 chunk cache per sweep worker (default 2 GB; uncapped a scan can pass 6 GB)")
+    ap.add_argument("--grow", type=int, default=0, help="grow the best N leads with VC's tracer, then read them (default 0: off)")
+    ap.add_argument("--tracer", default="vc_grow_seg_from_seed", help="tracer command; {dir} is replaced by the auto/vc folder, for a Docker mount")
+    ap.add_argument("--snap", action="store_true", help="fibre-snap each grown surface (needs setup.sh --fibre)")
+    ap.add_argument("--afv", default="data/weights/afv-v2")
     ap.add_argument("--device", default="cpu"); ap.add_argument("--sweep", help="use this existing scan or run folder instead of sweeping")
     a = ap.parse_args(argv)
     reg = json.load(open(os.path.join(HERE, "scrolls.json"))); todo = []
