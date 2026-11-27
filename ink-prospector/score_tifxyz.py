@@ -104,7 +104,8 @@ def main(argv=None):
         a.ct = a.ct or reg["ct"]; a.um = a.um or reg.get("um")
     if not a.ct: sys.exit("name a --scroll from scrolls.json or pass --ct")
     um = a.um or 8.64; os.makedirs(a.out, exist_ok=True); t0 = time.time()
-    json.dump(dict(scroll=a.scroll, ct=a.ct, um=um, source="score_tifxyz", surfaces=a.surfaces, crop=a.crop, tile=a.tile, shard=a.shard), open(os.path.join(a.out, "run.json"), "w"), indent=1)
+    info = dict(scroll=a.scroll, ct=a.ct, um=um, source="score_tifxyz", surfaces=a.surfaces, crop=a.crop, tile=a.tile, shard=a.shard)
+    json.dump(info, open(os.path.join(a.out, "run.json"), "w"), indent=1)
     import reader
     ct = LazyVol(a.ct, level=a.ct_level, max_cache_gb=a.max_cache_gb); cm = reader.load_reader(a.weights, a.villa)
     tsv = os.path.join(a.out, "scores.tsv"); names = os.path.join(a.out, "surfaces.tsv")
@@ -126,6 +127,7 @@ def main(argv=None):
         print(f"--resume: {len(done)} of {len(jobs)} patches already scored, skipping them", flush=True)
     si, sn = (int(v) for v in a.shard.split("/"))
     if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
+    info["jobs"] = len(jobs); json.dump(info, open(os.path.join(a.out, "run.json"), "w"), indent=1)   # lets prospect.py status count what is left
     if sn > 1: print(f"shard {a.shard}: {sum(1 for i in range(len(jobs)) if i % sn == si)} of {len(jobs)} patches", flush=True)
     for i, (path, win) in enumerate(jobs):
         if i in done or i % sn != si: continue

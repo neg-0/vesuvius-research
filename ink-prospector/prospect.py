@@ -3,6 +3,7 @@
 
   prospect.py scan   --scroll PHerc0306B --box z0 z1 y0 y1 x0 x1 --out runs/demo [--spacing 250] [--device cuda] [--shard i/n]
   prospect.py rank   runs/demo [-n 20] [--sheet top.png]
+  prospect.py status runs/sheet-s0 runs/sheet-s1 ...   (score_tifxyz progress: what each shard has left, ids no shard has)
   prospect.py spread --scroll PHerc0306B --seed z y x --side a --out runs/demo-spread [--half-nodes 320]
   prospect.py viewer runs/demo --out site [--title "PHerc0306B"]
 
@@ -25,6 +26,7 @@ def main():
     p.add_argument("--half-nodes", type=int, default=128); p.add_argument("--shard", default="0/1"); p.add_argument("--device", default="cpu"); p.add_argument("--max-patches", type=int); p.add_argument("--fuse", action="store_true")
     p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet")
     p = sub.add_parser("spread"); common(p); p.add_argument("--seed", type=float, nargs=3, required=True); p.add_argument("--side", choices="ab", default="a"); p.add_argument("--half-nodes", type=int, default=320)
+    p = sub.add_parser("status"); p.add_argument("run", nargs="+")
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
     p = sub.add_parser("viewer"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--title", default="")
     p.add_argument("--known", nargs="+", help="x.tif y.tif z.tif r0 r1 c0 c1 [label]: surface with known text")
@@ -45,6 +47,16 @@ def main():
             for i, p in enumerate(T): g.paste(Image.open(f"{p['base']}_{p['side']}.png").convert("L").resize((256, 256)), ((i % c) * 256, (i // c) * 256))
             g.save(a.sheet); print("contact sheet:", a.sheet)
         return
+    if a.cmd == "status":
+        sys.path.insert(0, HERE); import runs
+        rows, groups = runs.status([ab(r) for r in a.run]); short = lambda m: ", ".join(map(str, m[:10])) + (" ..." if len(m) > 10 else "")
+        for r in rows:
+            print(f"{r['dir']}: {r['done']}" + (f" of {r['expected']} done" + (f", missing {short(r['missing'])}" if r["missing"] else ", complete") if r["expected"] is not None else " scored (no job count in run.json)"))
+        for g in groups:
+            gone = sorted(set(range(g["shards"])) - set(g["have"]))
+            print(f"set of {g['jobs']} patches in {g['shards']} shard(s): " + ("complete" if not g["missing"] else f"{len(g['missing'])} missing ({short(g['missing'])})")
+                  + (f"; no folder for shard(s) {', '.join(map(str, gone))}" if gone else ""))
+        sys.exit(1 if any(g["missing"] for g in groups) or any(r["missing"] for r in rows) else 0)
     if a.cmd == "spread":
         s = scroll(a); sys.exit(run("spread.py", s["ct"], s["m7"], ab(a.out), *a.seed, a.half_nodes, "fwd" if a.side == "a" else "rev", s.get("ct_level", 0)))
     if a.cmd == "stitch":

@@ -253,6 +253,14 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
         assert len(calls) == 2 * len(got) and all(int(r[0]) % 2 == k for r in got)
         rows.update({r[0]: r[:13] for r in got})
     assert rows == {l.split("\t")[0]: l.split("\t")[:13] for l in first[1:]}
+    R, Gs = runs.status([out + "-s0", out + "-s1"])                              # status: both shards complete
+    assert [(r["done"], r["expected"], r["missing"]) for r in R] == [(2, 2, []), (2, 2, [])]
+    assert len(Gs) == 1 and Gs[0]["jobs"] == n and Gs[0]["missing"] == []
+    s1 = open(out + "-s1/scores.tsv").readlines(); open(out + "-s1/scores.tsv", "w").writelines(s1[:-1])   # shard 1 cut off
+    R, Gs = runs.status([out + "-s0", out + "-s1"]); last = int(s1[-1].split("\t")[0])
+    assert R[1]["missing"] == [last] and Gs[0]["missing"] == [last]
+    R, Gs = runs.status([out + "-s0"])                                           # shard 1 forgotten: its ids are missing
+    assert R[0]["missing"] == [] and Gs[0]["missing"] == [1, 3] and Gs[0]["have"] == [0]
 
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     from PIL import Image, ImageDraw

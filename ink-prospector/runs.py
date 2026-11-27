@@ -29,3 +29,19 @@ def patches(paths, um=None):
                              tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b",
                              src=src.get(r["id"], "")))
     return sorted(rows, key=lambda r: -r["ts"])
+def status(paths):
+    """Progress of score_tifxyz folders: per folder done/expected and missing ids, then per set of shards
+    made from the same surfaces, the ids no folder has (a shard never run, or cut off). Folders without a
+    job count in run.json (older runs, scan.py runs) report done only."""
+    rows, sets = [], {}
+    for d in scan_dirs(paths):
+        m = meta(d); n = m.get("jobs"); si, sn = (int(v) for v in str(m.get("shard") or "0/1").split("/"))
+        ids = {int(r["id"]) for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t")}
+        want = {i for i in range(n) if i % sn == si} if n is not None else None
+        rows.append(dict(dir=d, done=len(ids & want) if want is not None else len(ids), expected=None if want is None else len(want),
+                         missing=None if want is None else sorted(want - ids), shard=f"{si}/{sn}"))
+        if n is not None:
+            k = json.dumps([m.get("surfaces"), m.get("crop"), m.get("tile"), n, sn]); s = sets.setdefault(k, dict(jobs=n, n=sn, ids=set(), shards=set(), dirs=[]))
+            s["ids"] |= ids; s["shards"].add(si); s["dirs"].append(d)
+    groups = [dict(jobs=s["jobs"], shards=s["n"], have=sorted(s["shards"]), missing=sorted(set(range(s["jobs"])) - s["ids"]), dirs=s["dirs"]) for s in sets.values()]
+    return rows, groups
