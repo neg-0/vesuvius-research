@@ -166,6 +166,20 @@ def test_vc_export_and_run_ids(tmp_path):
     assert json.load(open(out / "paths" / "prospector_runA-s0-1" / "meta.json"))["scale"] == [0.05, 0.05]
 
 
+def test_score_tifxyz_tiles_cover_a_sheet_once(tmp_path):
+    # Tiles share an edge row/column, so their densified patches abut: together they cover the sheet exactly once.
+    import score_tifxyz
+    ok = np.ones((23, 31), bool); ok[:, 25:] = False                           # a ragged sheet edge
+    W = score_tifxyz.tiles(ok.shape, 8, ok)
+    cover = np.zeros((22 * 4, 30 * 4), int)                                   # densified at step 4
+    for r0, r1, c0, c1 in W:
+        assert r1 - r0 <= 12 and c1 - c0 <= 12
+        cover[r0 * 4:(r1 - 1) * 4, c0 * 4:(c1 - 1) * 4] += 1
+    assert (cover[:, :24 * 4] == 1).all()                                     # every cell of the valid part once
+    assert all(ok[r0:r1, c0:c1].sum() >= 16 for r0, r1, c0, c1 in W)          # empty tiles beyond the edge skipped
+    assert len(score_tifxyz.tiles((23, 31), 8)) == 3 * 4                       # short last strips merged
+
+
 def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
     # A VC-style tifxyz: 20-voxel grid (scale 0.05) on the plane z = 300, two invalid nodes (-1 and z = 0).
     from export_tifxyz import write_tifxyz
