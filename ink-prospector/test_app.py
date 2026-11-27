@@ -52,6 +52,7 @@ def test_runs_and_ranked_patches(app):
     (r,) = json.loads(body); assert r["name"] == "demo" and r["patches"] == 2 and r["scored"] == 2
     P = J(call("/api/runs/demo/patches"))
     assert [p["id"] for p in P] == ["demo-2", "demo-1"] and P[0]["side"] == "a"   # same order as prospect.py rank
+    assert all(isinstance(p["ls"], float) and p["letters"] in (True, False) for p in P)   # letterscore.py on the ink face
     code, png = call(P[0]["a"]); assert code == 200 and png[:4] == b"\x89PNG"
     rows = call("/api/runs/demo/tsv")[1].decode().splitlines()
     assert rows[0].startswith("rank\tid") and rows[1].split("\t")[1] == "demo-2" and rows[1].endswith("demo/p0002_a.png")

@@ -95,9 +95,10 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
     </div>
     <div class="grid" style="margin-top:16px">
       <div class="panel">
-        <div class="ph"><h2>Ranked patches</h2><span class="muted">best first, as <span class="mono">prospect.py rank</span>; orange = the face with ink</span></div>
+        <div class="ph"><h2>Ranked patches</h2><div class="row"><span class="muted">orange = the face with ink · sort by</span>
+          <div class="row" role="group" aria-label="Sort"><button data-sort="ts" aria-pressed="true">Text score</button><button data-sort="ls">Letters</button></div></div></div>
         <div class="scroll"><table>
-          <thead><tr><th>#</th><th>Faces a · b</th><th class="n">Text score</th><th>Side</th><th class="n">Bright a / b</th><th class="n">cm²</th><th>Seed z y x</th></tr></thead>
+          <thead><tr><th>#</th><th>Faces a · b</th><th class="n">Text score</th><th class="n" title="letterscore.py on the ink face: forms in a row x share of ink in letter-sized forms x one-sidedness">Letters</th><th>Side</th><th class="n">Bright a / b</th><th class="n">cm²</th><th>Seed z y x</th></tr></thead>
           <tbody id="patches"></tbody>
         </table></div>
       </div>
@@ -186,12 +187,18 @@ async function loadRun(full) {
     + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button>`;
   $('#run-actions').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, b.dataset.j, name));
   if (!full && P.length === r.patches) return;
-  P = await api('/api/runs/' + encodeURIComponent(name) + '/patches?n=500');
+  P = await api('/api/runs/' + encodeURIComponent(name) + '/patches?n=500'); drawPatches();
+}
+let sortKey = 'ts';
+document.querySelectorAll('[data-sort]').forEach(b => b.onclick = () => { sortKey = b.dataset.sort; document.querySelectorAll('[data-sort]').forEach(x => x.setAttribute('aria-pressed', x === b)); drawPatches(); });
+const lcell = p => p.ls === null || p.ls === undefined ? '' : `${p.ls.toFixed(2)}${p.letters ? ' <span class="st done" title="passes the letters rule: 4+ forms in a row">row</span>' : ''}`;
+function drawPatches() {
+  P.sort((x, y) => sortKey === 'ls' ? (y.ls ?? -1) - (x.ls ?? -1) || x.rank - y.rank : x.rank - y.rank);
   const tb = $('#patches');
   tb.innerHTML = P.length ? P.map((p, i) => `<tr class="click${cur.sel === p.id ? ' sel' : ''}" tabindex="0" data-i="${i}"><td>${p.rank}</td>
       <td><div class="thumbs"><img loading="lazy" alt="face a" src="${p.a}" class="${p.side === 'a' ? 'ink' : ''}"><img loading="lazy" alt="face b" src="${p.b}" class="${p.side === 'b' ? 'ink' : ''}"></div></td>
-      <td class="n">${p.ts.toFixed(4)}</td><td>${p.side}</td><td class="n">${p.fa.toFixed(3)} / ${p.fb.toFixed(3)}</td><td class="n">${p.area.toFixed(2)}</td><td class="mono">${p.seed.join(' ')}</td></tr>`).join('')
-    : `<tr><td colspan="7" class="empty">No usable patches yet.</td></tr>`;
+      <td class="n">${p.ts.toFixed(4)}</td><td class="n">${lcell(p)}</td><td>${p.side}</td><td class="n">${p.fa.toFixed(3)} / ${p.fb.toFixed(3)}</td><td class="n">${p.area.toFixed(2)}</td><td class="mono">${p.seed.join(' ')}</td></tr>`).join('')
+    : `<tr><td colspan="8" class="empty">No usable patches yet.</td></tr>`;
   tb.querySelectorAll('tr[data-i]').forEach(tr => { const go = () => pick(+tr.dataset.i); tr.onclick = go; tr.onkeydown = e => e.key === 'Enter' && go(); });
   if (cur.sel) { const i = P.findIndex(p => p.id === cur.sel); if (i >= 0) pick(i); }
 }
@@ -201,6 +208,7 @@ function pick(i) {
   $('#detail').innerHTML = `<div class="ph"><h2>#${p.rank} · ${esc(p.id)}</h2><div class="row"><a class="btn" href="${p.a}" target="_blank" rel="noopener">Face a</a><a class="btn" href="${p.b}" target="_blank" rel="noopener">Face b</a></div></div>
     <div class="pb"><div class="reads">${['a', 'b'].map(s => `<div class="read${p.side === s ? ' ink' : ''}"><img alt="face ${s}" src="${p[s]}"><span>${s}${p.side === s ? ' · ink' : ''}</span></div>`).join('')}</div>
     <dl>${[['text score', `${p.ts.toFixed(4)} (side ${p.side})`], ['bright share', `a ${p.fa.toFixed(3)} · b ${p.fb.toFixed(3)}`], ['seed z y x', p.seed.join(' ')],
+      ['letter score', p.ls === null || p.ls === undefined ? 'n/a' : `${p.ls.toFixed(2)} · ${p.lrow} forms in a row${p.letters ? ' · passes the letters rule' : ''}`],
       ['sheet tracked', Math.round(p.tracked * 100) + '%'], ['area', p.area.toFixed(2) + ' cm²']].concat(p.src ? [['tifxyz window', p.src]] : [])
       .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
     <p class="muted" style="margin:12px 0 0">A hit is a place to look, not a reading. Copy the seed into <a href="#new" data-spread="${p.seed.join(' ')}" data-side="${p.side}">Spread from a seed</a> to grow a larger patch here.</p></div>`;

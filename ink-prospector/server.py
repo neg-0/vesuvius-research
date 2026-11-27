@@ -36,6 +36,8 @@ class App:
             hit = self.cache.get(d)
             if hit and hit[0] == st: return hit[1]
         P = runlib.patches([d])
+        for p in P:
+            L = runlib.letters(p) or {}; p["ls"] = L.get("score"); p["lrow"] = L.get("row"); p["letters"] = L.get("letters")
         with self.lock: self.cache[d] = (st, P)
         return P
 
@@ -64,7 +66,7 @@ class App:
         out = []
         for i, p in enumerate(self.patches(name)[:n]):
             out.append(dict(rank=i + 1, id=p["id"], ts=round(p["ts"], 4), side=p["side"], fa=round(p["fa"], 4), fb=round(p["fb"], 4),
-                            area=round(p["area"], 3), tracked=round(p["tracked"], 3), seed=p["seed"], src=p.get("src", ""),
+                            area=round(p["area"], 3), ls=p.get("ls"), lrow=p.get("lrow"), letters=p.get("letters"), tracked=round(p["tracked"], 3), seed=p["seed"], src=p.get("src", ""),
                             a=self.url(p["base"] + "_a.png"), b=self.url(p["base"] + "_b.png")))
         return out
 

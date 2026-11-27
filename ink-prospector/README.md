@@ -51,7 +51,8 @@ each other's patches, so two shards can grow the same sheet; `rank` lists both a
 - **Runs:** every run folder under `--runs` with its progress (as `status`), patch count, area read and best text score.
 - **New run:** forms for a box scan, scoring tifxyz surfaces (VC3D segments, HerculeX sheets, `--tile`, `--crop`) and a
   spread from a seed. Shards start as parallel jobs.
-- **Run page:** the ranked list (as `rank`) with both faces of every patch, full-size maps, the ranked TSV, and a button
+- **Run page:** the ranked list (as `rank`) with both faces of every patch and a letter-likeness column (`letterscore.py`
+  on the ink face of the saved maps, 4 voxels per pixel; sortable), full-size maps, the ranked TSV, and a button
   that builds the 3D viewer for that run. A hit's seed can be sent straight to a spread.
 - **Jobs:** state and live log of every job; stop and resume. Resume runs the same command again (`--resume` for scored
   surfaces), so only missing patches are done.
