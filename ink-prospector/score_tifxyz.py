@@ -20,10 +20,17 @@ import grow
 from textscore import stroke
 
 
+def _grid(f):
+    """One tifxyz channel. Uncompressed tifs (HerculeX sheets, VC output) are memory-mapped, so a tile reads only its
+    own rows from disk; anything else is read whole."""
+    try: return tifffile.memmap(f, mode="r")
+    except ValueError: return tifffile.imread(f)
+
+
 @functools.lru_cache(maxsize=1)
 def _read(path):
-    """x, y, z grids and step of one tifxyz folder (the last one read is kept, so tiles of a sheet read it once)."""
-    x, y, z = (tifffile.imread(os.path.join(path, a + ".tif")).astype(np.float32) for a in "xyz")
+    """x, y, z grids and step of one tifxyz folder (the last one opened is kept, so tiles of a sheet open it once)."""
+    x, y, z = (_grid(os.path.join(path, a + ".tif")) for a in "xyz")
     meta = json.load(open(os.path.join(path, "meta.json")))
     return x, y, z, 1.0 / float(meta.get("scale", [1.0])[0])
 
@@ -32,8 +39,19 @@ def load_tifxyz(path, crop=None):
     """tifxyz folder -> P (rows, cols, 3) z y x, ok mask, step in voxels between nodes."""
     x, y, z, step = _read(os.path.abspath(path))
     if crop: r0, r1, c0, c1 = crop; x, y, z = x[r0:r1, c0:c1], y[r0:r1, c0:c1], z[r0:r1, c0:c1]
-    ok = (z > 0) & (x != -1) & (y != -1) & np.isfinite(x) & np.isfinite(y) & np.isfinite(z)   # VC treats z <= 0 as invalid
-    return np.stack([z, y, x], -1), ok, step
+    x, y, z = (np.asarray(v, np.float32) for v in (x, y, z))
+    return np.stack([z, y, x], -1), _ok(x, y, z), step
+
+
+def _ok(x, y, z):
+    return (z > 0) & (x != -1) & (y != -1) & np.isfinite(x) & np.isfinite(y) & np.isfinite(z)   # VC treats z <= 0 as invalid
+
+
+def valid_nodes(path, crop=None, rows=1024):
+    """The ok mask of a tifxyz grid (or window), read in row blocks so a whole sheet never sits in memory at once."""
+    x, y, z, _ = _read(os.path.abspath(path)); r0, r1, c0, c1 = crop or (0, x.shape[0], 0, x.shape[1])
+    return np.concatenate([_ok(*(np.asarray(v[r:min(r + rows, r1), c0:c1], np.float32) for v in (x, y, z)))
+                           for r in range(r0, r1, rows)] or [np.zeros((0, c1 - c0), bool)])
 
 
 def to_dense(P, ok, step):
@@ -99,7 +117,7 @@ def main(argv=None):
     jobs = []                                                            # (path, grid window) per patch
     for path in a.surfaces:
         if not a.tile: jobs.append((path, a.crop)); continue
-        P, ok, _ = load_tifxyz(path, a.crop); o = a.crop or (0, 0, 0, 0)
+        ok = valid_nodes(path, a.crop); o = a.crop or (0, 0, 0, 0)
         jobs += [(path, (o[0] + w[0], o[0] + w[1], o[2] + w[2], o[2] + w[3])) for w in tiles(ok.shape, a.tile, ok, a.min_nodes)]
         print(f"{path}: {len(jobs)} tiles so far", flush=True)
     if done:

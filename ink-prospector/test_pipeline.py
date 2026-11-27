@@ -207,6 +207,13 @@ def test_score_tifxyz_loads_and_densifies_any_step(tmp_path):
     assert np.allclose(D[valid][:, 0], 300, atol=0.5) and abs(abs(Nd[valid][:, 0]).mean() - 1) < 1e-3
     Q2, ok2, _ = score_tifxyz.load_tifxyz(str(tmp_path / "seg"), crop=(1, 4, 2, 7))
     assert Q2.shape == (3, 5, 3) and ok2.all()
+    assert isinstance(score_tifxyz._read(str(tmp_path / "seg"))[2], np.memmap)            # uncompressed: memory-mapped
+    assert np.array_equal(score_tifxyz.valid_nodes(str(tmp_path / "seg"), rows=2), qok)   # row-block mask = whole mask
+    assert np.array_equal(score_tifxyz.valid_nodes(str(tmp_path / "seg"), (1, 4, 2, 7)), ok2)
+    for a in "xyz":                                                                       # compressed tifs still load
+        tifffile.imwrite(tmp_path / "seg" / f"{a}.tif", tifffile.imread(tmp_path / "seg" / f"{a}.tif"), compression="zlib")
+    score_tifxyz._read.cache_clear(); Q3, qok3, _ = score_tifxyz.load_tifxyz(str(tmp_path / "seg"))
+    assert np.array_equal(Q3, Q) and np.array_equal(qok3, qok)
 
 
 
