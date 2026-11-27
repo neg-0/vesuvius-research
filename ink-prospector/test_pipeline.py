@@ -63,6 +63,12 @@ def test_seed_frame_snaps_to_sheet_and_none_off_sheet(tmp_path):
     assert grow.seed_frame(m7, np.array([15.0, 48.0, 48.0])) is None             # 30 vx from any sheet
 
 
+def test_seed_frame_is_none_next_to_a_lone_sheet_voxel(tmp_path):
+    vol = np.zeros((64, 64, 64), np.uint8); vol[40, 32, 32] = 255                # an isolated speck in the prediction
+    m7 = LazyVol(write_zarr(str(tmp_path / "m7.zarr"), vol))
+    assert grow.seed_frame(m7, np.array([36.0, 32.0, 32.0])) is None
+
+
 def test_grow_tracks_a_tilted_sheet(tmp_path):
     vol, dist = sheet(); m7 = LazyVol(write_zarr(str(tmp_path / "m7.zarr"), vol))
     p0, n, U, V, *_ = grow.seed_frame(m7, np.array([50.0, 48.0, 48.0]))

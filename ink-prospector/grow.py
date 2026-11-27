@@ -21,6 +21,7 @@ def seed_frame(surf, p, r=14):
     lab, _ = ndi.label(vals, structure=np.ones((3, 3, 3)))
     idx = np.argwhere(lab == lab[r, r, r]).astype(np.float32) - r
     idx = idx[np.linalg.norm(idx, axis=1) <= r]
+    if len(idx) < 3: return None          # a speck of sheet: too few voxels to fit a plane (np.cov of one point is NaN)
     w, v = np.linalg.eigh(np.cov(idx.T)); n = v[:, 0]
     ez = np.array([1.0, 0, 0]); V = ez - n * (ez @ n)
     if np.linalg.norm(V) < 0.3: ez = np.array([0, 1.0, 0]); V = ez - n * (ez @ n)
