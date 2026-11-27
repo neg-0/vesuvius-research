@@ -67,8 +67,8 @@ class App:
         url = lambda p: self.url(p) if p and os.path.realpath(p).startswith(os.path.realpath(self.runs) + os.sep) and os.path.exists(p) else None
         leads = [dict(l, png=url(l.get("png")), spread=dict(sp[l["id"]], png=url(sp[l["id"]].get("png"))) if l["id"] in sp else None)
                  for l in S.get("leads", {}).get("best", [])]
-        G = S.get("grow", {}); gd = G.get("folder") or ""
-        grown = [dict(g, png=url(os.path.join(gd, f"p{int(g['id']):04d}_{g['side']}.png"))) for g in G.get("surfaces", [])]
+        G = S.get("grow", {})
+        grown = [dict(g, png=url(g.get("png"))) for g in G.get("surfaces", [])]
         rep = os.path.join(d, "auto", "REPORT.md"); vc = os.path.join(d, "auto", "vc")
         return dict(grown=grown, stages={k: dict(state=v.get("state"), secs=v.get("secs"), error=v.get("error") or v.get("reason")) for k, v in S.items()}, leads=leads,
                     sweep=S.get("sweep", {}), report=self.url(rep) if os.path.exists(rep) else None, vc=vc if os.path.isdir(vc) else None)

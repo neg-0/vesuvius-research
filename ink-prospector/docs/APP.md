@@ -56,3 +56,24 @@ browser (app/index.html)  <-- JSON + files -->  prospect.py serve  --spawns-->  
 3. Letter-likeness column (done: `runs.letters`, sortable in the run page).
 4. Read-only mode (done: with no server the app shows `demo/` data; on Pages at `ink-prospector/app/`).
 5. Stitched sheet view (done: Stitch sheets on the run page runs `stitch` into `<run>/_stitch/`; the sheets show with a letter score).
+6. Auto mode (done: `prospect.py auto`, the Auto form and the Auto panel on the run page; `--grow` runs VC's tracer).
+
+## Real runs (cloud CPU, 4 cores, 16 GB, PHerc0306B, 2026-11-27)
+
+- Box scan through the app: `9000-10000 2400-3400 3400-4400`, spacing 250 (64 seeds), 2 shards. It took about 4 min per
+  patch per shard. Uncapped, two shards plus a score job were OOM-killed, so jobs now cap the chunk cache at 2 GB.
+- Auto on that scan (16 usable patches so far), with `--leads 10 --spread 2 --grow 3` and the villa
+  `volume-cartographer:edge` image as tracer, ran unattended in 44 min:
+
+  | stage | time |
+  |---|---|
+  | leads, stitch, viewer, vc | under 5 s |
+  | spread | 33 min (2 leads, 22 mm fused reads) |
+  | grow + whole reads | 11 min (3 leads grown to 1.7-2.1 cm², about 50 s each in VC, 3 min to read each) |
+
+  This box shows no letters (best spread letter score 1.1, under the pass mark). The run checks that the pipeline works
+  end to end, not that the box holds text.
+- Fibre snap (`fibre_snap.py`) on a quarter (0.6 cm²) of a VC-grown 306B segment: 151 AFV blocks in 15 min, mean shift
+  0.55 voxels, 16% of points with a confident fibre peak. Read in 9 tiles, ink moved both ways from tile to tile, and the
+  total inked share was about the same (0.078 before, 0.070 after). On a segment VC already traced well, snapping does
+  not help much. It is meant for rougher surfaces.

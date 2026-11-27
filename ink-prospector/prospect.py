@@ -36,8 +36,8 @@ def main():
     p = sub.add_parser("auto", add_help=False); p.add_argument("rest", nargs=argparse.REMAINDER)
     p = sub.add_parser("serve"); p.add_argument("--runs", default="runs", help="folder holding the run folders (made if missing)")
     p.add_argument("--host", default="127.0.0.1"); p.add_argument("--port", type=int, default=8765)
+    if sys.argv[1:2] == ["auto"]: sys.exit(run("auto.py", *sys.argv[2:]))   # argparse REMAINDER rejects a leading --option
     a = ap.parse_args(); ab = os.path.abspath
-    if a.cmd == "auto": sys.exit(run("auto.py", *a.rest))
     if a.cmd == "serve":
         sys.path.insert(0, HERE); import server
         return server.main(a.runs, a.host, a.port)

@@ -147,6 +147,18 @@ def tracer_cmd(a, d):
     return cmd if cmd and shutil.which(cmd[0]) else None
 
 
+def grown_rows(out):
+    """One row per surface read by score_tifxyz into out: its tifxyz name, area, text and letter score, ink map, fibre shift."""
+    rows = []; tif = {r["id"]: r["tifxyz"] for r in csv.DictReader(open(os.path.join(out, "surfaces.tsv")), delimiter="\t")}
+    for p in runlib.patches([out]):
+        sp = tif.get(str(int(os.path.basename(p["base"])[1:])), "")    # p0003 -> surfaces.tsv id 3
+        r = runlib.letters(p) or {}
+        snap = json.load(open(os.path.join(sp, "snap.json"))) if sp and os.path.exists(os.path.join(sp, "snap.json")) else None
+        rows.append(dict(id=p["id"], png=f"{p['base']}_{p['side']}.png", surface=os.path.basename(sp) or p.get("src", ""), area=round(p["area"], 3), ts=round(p["ts"], 4), side=p["side"],
+                         ls=r.get("score"), letters=r.get("letters"), shift=snap and snap["shift_abs_mean"]))
+    return rows
+
+
 def grow(a, sc, st):
     import vc_export
     d = os.path.join(st.dir, "vc"); cmd = tracer_cmd(a, d)
@@ -173,14 +185,7 @@ def grow(a, sc, st):
     c = subprocess.call([PY, os.path.join(HERE, "score_tifxyz.py"), "--out", out, "--ct", sc["ct"], *(["--um", str(sc["um"])] if sc.get("um") else []),
                          "--device", a.device, "--max-cache-gb", str(a.max_cache_gb), "--resume", *surf])
     if c: st.mark("grow", "failed", error=f"score_tifxyz exit {c}"); return
-    rows = []; tif = {r["id"]: r["tifxyz"] for r in csv.DictReader(open(os.path.join(out, "surfaces.tsv")), delimiter="\t")}
-    for p in runlib.patches([out]):
-        sp = tif.get(str(p["id"]), "")
-        r = runlib.letters(p) or {}
-        snap = json.load(open(os.path.join(sp, "snap.json"))) if sp and os.path.exists(os.path.join(sp, "snap.json")) else None
-        rows.append(dict(id=p["id"], surface=os.path.basename(sp) or p.get("src", ""), area=round(p["area"], 3), ts=round(p["ts"], 4), side=p["side"],
-                         ls=r.get("score"), letters=r.get("letters"), shift=snap and snap["shift_abs_mean"]))
-    st.mark("grow", "done", surfaces=rows, folder=out)
+    st.mark("grow", "done", surfaces=grown_rows(out), folder=out)
 
 
 def report(run, st, sc):

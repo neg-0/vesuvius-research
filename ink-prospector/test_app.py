@@ -173,3 +173,20 @@ def test_auto_runs_every_stage_on_an_existing_sweep(tmp_path):
     assert "Grow skipped: tracer 'no-such-tracer' not found" in (run / "auto" / "REPORT.md").read_text()
     s = server.App(str(tmp_path / "runs")); info = s.auto(str(run))
     assert info["report"] and [l["id"] for l in info["leads"]] == [l["id"] for l in best] and info["leads"][0]["png"].startswith("/files/")
+
+
+def test_prospect_auto_passes_options_through():
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "prospect.py"), "auto", "--scroll", "x", "--help"],
+                       capture_output=True, text=True)
+    assert r.returncode == 0 and "--grow" in r.stdout
+
+
+def test_grown_rows_name_each_surface(tmp_path):
+    import auto
+    out = str(tmp_path / "scored"); _scan(out, ids=(0, 1)); snapped = tmp_path / "x_snapped"; snapped.mkdir()
+    (snapped / "snap.json").write_text(json.dumps(dict(shift_abs_mean=0.5)))
+    (tmp_path / "scored" / "surfaces.tsv").write_text(f"id\ttifxyz\tr0\tr1\tc0\tc1\n0\t{tmp_path}/x_grown\t0\t9\t0\t9\n1\t{snapped}\t0\t9\t0\t9\n")
+    R = {r["surface"]: r for r in auto.grown_rows(out)}
+    assert set(R) == {"x_grown", "x_snapped"} and R["x_snapped"]["shift"] == 0.5 and R["x_grown"]["shift"] is None
+    assert all(os.path.exists(r["png"]) for r in R.values())
