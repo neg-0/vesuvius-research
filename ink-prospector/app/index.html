@@ -16,7 +16,7 @@
 :root[data-theme="dark"]{
   --bg:#12151b; --panel:#1a1e27; --line:#2d3441; --fg:#e4e8ef; --muted:#939db0;
   --accent:#7fa8f0; --warm:#eaa13a; --hot:#ff6a4d; --ok:#44c9b4; --ct:#07080a; color-scheme:dark }
-*{box-sizing:border-box}
+*{box-sizing:border-box} [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
 .wrap{max-width:1280px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:16px}
 header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
@@ -95,8 +95,8 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
     </div>
     <div class="grid" style="margin-top:16px">
       <div class="panel">
-        <div class="ph"><h2>Ranked patches</h2><div class="row"><span class="muted">orange = the face with ink · sort by</span>
-          <div class="row" role="group" aria-label="Sort"><button data-sort="ts" aria-pressed="true">Text score</button><button data-sort="ls">Letters</button></div></div></div>
+        <div class="ph"><h2>Ranked patches</h2><div class="row"><span class="muted">orange = the face with ink</span>
+          <div class="row" role="group" aria-label="Sort" id="sorts"><span class="muted">· sort by</span><button data-sort="ts" aria-pressed="true">Text score</button><button data-sort="ls">Letters</button></div></div></div>
         <div class="scroll"><table>
           <thead><tr><th>#</th><th>Faces a · b</th><th class="n">Text score</th><th class="n" title="letterscore.py on the ink face: forms in a row x share of ink in letter-sized forms x one-sidedness">Letters</th><th>Side</th><th class="n">Bright a / b</th><th class="n">cm²</th><th>Seed z y x</th></tr></thead>
           <tbody id="patches"></tbody>
@@ -140,7 +140,7 @@ pre.log{margin:0;padding:10px 12px;background:var(--ct);color:#d8dde6;font:12px/
 <div id="toast" role="status"></div>
 <script>
 const $ = s => document.querySelector(s), esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function api(path, body) {
+let api = async function (path, body) {
   const r = await fetch(path, body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
   const j = (r.headers.get('content-type') || '').includes('json') ? await r.json() : await r.text();
   if (!r.ok) throw new Error(j.error || r.statusText); return j;
@@ -185,6 +185,7 @@ async function loadRun(full) {
     + (last ? `<a class="btn" href="#job/${last.id}">Log</a>` : '')
     + `<a class="btn" href="/api/runs/${encodeURIComponent(name)}/tsv" download="${esc(name)}-ranked.tsv">Ranked TSV</a>`
     + (r.viewer ? `<a class="btn" href="${r.viewer}" target="_blank" rel="noopener">3D viewer</a>` : '') + `<button data-a="viewer">${r.viewer ? 'Rebuild' : 'Build'} 3D viewer</button>`;
+  if (DEMO) $('#run-actions').innerHTML = `<a class="btn" href="${r.viewer}">3D viewer</a>`;
   $('#run-actions').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, b.dataset.j, name));
   if (!full && P.length === r.patches) return;
   P = await api('/api/runs/' + encodeURIComponent(name) + '/patches?n=500'); drawPatches();
@@ -205,14 +206,14 @@ function drawPatches() {
 function pick(i) {
   const p = P[i]; cur.sel = p.id;
   document.querySelectorAll('#patches tr').forEach(tr => tr.classList.toggle('sel', +tr.dataset.i === i));
-  $('#detail').innerHTML = `<div class="ph"><h2>#${p.rank} · ${esc(p.id)}</h2><div class="row"><a class="btn" href="${p.a}" target="_blank" rel="noopener">Face a</a><a class="btn" href="${p.b}" target="_blank" rel="noopener">Face b</a></div></div>
+  $('#detail').innerHTML = `<div class="ph"><h2>#${p.rank} · ${esc(p.id)}</h2>${DEMO ? '' : `<div class="row"><a class="btn" href="${p.a}" target="_blank" rel="noopener">Face a</a><a class="btn" href="${p.b}" target="_blank" rel="noopener">Face b</a></div>`}</div>
     <div class="pb"><div class="reads">${['a', 'b'].map(s => `<div class="read${p.side === s ? ' ink' : ''}"><img alt="face ${s}" src="${p[s]}"><span>${s}${p.side === s ? ' · ink' : ''}</span></div>`).join('')}</div>
     <dl>${[['text score', `${p.ts.toFixed(4)} (side ${p.side})`], ['bright share', `a ${p.fa.toFixed(3)} · b ${p.fb.toFixed(3)}`], ['seed z y x', p.seed.join(' ')],
       ['letter score', p.ls === null || p.ls === undefined ? 'n/a' : `${p.ls.toFixed(2)} · ${p.lrow} forms in a row${p.letters ? ' · passes the letters rule' : ''}`],
       ['sheet tracked', Math.round(p.tracked * 100) + '%'], ['area', p.area.toFixed(2) + ' cm²']].concat(p.src ? [['tifxyz window', p.src]] : [])
       .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
-    <p class="muted" style="margin:12px 0 0">A hit is a place to look, not a reading. Copy the seed into <a href="#new" data-spread="${p.seed.join(' ')}" data-side="${p.side}">Spread from a seed</a> to grow a larger patch here.</p></div>`;
-  $('#detail [data-spread]').onclick = e => { pendingSpread = {seed: e.target.dataset.spread, side: e.target.dataset.side, scroll: cur.scroll}; };
+    <p class="muted" style="margin:12px 0 0">A hit is a place to look, not a reading.${DEMO ? '' : ` Copy the seed into <a href="#new" data-spread="${p.seed.join(' ')}" data-side="${p.side}">Spread from a seed</a> to grow a larger patch here.`}</p></div>`;
+  if (!DEMO) $('#detail [data-spread]').onclick = e => { pendingSpread = {seed: e.target.dataset.spread, side: e.target.dataset.side, scroll: cur.scroll}; };
 }
 
 /* new run forms */
@@ -290,5 +291,35 @@ async function refresh(full) {
   catch (e) { toast(e.message, true); } finally { busy = false; }
 }
 setInterval(() => document.visibilityState === 'visible' && refresh(false), 3000);
-(async () => { scrolls = await api('/api/scrolls'); $('#where').textContent = location.host; drawForm(); route(); })();
+/* Read-only demo: with no server behind the page (GitHub Pages, a plain file server), the app shows the published
+   PHerc0306B demo scan from ../demo/ (data.json and the thumbnail atlas). Starting runs needs `prospect.py serve`. */
+let DEMO = null;
+async function demoApi(path) {
+  const u = new URL(path, location.href), p = u.pathname;
+  if (p === '/api/scrolls') return {PHerc0306B: {}};
+  if (p === '/api/jobs') return [];
+  const d = DEMO.data, run = {name: DEMO.name, patches: d.patches.length, area: d.patches.reduce((s, q) => s + q.area, 0), best: d.patches[0].ts,
+    scored: d.patches.length, expected: null, shards: 1, missing: 0, scroll: 'PHerc0306B', source: 'scan', viewer: '../demo/', jobs: []};
+  if (p === '/api/runs') return [run];
+  if (p.endsWith('/patches')) return d.patches.map((q, i) => ({rank: i + 1, id: q.id, ts: q.ts, side: q.side, fa: q.fa, fb: q.fb, area: q.area, tracked: q.tr,
+    seed: q.seed, src: q.src || '', ls: null, lrow: null, letters: null, a: DEMO.tile(i, 0), b: DEMO.tile(i, 1)}));
+  if (p.startsWith('/api/runs/')) return run;
+  throw new Error('This is the read-only demo. Run prospect.py serve to start and control runs.');
+}
+async function startDemo() {
+  const base = new URL('../demo/', location.href), data = await (await fetch(new URL('data.json', base))).json();
+  const atlas = new Image(); atlas.src = new URL('atlas.jpg', base); await atlas.decode();
+  const cache = {}, c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+  DEMO = {data, name: 'pherc0306b-demo', tile: (i, k) => cache[i + '-' + k] ??= (g.drawImage(atlas, (i % 6) * 512 + k * 256, Math.floor(i / 6) * 256, 256, 256, 0, 0, 256, 256), c.toDataURL('image/jpeg', 0.85))};
+  api = demoApi;
+  $('#where').innerHTML = 'read-only demo of a blind PHerc0306B scan · run <span class="mono">prospect.py serve</span> to start your own';
+  document.querySelectorAll('nav button[data-tab="new"], nav button[data-tab="jobs"]').forEach(b => b.hidden = true);
+  $('#sorts').hidden = true;
+  $('#runs-note').textContent = 'The published demo scan. Locally, every run folder in --runs is listed here.';
+}
+(async () => {
+  try { scrolls = await api('/api/scrolls'); if (typeof scrolls !== 'object') throw new Error('no app server'); $('#where').textContent = location.host; }
+  catch (e) { await startDemo(); scrolls = await api('/api/scrolls'); }
+  drawForm(); route();
+})();
 </script>

@@ -61,7 +61,8 @@ Jobs run as ordinary processes and are recorded in `<runs>/.jobs/`, so they keep
 ended, if the browser or the server is closed. The app uses the Python standard library only and listens on localhost,
 since it starts processes on the machine. With Docker:
 `docker run -p 127.0.0.1:8765:8765 -v "$PWD/runs:/work/runs" ink-prospector:cpu serve --runs runs --host 0.0.0.0`.
-Design and API: [`docs/APP.md`](docs/APP.md).
+Design and API: [`docs/APP.md`](docs/APP.md). Without a server behind it (as on GitHub Pages:
+https://neg-0.github.io/vesuvius-research/ink-prospector/app/) the app opens read-only on the demo scan below.
 
 ## Try it without installing
 

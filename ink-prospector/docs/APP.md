@@ -54,4 +54,5 @@ browser (app/index.html)  <-- JSON + files -->  prospect.py serve  --spawns-->  
 1. Server, jobs and API with tests (no network, fake jobs).
 2. Web UI on top of it.
 3. Letter-likeness column (done: `runs.letters`, sortable in the run page).
-4. Read-only mode of the app for the Pages demo, and a stitched sheet view.
+4. Read-only mode (done: with no server the app shows `demo/` data; on Pages at `ink-prospector/app/`).
+5. Stitched sheet view.
