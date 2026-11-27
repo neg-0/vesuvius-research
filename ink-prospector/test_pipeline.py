@@ -224,7 +224,7 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     import score_tifxyz
     calls = []
     stub = types.SimpleNamespace(load_reader=lambda *a: None,
-                                 run_stack=lambda cm, st, **kw: calls.append(1) or st[8].astype(np.float32) / 255)
+                                 run_stack=lambda cm, st, **kw: calls.append(1) or st[8].astype(np.float32) / (510 if kw.get("reverse") else 255))
     monkeypatch.setitem(sys.modules, "reader", stub)
     vol, _ = sheet(); ct = write_zarr(str(tmp_path / "ct.zarr"), vol)
     G = 13; ii, jj = np.mgrid[:G, :G]
@@ -240,6 +240,10 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     assert [l.split("\t")[:13] for l in again] == [l.split("\t")[:13] for l in first]   # same rows, same values
     assert len(open(out + "/surfaces.tsv").readlines()) == n + 1
     calls.clear(); score_tifxyz.main(args + ["--resume"]); assert not calls      # nothing left to do
+    import runs, build_viewer                                                    # rank and viewer name each tile's tifxyz window
+    P = runs.patches([out]); assert len(P) == n and all(p["src"].startswith("seg rows ") for p in P)
+    build_viewer.main([str(tmp_path / "view"), "t", out])
+    D = json.load(open(tmp_path / "view" / "data.json")); assert {p["src"] for p in D["patches"]} == {p["src"] for p in P}
     with pytest.raises(SystemExit):                                              # a different tiling is refused
         score_tifxyz.main(args[:-3] + ["5", "--um", "8", "--resume"])
     rows = {}                                                                    # two shards: every patch once, same values
