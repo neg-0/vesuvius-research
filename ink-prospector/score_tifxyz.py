@@ -58,11 +58,27 @@ def tiles(shape, n, ok=None, min_nodes=None):
     return [w for w in out if ok is None or ok[w[0]:w[1], w[2]:w[3]].sum() >= max(m, 4)]
 
 
+def finished(out):
+    """Patches already scored in a scan folder: {id: (scores.tsv line, surfaces.tsv line)}. A patch counts only when both
+    files have its row (a run cut off mid-patch has the surfaces row but no score)."""
+    try: S = open(os.path.join(out, "scores.tsv")).readlines()[1:]; N = open(os.path.join(out, "surfaces.tsv")).readlines()[1:]
+    except FileNotFoundError: return {}
+    sc = {int(l.split("\t")[0]): l for l in S if l.endswith("\n") and l.split("\t")[0].isdigit()}
+    nm = {int(l.split("\t")[0]): l for l in N if l.endswith("\n") and l.split("\t")[0].isdigit()}
+    return {i: (sc[i], nm[i]) for i in sc if i in nm}
+
+
+def same_job(line, job):
+    """Does a surfaces.tsv line describe this (path, window) job? A job with no window matches any recorded window."""
+    f = line.rstrip("\n").split("\t"); path, win = job
+    return f[1] == os.path.abspath(path) and (win is None or [int(v) for v in f[2:6]] == list(win))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("surfaces", nargs="+"); ap.add_argument("--out", required=True)
     ap.add_argument("--scroll"); ap.add_argument("--ct"); ap.add_argument("--um", type=float); ap.add_argument("--ct-level", type=int, default=0)
-    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
+    ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--resume", action="store_true", help="keep patches already scored in --out and score only the rest"); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
     if a.scroll:
@@ -74,15 +90,24 @@ def main(argv=None):
     import reader
     ct = LazyVol(a.ct, level=a.ct_level, max_cache_gb=a.max_cache_gb); cm = reader.load_reader(a.weights, a.villa)
     tsv = os.path.join(a.out, "scores.tsv"); names = os.path.join(a.out, "surfaces.tsv")
-    with open(tsv, "w") as f: f.write("id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\tp995_a\tp995_b\tstroke_a\tstroke_b\tsecs\n")
-    with open(names, "w") as f: f.write("id\ttifxyz\tr0\tr1\tc0\tc1\n")
+    done = finished(a.out) if a.resume else {}
+    with open(tsv, "w") as f:
+        f.write("id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\tp995_a\tp995_b\tstroke_a\tstroke_b\tsecs\n")
+        f.writelines(done[i][0] for i in sorted(done))
+    with open(names, "w") as f:
+        f.write("id\ttifxyz\tr0\tr1\tc0\tc1\n"); f.writelines(done[i][1] for i in sorted(done))
     jobs = []                                                            # (path, grid window) per patch
     for path in a.surfaces:
         if not a.tile: jobs.append((path, a.crop)); continue
         P, ok, _ = load_tifxyz(path, a.crop); o = a.crop or (0, 0, 0, 0)
         jobs += [(path, (o[0] + w[0], o[0] + w[1], o[2] + w[2], o[2] + w[3])) for w in tiles(ok.shape, a.tile, ok, a.min_nodes)]
         print(f"{path}: {len(jobs)} tiles so far", flush=True)
+    if done:
+        bad = [i for i in done if i >= len(jobs) or not same_job(done[i][1], jobs[i])]
+        if bad: sys.exit(f"--resume: {a.out} was made from other surfaces or tiles (patch {bad[0]} differs); use a new --out")
+        print(f"--resume: {len(done)} of {len(jobs)} patches already scored, skipping them", flush=True)
     for i, (path, win) in enumerate(jobs):
+        if i in done: continue
         t = time.time(); P, ok, step = load_tifxyz(path, win)
         w = win or (0, P.shape[0], 0, P.shape[1])
         open(names, "a").write(f"{i}\t{os.path.abspath(path)}\t{w[0]}\t{w[1]}\t{w[2]}\t{w[3]}\n")
