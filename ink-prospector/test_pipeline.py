@@ -269,6 +269,18 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     assert R[1]["missing"] == [last] and Gs[0]["missing"] == [last]
     R, Gs = runs.status([out + "-s0"])                                           # shard 1 forgotten: its ids are missing
     assert R[0]["missing"] == [] and Gs[0]["missing"] == [1, 3] and Gs[0]["have"] == [0]
+    boom = {"n": 0}                                                              # a patch that throws does not end the run
+    def flaky(cm, st, **kw):
+        boom["n"] += 1
+        if boom["n"] == 3: raise OSError("chunk fetch failed")
+        return st[8].astype(np.float32) / (510 if kw.get("reverse") else 255)
+    stub.run_stack = flaky; bad = out + "-flaky"
+    with pytest.raises(SystemExit, match="1 patch"):
+        score_tifxyz.main(args[:2] + [bad] + args[3:])
+    got = {l.split("\t")[0] for l in open(bad + "/scores.tsv").readlines()[1:]}
+    assert got == {"0", "2", "3"} and runs.status([bad])[0][0]["missing"] == [1]
+    score_tifxyz.main(args[:2] + [bad] + args[3:] + ["--resume"])                # --resume retries only the failed one
+    assert [l.split("\t")[:13] for l in sorted(open(bad + "/scores.tsv").readlines()[1:])] == [l.split("\t")[:13] for l in sorted(first[1:])]
 
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path):
     from PIL import Image, ImageDraw
