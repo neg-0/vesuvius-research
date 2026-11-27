@@ -138,6 +138,8 @@ def main(argv=None):
             open(tsv, "a").write(f"{i}\t{c[0]:.0f}\t{c[1]:.0f}\t{c[2]:.0f}\tsmall\n"); return
         D, valid, Nd = to_dense(P, ok, step)
         st = grow.render_fast(ct, D, Nd, 17, valid=valid); st[:, ~valid] = 0
+        if (st[:, valid] == 0).mean() > 0.99:                            # outside the scan or on missing chunks: nothing to read
+            open(tsv, "a").write(f"{i}\t{c[0]:.0f}\t{c[1]:.0f}\t{c[2]:.0f}\tnoct\n"); print(f"patch {i}: no CT data under it, skipped", flush=True); return
         res = {}
         for tag, rev in (("a", False), ("b", True)):
             o = (reader.run_fused if a.fuse else reader.run_stack)(cm, st, layer_start=0, reverse=rev, overlap=0.5, batch=a.batch, device=a.device)
