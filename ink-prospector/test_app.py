@@ -173,3 +173,10 @@ def test_auto_runs_every_stage_on_an_existing_sweep(tmp_path):
     assert "Grow skipped: tracer 'no-such-tracer' not found" in (run / "auto" / "REPORT.md").read_text()
     s = server.App(str(tmp_path / "runs")); info = s.auto(str(run))
     assert info["report"] and [l["id"] for l in info["leads"]] == [l["id"] for l in best] and info["leads"][0]["png"].startswith("/files/")
+
+
+def test_prospect_auto_passes_options_through():
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "prospect.py"), "auto", "--scroll", "x", "--help"],
+                       capture_output=True, text=True)
+    assert r.returncode == 0 and "--grow" in r.stdout
