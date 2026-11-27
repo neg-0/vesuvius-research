@@ -24,11 +24,11 @@ import argparse, json, os, sys
 import numpy as np
 from scipy import ndimage as ndi
 
-DEFAULTS = dict(thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.6, max_stroke_mm=0.8, line_tol=0.35, max_gap=2.0,
+DEFAULTS = dict(thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.7, max_stroke_mm=1.2, line_tol=0.35, max_gap=2.0,
                 min_row=4, min_form_share=0.35, max_back=1 / 3)
 
 
-def forms(ink, valid, um, thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.6, max_stroke_mm=0.8, **_):
+def forms(ink, valid, um, thr=0.62, join_mm=0.35, lo_mm=2.0, hi_mm=5.0, max_elong=4.0, max_fill=0.7, max_stroke_mm=1.2, **_):
     """Connected forms of confident ink after joining strokes closer than join_mm. Returns a list of dicts
     (centre in mm, height/width in mm, fill, letter-like flag, confident pixel count)."""
     A = (ink > thr) & valid
