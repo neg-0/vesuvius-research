@@ -129,14 +129,13 @@ def main(argv=None):
     if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
     info["jobs"] = len(jobs); json.dump(info, open(os.path.join(a.out, "run.json"), "w"), indent=1)   # lets prospect.py status count what is left
     if sn > 1: print(f"shard {a.shard}: {sum(1 for i in range(len(jobs)) if i % sn == si)} of {len(jobs)} patches", flush=True)
-    for i, (path, win) in enumerate(jobs):
-        if i in done or i % sn != si: continue
+    def one(i, path, win):
         t = time.time(); P, ok, step = load_tifxyz(path, win)
         w = win or (0, P.shape[0], 0, P.shape[1])
         open(names, "a").write(f"{i}\t{os.path.abspath(path)}\t{w[0]}\t{w[1]}\t{w[2]}\t{w[3]}\n")
         c = P[ok].mean(0) if ok.any() else np.zeros(3)
         if ok.sum() < 4:
-            open(tsv, "a").write(f"{i}\t{c[0]:.0f}\t{c[1]:.0f}\t{c[2]:.0f}\tsmall\n"); continue
+            open(tsv, "a").write(f"{i}\t{c[0]:.0f}\t{c[1]:.0f}\t{c[2]:.0f}\tsmall\n"); return
         D, valid, Nd = to_dense(P, ok, step)
         st = grow.render_fast(ct, D, Nd, 17, valid=valid); st[:, ~valid] = 0
         res = {}
@@ -152,6 +151,15 @@ def main(argv=None):
                              (ok.mean(), area, res["a"][0], res["b"][0], res["a"][1], res["b"][1], res["a"][2], res["b"][2], time.time() - t)]) + "\n")
         print(f"[{time.time() - t0:6.0f}s] {i + 1}/{len(jobs)} {path} {w}: {area:.2f} cm2 read, bright a/b {res['a'][0]:.3f}/{res['b'][0]:.3f}", flush=True)
         ct.drop(1500)
+    failed = []
+    for i, (path, win) in enumerate(jobs):
+        if i in done or i % sn != si: continue
+        try: one(i, path, win)
+        except Exception as e:                                           # a bad tile (CT fetch, corrupt grid) must not end a whole-sheet run
+            failed.append(i); print(f"patch {i} ({path} {win}) failed: {type(e).__name__}: {e}", flush=True); ct.drop(1500)
+    if failed:
+        sys.exit(f"{len(failed)} patch(es) failed ({', '.join(map(str, failed[:10]))}{' ...' if len(failed) > 10 else ''}); the rest are scored. "
+                 f"Run the same command with --resume to retry only those.")
     print(f"done -> {a.out}; rank with: prospect.py rank {a.out}")
 
 
