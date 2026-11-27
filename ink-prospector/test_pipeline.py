@@ -244,6 +244,10 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     P = runs.patches([out]); assert len(P) == n and all(p["src"].startswith("seg rows ") for p in P)
     build_viewer.main([str(tmp_path / "view"), "t", out])
     D = json.load(open(tmp_path / "view" / "data.json")); assert {p["src"] for p in D["patches"]} == {p["src"] for p in P}
+    assert all(len(p["full"]) == 2 and (tmp_path / "view" / p["full"][0]).exists() for p in D["patches"])   # full-size maps copied
+    build_viewer.main([str(tmp_path / "view2"), "t", out, "--full", "1"])
+    D = json.load(open(tmp_path / "view2" / "data.json")); assert [len(p["full"]) for p in D["patches"]] == [2] + [0] * (n - 1)
+    assert len(os.listdir(tmp_path / "view2" / "full")) == 2
     with pytest.raises(SystemExit):                                              # a different tiling is refused
         score_tifxyz.main(args[:-3] + ["5", "--um", "8", "--resume"])
     rows = {}                                                                    # two shards: every patch once, same values
