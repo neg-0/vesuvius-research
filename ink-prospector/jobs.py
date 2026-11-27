@@ -147,7 +147,8 @@ class Jobs:
         if kind != "viewer":
             busy = [j for j in self.list() if j["state"] == "running" and j["out"] == out and j["argv"] == argv]
             if busy: raise BadJob(f"job {busy[0]['id']} is already running this command")
-        jid = time.strftime("%Y%m%d%H%M%S") + uuid.uuid4().hex[:6]; d = os.path.join(self.dir, jid); os.makedirs(d)
+        jid = time.strftime("%Y%m%d%H%M%S") + f"{time.time_ns() % 10**9:09d}" + uuid.uuid4().hex[:4]   # sorts by start time
+        d = os.path.join(self.dir, jid); os.makedirs(d)
         job = dict(id=jid, kind=kind, fields=fields, argv=argv, out=out, created=time.time(), attempts=0)
         json.dump(job, open(os.path.join(d, "job.json"), "w"), indent=1)
         return self.start(jid)
@@ -198,7 +199,7 @@ class Jobs:
         for jid in sorted(os.listdir(self.dir), reverse=True):
             try: out.append(self.get(jid))
             except (KeyError, BadJob, FileNotFoundError, json.JSONDecodeError): pass
-        return out
+        return sorted(out, key=lambda j: -j["created"])                  # newest first, also for jobs made in the same second
 
 
 def _wrapper(d):
