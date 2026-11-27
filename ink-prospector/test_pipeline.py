@@ -51,6 +51,12 @@ def test_lazyvol_missing_chunk_is_zero_and_dtype_checked(tmp_path):
     write_zarr(str(tmp_path / "f.zarr"), vol.astype(np.uint8), dtype="<f4")
     with pytest.raises(ValueError): LazyVol(str(tmp_path / "f.zarr"))
     with pytest.raises(FileNotFoundError): LazyVol(str(tmp_path / "f.zarr"), level=3)
+    cd = tmp_path / "cache"; z = write_zarr(str(tmp_path / "v.zarr"), vol)       # disk cache: reused, and a broken file is refetched
+    LazyVol(z, cache_dir=str(cd)).block((0, 0, 0), (64, 64, 64))
+    assert sorted(os.listdir(cd)) == [f"{i}_{j}_{k}.npy" for i in (0, 1) for j in (0, 1) for k in (0, 1)]   # no .tmp left
+    (cd / "1_1_1.npy").write_bytes(b"\x93NUMPY trunc")                          # a run killed mid-write
+    assert np.array_equal(LazyVol(z, cache_dir=str(cd)).block((0, 0, 0), (64, 64, 64)), vol)
+    assert np.load(cd / "1_1_1.npy").shape == (32, 32, 32)
 
 
 def test_seed_frame_snaps_to_sheet_and_none_off_sheet(tmp_path):

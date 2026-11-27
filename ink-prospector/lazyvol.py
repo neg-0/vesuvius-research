@@ -2,7 +2,7 @@
 
 `path` is a path inside the Vesuvius Challenge open-data bucket (as in scrolls.json), a full http(s) URL of a zarr, or a
 local zarr folder. `level` picks the pyramid level (the subfolder 0, 1, ...). Chunks that do not exist read as zeros."""
-import json, os, time, urllib.request, urllib.error, numpy as np
+import json, os, threading, time, urllib.request, urllib.error, numpy as np
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 BASE = "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/"
@@ -46,14 +46,19 @@ class LazyVol:
     def _get(self, key):
         i, j, k = key
         fn = os.path.join(self.cache_dir, f"{i}_{j}_{k}.npy") if self.cache_dir else None
-        if fn and os.path.exists(fn): return key, np.load(fn)
+        if fn and os.path.exists(fn):
+            try: return key, np.load(fn)
+            except (ValueError, OSError, EOFError): os.remove(fn)          # a half-written cache file: fetch the chunk again
         raw = self._read(f"{self.url}/{i}{self.sep}{j}{self.sep}{k}")
         if raw is None: arr = None
         else:
             self.bytes += len(raw)
             if self.codec is not None: raw = self.codec.decode(raw)
             arr = np.frombuffer(raw, np.uint8).reshape(self.chunk)
-        if fn: np.save(fn, arr if arr is not None else np.zeros(0, np.uint8))
+        if fn:                                                           # write then rename, so a killed run never leaves a broken file
+            tmp = f"{fn}.{os.getpid()}.{threading.get_ident()}.tmp"
+            with open(tmp, "wb") as f: np.save(f, arr if arr is not None else np.zeros(0, np.uint8))
+            os.replace(tmp, fn)
         return key, arr
 
     def ensure(self, keys):
