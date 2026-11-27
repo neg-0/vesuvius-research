@@ -113,3 +113,17 @@ def test_argv_matches_the_command_line(tmp_path):
     assert J.get(j["id"])["state"] == "failed" and "--resume" not in j["run_argv"]          # no such surface
     assert "--resume" in J.resume(j["id"])["run_argv"]                                   # resuming a score job keeps what is scored
     with pytest.raises(joblib.BadJob): joblib.argv_spread(runs, dict(scroll="x", seed=[1, 2], out="s"))
+
+
+def test_stitched_sheets_listed_and_stitch_job(app):
+    call, runs = app
+    st = runs / "demo" / "_stitch"; st.mkdir()
+    from PIL import Image
+    Image.fromarray(blobs([(64, 64), (64, 160)])).save(st / "sheet1_ink.png"); Image.fromarray(blank()).save(st / "sheet1_back.png")
+    (st / "sheets.json").write_text(json.dumps([dict(sheet=1, patches=["demo-2", "demo-1"], root="demo-2", height_mm=8.8, width_mm=8.8, area_cm2=0.7)]))
+    (s,) = J(call("/api/runs/demo"))["sheets"]
+    assert s["root"] == "demo-2" and isinstance(s["ls"], float) and call(s["ink"])[1][:4] == b"\x89PNG"
+    j = J(call("/api/runs/demo/stitch", {}))
+    assert j["kind"] == "stitch" and j["argv"][j["argv"].index("--out") + 1] == str(st) and j["argv"][2:4] == ["stitch", str(runs / "demo")]
+    wait(call, j["id"], ("done", "failed"))
+    assert J(call("/api/runs/demo"))["jobs"] == []                       # a stitch job is not the run's own job

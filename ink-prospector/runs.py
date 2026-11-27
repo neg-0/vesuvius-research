@@ -29,12 +29,14 @@ def patches(paths, um=None):
                              tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b",
                              src=src.get(r["id"], "")))
     return sorted(rows, key=lambda r: -r["ts"])
-def letters(p):
+def letters(p, faces=None):
     """letterscore.py on a patch's saved maps: the ink face against the other. The PNGs are ds4 reads stored as
-    (prob - 0.25) / 0.5 x 255, with 0 where the patch is not tracked, so a pixel is 4 voxels."""
+    (prob - 0.25) / 0.5 x 255, with 0 where the patch is not tracked, so a pixel is 4 voxels. faces names the two
+    files (ink, back) when they are not a/b, as for stitched sheets (sheetK_ink.png, sheetK_back.png)."""
     import numpy as np, letterscore
     from PIL import Image
-    a, b = (np.asarray(Image.open(f"{p['base']}_{s}.png").convert("L"), np.float32) for s in (p["side"], "b" if p["side"] == "a" else "a"))
+    fs = faces or (p["side"], "b" if p["side"] == "a" else "a")
+    a, b = (np.asarray(Image.open(f"{p['base']}_{s}.png").convert("L"), np.float32) for s in fs)
     if a.shape != b.shape: return None
     return letterscore.score_maps(0.25 + a / 510, 0.25 + b / 510, (a > 0) | (b > 0), p["um"] * 4)
 def status(paths):
