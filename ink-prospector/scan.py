@@ -19,11 +19,11 @@ ap.add_argument("--spacing", type=int, default=250); ap.add_argument("--half-nod
 ap.add_argument("--shard", default="0/1"); ap.add_argument("--max-patches", type=int, default=10**6)
 ap.add_argument("--min-tracked", type=float, default=0.15); ap.add_argument("--seed", type=int, default=0)
 ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip")
-ap.add_argument("--cache", default=None); ap.add_argument("--device", default="cpu"); ap.add_argument("--ct-level", type=int, default=0); ap.add_argument("--um", type=float, default=0.0); ap.add_argument("--batch", type=int, default=4); ap.add_argument("--fuse", action="store_true", help="average 4 turned/mirrored reads per face (4x read time, cleaner maps)")
+ap.add_argument("--cache", default=None); ap.add_argument("--max-cache-gb", type=float, default=None, help="cap on CT/m7 chunks held in memory (least recently used are dropped)"); ap.add_argument("--device", default="cpu"); ap.add_argument("--ct-level", type=int, default=0); ap.add_argument("--um", type=float, default=0.0); ap.add_argument("--batch", type=int, default=4); ap.add_argument("--fuse", action="store_true", help="average 4 turned/mirrored reads per face (4x read time, cleaner maps)")
 a = ap.parse_args()
 os.makedirs(a.out, exist_ok=True); si, sn = [int(v) for v in a.shard.split("/")]
 t0 = time.time(); log = lambda s: print(f"[{time.time() - t0:7.0f}s] {s}", flush=True)
-ct = LazyVol(a.ct, level=a.ct_level, cache_dir=a.cache and a.cache + "/ct"); m7 = LazyVol(a.m7, cache_dir=a.cache and a.cache + "/m7")
+ct = LazyVol(a.ct, level=a.ct_level, cache_dir=a.cache and a.cache + "/ct", max_cache_gb=a.max_cache_gb); m7 = LazyVol(a.m7, cache_dir=a.cache and a.cache + "/m7", max_cache_gb=a.max_cache_gb)
 cm = reader.load_reader(a.weights, a.villa)
 z0, z1, y0, y1, x0, x1 = a.box; S = a.spacing
 lat = np.array([(z, y, x) for z in range(z0 + S // 2, z1, S) for y in range(y0 + S // 2, y1, S) for x in range(x0 + S // 2, x1, S)], float)

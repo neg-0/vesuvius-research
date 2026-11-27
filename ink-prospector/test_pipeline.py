@@ -90,6 +90,18 @@ def test_render_fast_samples_along_normal(tmp_path):
     assert st.shape[0] == 17 and prof.argmax() == 8 and prof[8] > 200 and prof[0] < 20 and prof[16] < 20
 
 
+
+def test_lazyvol_cache_cap_keeps_output_and_bounds_memory(tmp_path):
+    vol, _ = sheet((96, 160, 160)); rng = np.random.default_rng(1); vol = np.maximum(vol, rng.integers(0, 40, vol.shape, dtype=np.uint8))
+    z = write_zarr(str(tmp_path / "ct.zarr"), vol, chunk=16)
+    yy, xx = np.mgrid[2:150, 2:150].astype(np.float64); D = np.stack([48 + 0.15 * (yy - 48), yy, xx], -1)
+    Nd = np.broadcast_to(np.array([1.0, -0.15, 0]) / np.sqrt(1.0225), D.shape).copy(); valid = np.ones(D.shape[:2], bool)
+    full = LazyVol(z); a = grow.render_fast(full, D, Nd, 9, tile=32, valid=valid)
+    cap = 40 * 16 ** 3 / 1e9; small = LazyVol(z, max_cache_gb=cap); b = grow.render_fast(small, D, Nd, 9, tile=32, valid=valid)
+    assert np.array_equal(a, b)
+    assert small.max_chunks == 40 and len(small.cache) <= 40 < len(full.cache)
+    assert np.array_equal(small.block((0, 0, 0), (96, 160, 160)), vol)            # a read larger than the cap is still whole
+
 def test_export_tifxyz_roundtrip(tmp_path):
     G = 9; P = np.zeros((G, G, 3), np.float32); ii, jj = np.mgrid[:G, :G]
     P[..., 0] = 500 + 0.5 * ii; P[..., 1] = 1000 + 4 * ii; P[..., 2] = 2000 + 4 * jj
