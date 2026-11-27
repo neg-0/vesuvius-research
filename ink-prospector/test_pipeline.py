@@ -242,6 +242,10 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch):
     calls.clear(); score_tifxyz.main(args + ["--resume"]); assert not calls      # nothing left to do
     import runs, build_viewer                                                    # rank and viewer name each tile's tifxyz window
     P = runs.patches([out]); assert len(P) == n and all(p["src"].startswith("seg rows ") for p in P)
+    runs.write_tsv(P, str(tmp_path / "ranked.tsv")); import csv
+    T = list(csv.DictReader(open(tmp_path / "ranked.tsv"), delimiter="\t"))
+    assert [t["id"] for t in T] == [p["id"] for p in P] and [int(t["rank"]) for t in T] == list(range(1, n + 1))
+    assert all(os.path.exists(t["png"]) and t["src"] == p["src"] for t, p in zip(T, P))
     build_viewer.main([str(tmp_path / "view"), "t", out])
     D = json.load(open(tmp_path / "view" / "data.json")); assert {p["src"] for p in D["patches"]} == {p["src"] for p in P}
     assert all(len(p["full"]) == 2 and (tmp_path / "view" / p["full"][0]).exists() for p in D["patches"])   # full-size maps copied
