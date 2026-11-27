@@ -103,6 +103,7 @@ def main(argv=None):
     ap.add_argument("surfaces", nargs="+"); ap.add_argument("--out", required=True)
     ap.add_argument("--scroll"); ap.add_argument("--ct"); ap.add_argument("--um", type=float); ap.add_argument("--ct-level", type=int, default=0)
     ap.add_argument("--crop", type=int, nargs=4); ap.add_argument("--tile", type=int); ap.add_argument("--max-cache-gb", type=float, help="cap on CT chunks held in memory (least recently used are dropped)"); ap.add_argument("--min-nodes", type=int); ap.add_argument("--resume", action="store_true", help="keep patches already scored in --out and score only the rest"); ap.add_argument("--shard", default="0/1", help="i/n: score only patches with id %% n == i (one --out per shard; ids stay global)"); ap.add_argument("--device", default="cpu"); ap.add_argument("--fuse", action="store_true")
+    ap.add_argument("--limit", type=int, help="score at most this many patches, then stop; run again with --resume for the next ones (time-boxed chunks)")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
     if a.scroll:
@@ -161,6 +162,9 @@ def main(argv=None):
               f" | {eta(t1, len(todo), todo[i])}", flush=True)
         ct.drop(1500)
     todo = {i: k + 1 for k, i in enumerate(i for i in range(len(jobs)) if i not in done and i % sn == si)}; t1 = time.time()
+    left_after = 0
+    if a.limit is not None and len(todo) > a.limit:
+        left_after = len(todo) - a.limit; todo = {i: k for i, k in todo.items() if k <= a.limit}
     failed = []
     for i, (path, win) in enumerate(jobs):
         if i not in todo: continue
@@ -170,6 +174,8 @@ def main(argv=None):
     if failed:
         sys.exit(f"{len(failed)} patch(es) failed ({', '.join(map(str, failed[:10]))}{' ...' if len(failed) > 10 else ''}); the rest are scored. "
                  f"Run the same command with --resume to retry only those.")
+    if left_after:
+        print(f"--limit {a.limit}: stopped with {left_after} patch(es) of this shard left; run the same command with --resume for the next ones", flush=True); return
     print(f"done -> {a.out}; rank with: prospect.py rank {a.out}")
 
 
