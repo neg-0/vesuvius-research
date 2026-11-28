@@ -7,7 +7,7 @@ publishes that section as the release notes (`python3 release_notes.py X.Y.Z` pr
 
 ## Unreleased
 
-- Release notes join wrapped changelog lines, and re-running the release workflow for a version refreshes its notes.
+- Release notes join wrapped changelog lines, and re-running the release workflow for a version refreshes its notes (its archive stays the tagged one).
 
 ## 0.1.0 (2026-11-28)
 
