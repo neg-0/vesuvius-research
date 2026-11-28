@@ -22,16 +22,20 @@ def meta(d):
     for f in (os.path.join(d, "run.json"), os.path.join(os.path.dirname(d.rstrip("/")), "run.json")):
         if os.path.exists(f): return json.load(open(f))
     return {}
-_TS = {}
+_TS, _LS = {}, {}
+def _key(files, *extra):
+    """Files' paths with their mtime and size, so a remembered result is used only while the files are unchanged."""
+    return tuple((f, s.st_mtime_ns, s.st_size) for f, s in ((f, os.stat(f)) for f in files)) + extra
+def _remember(memo, k, fn):
+    if k not in memo:
+        if len(memo) > 200000: memo.clear()
+        memo[k] = fn()
+    return memo[k]
 def _score(base, u):
     """textscore of a patch's two faces, remembered while their files are unchanged: a long-lived caller (prospect.py
     serve on a run that is still being written) then rescores only the new or rewritten patches, not all of them."""
-    fa, fb = base + "_a.png", base + "_b.png"; st_a, st_b = os.stat(fa), os.stat(fb)
-    k = (fa, st_a.st_mtime_ns, st_a.st_size, st_b.st_mtime_ns, st_b.st_size, u)
-    if k not in _TS:
-        if len(_TS) > 200000: _TS.clear()
-        _TS[k] = textscore.score(fa, fb, u)
-    return _TS[k]
+    fa, fb = base + "_a.png", base + "_b.png"
+    return _remember(_TS, _key((fa, fb), u), lambda: textscore.score(fa, fb, u))
 def patches(paths, um=None, min_area=0.0):
     """Usable patches of all folders, best text score first. Each: dict with id, dir, base path, scores.
     min_area (cm2) drops patches with less read surface, such as slivers at a sheet's edge, whose scores are noisy."""
@@ -56,12 +60,15 @@ def letters(p, faces=None):
     """letterscore.py on a patch's saved maps: the ink face against the other. The PNGs are ds4 reads stored as
     (prob - 0.25) / 0.5 x 255, with 0 where the patch is not tracked, so a pixel is 4 voxels. faces names the two
     files (ink, back) when they are not a/b, as for stitched sheets (sheetK_ink.png, sheetK_back.png)."""
+    fs = [f"{p['base']}_{s}.png" for s in (faces or (p["side"], "b" if p["side"] == "a" else "a"))]
+    L = _remember(_LS, _key(fs, p["um"]), lambda: _letters(fs, p["um"]))     # like _score: unchanged maps are not rescored
+    return dict(L) if L else L
+def _letters(fs, um):
     import numpy as np, letterscore
     from PIL import Image
-    fs = faces or (p["side"], "b" if p["side"] == "a" else "a")
-    a, b = (np.asarray(Image.open(f"{p['base']}_{s}.png").convert("L"), np.float32) for s in fs)
+    a, b = (np.asarray(Image.open(f).convert("L"), np.float32) for f in fs)
     if a.shape != b.shape: return None
-    return letterscore.score_maps(0.25 + a / 510, 0.25 + b / 510, (a > 0) | (b > 0), p["um"] * 4)
+    return letterscore.score_maps(0.25 + a / 510, 0.25 + b / 510, (a > 0) | (b > 0), um * 4)
 def status(paths):
     """Progress of score_tifxyz folders: per folder done/expected, missing ids and how many rows of each status
     (ok read, noct off the scan, small, ...), then per set of shards
