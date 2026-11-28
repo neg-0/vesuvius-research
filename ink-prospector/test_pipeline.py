@@ -108,6 +108,18 @@ def test_render_fast_samples_along_normal(tmp_path):
 
 
 
+def test_render_fast_reads_only_what_valid_pixels_need(tmp_path):
+    rng = np.random.default_rng(2); vol = rng.integers(1, 255, (64, 160, 160), dtype=np.uint8)
+    z = write_zarr(str(tmp_path / "ct.zarr"), vol, chunk=16)
+    yy, xx = np.mgrid[0:128, 0:128].astype(np.float64); D = np.stack([32 + 0.1 * (yy - 64), yy + 16, xx + 16], -1).astype(np.float32)
+    Nd = np.broadcast_to(np.array([1.0, -0.1, 0]) / np.sqrt(1.01), D.shape).astype(np.float32).copy()
+    valid = (yy - 64) ** 2 + (xx - 64) ** 2 < 56 ** 2                              # round patch: tile corners are partly valid
+    whole = LazyVol(z); a = grow.render_fast(whole, D, Nd, 9, tile=32)
+    part = LazyVol(z); b = grow.render_fast(part, D, Nd, 9, tile=32, valid=valid)
+    assert np.array_equal(b[:, valid], a[:, valid]) and not b[:, ~valid].any()       # same values where valid, 0 elsewhere
+    assert len(part.cache) < len(whole.cache)                                         # fewer chunks read
+
+
 def test_lazyvol_cache_cap_keeps_output_and_bounds_memory(tmp_path):
     vol, _ = sheet((96, 160, 160)); rng = np.random.default_rng(1); vol = np.maximum(vol, rng.integers(0, 40, vol.shape, dtype=np.uint8))
     z = write_zarr(str(tmp_path / "ct.zarr"), vol, chunk=16)
