@@ -325,6 +325,9 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, 
     for extra in (["--shard", "2/2"], ["--shard", "x"], ["--limit", "0"]):
         with pytest.raises(SystemExit): score_tifxyz.main(args + extra)
         assert open(out + "/scores.tsv").read() == keep
+    calls.clear()                                                                # a mistyped surface path: named, nothing read or written
+    with pytest.raises(SystemExit, match="segX.*x.tif is missing"): score_tifxyz.main([str(tmp_path / "segX")] + args[1:])
+    assert open(out + "/scores.tsv").read() == keep and not calls
 
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path, capsys):
     from PIL import Image, ImageDraw

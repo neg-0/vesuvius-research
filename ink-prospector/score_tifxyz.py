@@ -108,6 +108,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     import runs; si, sn = runs.shard(a.shard)                             # bad options exit before --out is touched
     if a.limit is not None and a.limit < 1: sys.exit(f"--limit {a.limit}: need at least 1")
+    gone = [os.path.join(p, f) for p in a.surfaces for f in ("x.tif", "y.tif", "z.tif", "meta.json") if not os.path.isfile(os.path.join(p, f))]
+    if gone: sys.exit(f"not a tifxyz folder: {gone[0]} is missing" + (f" (and {len(gone) - 1} more)" if len(gone) > 1 else ""))
     if a.scroll:
         reg = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scrolls.json")))[a.scroll]
         a.ct = a.ct or reg["ct"]; a.um = a.um or reg.get("um")
