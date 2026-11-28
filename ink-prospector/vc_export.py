@@ -33,10 +33,11 @@ def point_collection(hits, name="prospector hits"):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out"); ap.add_argument("run", nargs="+"); ap.add_argument("-n", type=int, default=10)
+    ap.add_argument("--min-area", type=float, default=0.0, help="skip patches with less than this many cm2 read (edge slivers)")
     ap.add_argument("--every", type=int, default=5); ap.add_argument("--m7", help="surface prediction zarr for grow.sh (default: from run.json)")
     ap.add_argument("--generations", type=int, default=40)
     a = ap.parse_args(argv)
-    P = runs.patches([os.path.abspath(r) for r in a.run])[:a.n]
+    P = runs.patches([os.path.abspath(r) for r in a.run], min_area=a.min_area)[:a.n]
     if not P: sys.exit("no usable patches")
     m7 = a.m7 or runs.meta(P[0]["dir"]).get("m7", "")
     if m7 and not (m7.startswith(("http://", "https://", "s3://")) or os.path.isdir(m7)): m7 = BUCKET + m7

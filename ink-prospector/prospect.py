@@ -31,7 +31,7 @@ def main():
     p = sub.add_parser("spread"); common(p); p.add_argument("--seed", type=float, nargs=3, required=True); p.add_argument("--side", choices="ab", default="a"); p.add_argument("--half-nodes", type=int, default=320)
     p = sub.add_parser("status"); p.add_argument("run", nargs="+")
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
-    p = sub.add_parser("viewer"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--title", default=""); p.add_argument("--full", type=int, default=50, help="copy full-size ink maps of the N best patches (0: none)")
+    p = sub.add_parser("viewer"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--title", default=""); p.add_argument("--full", type=int, default=50, help="copy full-size ink maps of the N best patches (0: none)"); p.add_argument("--min-area", type=float, default=0.0, help="leave out patches with less than this many cm2 read")
     p.add_argument("--known", nargs="+", help="x.tif y.tif z.tif r0 r1 c0 c1 [label]: surface with known text")
     p = sub.add_parser("auto", add_help=False); p.add_argument("rest", nargs=argparse.REMAINDER)
     p = sub.add_parser("serve"); p.add_argument("--runs", default="runs", help="folder holding the run folders (made if missing)")
@@ -76,5 +76,5 @@ def main():
     if a.cmd == "stitch":
         sys.exit(run("stitch.py", ab(a.out), *[ab(r) for r in a.run], "--top", a.top))
     if a.cmd == "viewer":
-        sys.exit(run("build_viewer.py", ab(a.out), a.title or "scan", *[ab(r) for r in a.run], "--full", a.full, *(["--known"] + [ab(x) if x.endswith(".tif") else x for x in a.known] if a.known else [])))
+        sys.exit(run("build_viewer.py", ab(a.out), a.title or "scan", *[ab(r) for r in a.run], "--full", a.full, "--min-area", a.min_area, *(["--known"] + [ab(x) if x.endswith(".tif") else x for x in a.known] if a.known else [])))
 if __name__ == "__main__": main()
