@@ -1,6 +1,15 @@
 """Read the patches of one or more scan folders (a folder with scores.tsv, or a run folder holding shard-*/)."""
 import csv, glob, json, os
 import textscore
+
+
+def shard(s):
+    """'i/n' -> (i, n) with 0 <= i < n, or SystemExit naming the problem. Every command that takes --shard checks it
+    with this before writing anything, so a typo cannot overwrite a run's files."""
+    try: i, n = (int(v) for v in s.split("/"))
+    except ValueError: raise SystemExit(f"--shard {s}: give i/n, e.g. 0/4")
+    if not 0 <= i < n: raise SystemExit(f"--shard {s}: need 0 <= i < n")
+    return i, n
 def scan_dirs(paths):
     out = []
     for p in paths:

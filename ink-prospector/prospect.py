@@ -42,7 +42,8 @@ def main():
         sys.path.insert(0, HERE); import server
         return server.main(a.runs, a.host, a.port)
     if a.cmd == "scan":
-        s = scroll(a); n = int(a.shard.split("/")[1]); out = ab(a.out) if n == 1 else os.path.join(ab(a.out), "shard-" + a.shard.split("/")[0]); os.makedirs(out, exist_ok=True)
+        sys.path.insert(0, HERE); import runs; i, n = runs.shard(a.shard)      # before run.json is rewritten
+        s = scroll(a); out = ab(a.out) if n == 1 else os.path.join(ab(a.out), f"shard-{i}"); os.makedirs(out, exist_ok=True)
         json.dump(dict(scroll=a.scroll, box=a.box, spacing=a.spacing, half_nodes=a.half_nodes, shards=n, **s), open(os.path.join(ab(a.out), "run.json"), "w"), indent=1)
         sys.exit(run("scan.py", "--ct", s["ct"], "--m7", s["m7"], "--out", out, "--box", *a.box, "--spacing", a.spacing, "--half-nodes", a.half_nodes, "--shard", a.shard,
                      "--device", a.device, "--ct-level", s.get("ct_level", 0), "--um", s.get("um", 0), *(["--max-patches", a.max_patches] if a.max_patches else []), *(["--fuse"] if a.fuse else []),

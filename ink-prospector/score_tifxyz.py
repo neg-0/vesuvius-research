@@ -106,9 +106,7 @@ def main(argv=None):
     ap.add_argument("--limit", type=int, help="score at most this many patches, then stop; run again with --resume for the next ones (time-boxed chunks)")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
-    try: si, sn = (int(v) for v in a.shard.split("/"))                 # bad options exit before --out is touched
-    except ValueError: sys.exit(f"--shard {a.shard}: give i/n, e.g. 0/4")
-    if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
+    import runs; si, sn = runs.shard(a.shard)                             # bad options exit before --out is touched
     if a.limit is not None and a.limit < 1: sys.exit(f"--limit {a.limit}: need at least 1")
     if a.scroll:
         reg = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scrolls.json")))[a.scroll]
