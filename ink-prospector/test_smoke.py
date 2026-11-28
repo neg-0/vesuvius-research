@@ -71,3 +71,17 @@ def test_release_notes_cut_one_version_from_the_changelog(tmp_path):
         with pytest.raises(SystemExit): release_notes.notes(text, v)
     here = os.path.dirname(os.path.abspath(__file__))                              # the real changelog has every tagged version
     assert "## 0.1.0" in open(os.path.join(here, "CHANGELOG.md")).read() and release_notes.notes(open(os.path.join(here, "CHANGELOG.md")).read(), "0.1.0")
+
+
+def test_version_is_the_newest_release_plus_dev_for_later_changes(tmp_path):
+    import release_notes, subprocess, sys
+    assert release_notes.version("## Unreleased\n\n## 0.2.0 (d)\n- b\n## 0.1.0 (d)\n- a\n") == "0.2.0"
+    assert release_notes.version("## Unreleased\n\n- new\n\n## 0.2.0 (d)\n- b\n") == "0.2.0+dev"
+    here = os.path.dirname(os.path.abspath(__file__))
+    out = subprocess.run([sys.executable, os.path.join(here, "prospect.py"), "--version"], capture_output=True, text=True)
+    assert out.returncode == 0 and out.stdout.startswith("ink-prospector 0.")
+    import shutil; d = os.path.join(str(tmp_path), "code"); os.makedirs(d)           # a code/ copy with only the .py files
+    for f in os.listdir(here):
+        if f.endswith(".py"): shutil.copy(os.path.join(here, f), d)
+    out = subprocess.run([sys.executable, os.path.join(d, "prospect.py"), "--version"], capture_output=True, text=True)
+    assert out.returncode == 0 and "version unknown" in out.stdout

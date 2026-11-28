@@ -9,6 +9,15 @@ def notes(text, version):
     return unwrap(m.group(1).strip()) + "\n"
 
 
+def version(text):
+    """The newest released version in the changelog (first '## X.Y.Z' heading), plus '+dev' when the Unreleased
+    section has notes, i.e. this copy has changes made after that release."""
+    m = re.search(r"^## (\d+\.\d+\.\d+)\b", text, re.M)
+    v = m.group(1) if m else "0.0.0"
+    u = re.search(r"^## Unreleased[ \t]*$\n(.*?)(?=^## |\Z)", text, re.M | re.S)
+    return v + ("+dev" if u and u.group(1).strip() else "")
+
+
 def unwrap(md):
     """Join wrapped lines (an indented continuation of a bullet, or the next line of a paragraph) onto the line they
     continue: GitHub release notes show every newline as a line break, so 120-column wrapping would show up."""
