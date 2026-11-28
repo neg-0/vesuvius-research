@@ -392,3 +392,16 @@ def test_bad_shard_exits_before_any_file_is_written(tmp_path):
                         "--out", str(out), "--shard", "2/2"], capture_output=True, text=True, cwd=str(tmp_path))
     assert r.returncode != 0 and "--shard 2/2" in r.stderr
     assert (out / "run.json").read_text() == '{"keep": 1}' and sorted(os.listdir(out)) == ["run.json"]
+
+
+def test_rank_and_status_name_a_folder_that_is_not_a_run(tmp_path):
+    import subprocess
+    here = os.path.dirname(os.path.abspath(__file__)); pr = os.path.join(here, "prospect.py")
+    ok = tmp_path / "run"; ok.mkdir()
+    (ok / "scores.tsv").write_text("id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\tp995_a\tp995_b\tstroke_a\tstroke_b\tsecs\n")
+    typo = str(tmp_path / "rnu")
+    for cmd in ("rank", "status"):
+        r = subprocess.run([sys.executable, pr, cmd, typo], capture_output=True, text=True)
+        assert r.returncode != 0 and "rnu" in r.stderr and "not a scan run" in r.stderr      # only a typo: stop
+        r = subprocess.run([sys.executable, pr, cmd, str(ok), typo], capture_output=True, text=True)
+        assert r.returncode == 0 and "rnu" in r.stderr                                       # a typo among real runs: named, rest read

@@ -15,6 +15,9 @@ def scan_dirs(paths):
     for p in paths:
         out += sorted(glob.glob(os.path.join(p, "shard-*"))) if glob.glob(os.path.join(p, "shard-*")) else [p]
     return [d for d in out if os.path.exists(os.path.join(d, "scores.tsv"))]
+def not_runs(paths):
+    """The paths with no scores.tsv in them or in a shard-*/ below, such as a mistyped run folder."""
+    return [p for p in paths if not scan_dirs([p])]
 def meta(d):
     for f in (os.path.join(d, "run.json"), os.path.join(os.path.dirname(d.rstrip("/")), "run.json")):
         if os.path.exists(f): return json.load(open(f))
