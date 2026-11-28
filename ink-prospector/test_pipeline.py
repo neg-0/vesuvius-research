@@ -279,6 +279,8 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, 
     assert all(float(t["letter_score"]) >= 0 for t in TL) and "letters" not in T[0]
     build_viewer.main([str(tmp_path / "view"), "t", out])
     D = json.load(open(tmp_path / "view" / "data.json")); assert {p["src"] for p in D["patches"]} == {p["src"] for p in P}
+    with pytest.raises(AssertionError, match="no usable"):                       # viewer honours --min-area too
+        build_viewer.main([str(tmp_path / "view_min"), "t", out, "--min-area", str(max(p["area"] for p in P) * 1.01)])
     assert all(len(p["full"]) == 2 and (tmp_path / "view" / p["full"][0]).exists() for p in D["patches"])   # full-size maps copied
     build_viewer.main([str(tmp_path / "view2"), "t", out, "--full", "1"])
     D = json.load(open(tmp_path / "view2" / "data.json")); assert [len(p["full"]) for p in D["patches"]] == [2] + [0] * (n - 1)

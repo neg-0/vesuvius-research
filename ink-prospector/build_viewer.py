@@ -1,9 +1,10 @@
 """Build the viewer page for scan folders: <out>/index.html, data.json, atlas.jpg.
 
-usage: build_viewer.py <out> <title> <scan_or_run_dir> [...] [--known x.tif y.tif z.tif r0 r1 c0 c1 label] [--full N]
+usage: build_viewer.py <out> <title> <scan_or_run_dir> [...] [--known x.tif y.tif z.tif r0 r1 c0 c1 label] [--full N] [--min-area CM2]
 --known marks a surface with known text (tifxyz grid, optional row/col window) and tags patches lying on it.
 --full N copies the full-size ink maps of the N best patches (default 50, 0 for none) to <out>/full/, and the detail
 panel links them; the atlas only holds 256 px thumbnails.
+--min-area CM2 leaves out patches with less read surface (as prospect.py rank --min-area).
 """
 import sys, os, json, shutil, numpy as np
 from PIL import Image
@@ -12,8 +13,10 @@ def main(argv):
     out, title = argv[0], argv[1]; rest = argv[2:]; known = None
     full = 50
     if "--full" in rest: k = rest.index("--full"); full = int(rest[k + 1]); rest = rest[:k] + rest[k + 2:]
+    min_area = 0.0
+    if "--min-area" in rest: k = rest.index("--min-area"); min_area = float(rest[k + 1]); rest = rest[:k] + rest[k + 2:]
     if "--known" in rest: k = rest.index("--known"); known = rest[k + 1:]; rest = rest[:k]
-    P = runs.patches(rest); assert P, "no usable patches"
+    P = runs.patches(rest, min_area=min_area); assert P, "no usable patches"
     os.makedirs(out, exist_ok=True); tree = None; kp = []; klabel = ""
     if known:
         import tifffile
