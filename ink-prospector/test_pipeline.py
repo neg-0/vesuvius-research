@@ -376,3 +376,16 @@ def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path, capsys):
     letterscore.main(["--dirs", str(tmp_path / "runs"), "--um", str(um)]); one = capsys.readouterr().out
     letterscore.main(["--dirs", str(tmp_path / "runs"), "--um", str(um), "--jobs", "2"])  # parallel gives the same table
     assert capsys.readouterr().out == one
+
+
+def test_bad_shard_exits_before_any_file_is_written(tmp_path):
+    import runs, subprocess
+    assert runs.shard("1/4") == (1, 4) and runs.shard("0/1") == (0, 1)
+    for bad in ("2/2", "-1/3", "x", "1/2/3", "3"):
+        with pytest.raises(SystemExit, match="--shard"): runs.shard(bad)
+    out = tmp_path / "run"; out.mkdir(); (out / "run.json").write_text('{"keep": 1}')    # a scan run already in this folder
+    here = os.path.dirname(os.path.abspath(__file__))
+    r = subprocess.run([sys.executable, os.path.join(here, "prospect.py"), "scan", "--ct", "c", "--m7", "m", "--box", "0", "1", "0", "1", "0", "1",
+                        "--out", str(out), "--shard", "2/2"], capture_output=True, text=True, cwd=str(tmp_path))
+    assert r.returncode != 0 and "--shard 2/2" in r.stderr
+    assert (out / "run.json").read_text() == '{"keep": 1}' and sorted(os.listdir(out)) == ["run.json"]
