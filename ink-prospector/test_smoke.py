@@ -59,3 +59,13 @@ def test_patches_best_first(tmp_path):
     assert [r["id"] for r in rows] == [f"{os.path.basename(folder)}-2", f"{os.path.basename(folder)}-1"], [r["id"] for r in rows]
     assert rows[0]["ts"] >= rows[1]["ts"]
     assert rows[0]["side"] == "a" and rows[0]["seed"] == [10100, 3000, 5100]
+
+
+def test_release_notes_cut_one_version_from_the_changelog(tmp_path):
+    import release_notes, pytest
+    text = "# Log\n\n## Unreleased\n\n## 0.2.0 (d)\n- b\n\n## 0.1.0 (d)\n- a\n"
+    assert release_notes.notes(text, "0.2.0") == "- b\n" and release_notes.notes(text, "0.1.0") == "- a\n"
+    for v in ("0.3.0", "Unreleased", "0.1"):
+        with pytest.raises(SystemExit): release_notes.notes(text, v)
+    here = os.path.dirname(os.path.abspath(__file__))                              # the real changelog has every tagged version
+    assert "## 0.1.0" in open(os.path.join(here, "CHANGELOG.md")).read() and release_notes.notes(open(os.path.join(here, "CHANGELOG.md")).read(), "0.1.0")
