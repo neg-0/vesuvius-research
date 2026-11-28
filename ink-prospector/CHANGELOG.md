@@ -1,9 +1,9 @@
 # Ink Prospector changelog
 
 Releases are tagged `ink-prospector-vX.Y.Z`; each tag covers this folder only. To cut one, move the
-Unreleased notes under a new `## X.Y.Z (date)` heading, merge, then push the tag on main:
-`git tag ink-prospector-vX.Y.Z && git push origin ink-prospector-vX.Y.Z`. The release workflow
-publishes that section as the GitHub release notes (`python3 release_notes.py X.Y.Z` prints it).
+Unreleased notes under a new `## X.Y.Z (date)` heading and merge. Then run the "ink-prospector release" workflow on
+main with version X.Y.Z (Actions tab, Run workflow), or push the tag `ink-prospector-vX.Y.Z`. Either way the workflow
+publishes that section as the release notes (`python3 release_notes.py X.Y.Z` prints it) with a tar.gz of this folder.
 
 ## Unreleased
 
