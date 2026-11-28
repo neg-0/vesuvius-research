@@ -22,6 +22,16 @@ def meta(d):
     for f in (os.path.join(d, "run.json"), os.path.join(os.path.dirname(d.rstrip("/")), "run.json")):
         if os.path.exists(f): return json.load(open(f))
     return {}
+_TS = {}
+def _score(base, u):
+    """textscore of a patch's two faces, remembered while their files are unchanged: a long-lived caller (prospect.py
+    serve on a run that is still being written) then rescores only the new or rewritten patches, not all of them."""
+    fa, fb = base + "_a.png", base + "_b.png"; st_a, st_b = os.stat(fa), os.stat(fb)
+    k = (fa, st_a.st_mtime_ns, st_a.st_size, st_b.st_mtime_ns, st_b.st_size, u)
+    if k not in _TS:
+        if len(_TS) > 200000: _TS.clear()
+        _TS[k] = textscore.score(fa, fb, u)
+    return _TS[k]
 def patches(paths, um=None, min_area=0.0):
     """Usable patches of all folders, best text score first. Each: dict with id, dir, base path, scores.
     min_area (cm2) drops patches with less read surface, such as slivers at a sheet's edge, whose scores are noisy."""
@@ -37,7 +47,7 @@ def patches(paths, um=None, min_area=0.0):
         for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t"):
             base = os.path.join(d, f"p{int(r['id']):04d}")
             if r["status"] != "ok" or r["id"] in seen or not os.path.exists(base + "_a.png") or r["frac_a"] == r["frac_b"]: continue
-            seen.add(r["id"]); s, ta, tb = textscore.score(base + "_a.png", base + "_b.png", u)
+            seen.add(r["id"]); s, ta, tb = _score(base, u)
             rows.append(dict(id=f"{tag}-{int(r['id'])}", dir=d, base=base, um=u, seed=[int(float(r[k])) for k in ("seed_z", "seed_y", "seed_x")],
                              tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b",
                              src=src.get(r["id"], "")))
