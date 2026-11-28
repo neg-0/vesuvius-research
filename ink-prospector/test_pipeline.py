@@ -421,3 +421,10 @@ def test_patches_rescore_only_changed_faces(tmp_path, monkeypatch):
     assert runs.patches([d]) == first and len(n) == 3                              # nothing changed: no rescoring
     f = os.path.join(d, "p0002_a.png"); st = os.stat(f); os.utime(f, ns=(st.st_atime_ns, st.st_mtime_ns + 10**9))
     assert runs.patches([d]) == first and n[3:] == [f]                             # one face rewritten: only that patch
+    import letterscore
+    real_l, m = letterscore.score_maps, []
+    monkeypatch.setattr(letterscore, "score_maps", lambda *a, **k: m.append(1) or real_l(*a, **k))
+    L1 = [runs.letters(p) for p in first]; assert len(m) == 3
+    L1[0]["score"] = -1                                                            # callers get their own copy
+    assert [runs.letters(p) for p in first] != L1 and len(m) == 3                  # letterscore remembered too
+    os.utime(f, ns=(st.st_atime_ns, st.st_mtime_ns + 2 * 10**9)); [runs.letters(p) for p in first]; assert len(m) == 4
