@@ -33,4 +33,9 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$TAG" "$TAG.tar.gz" --target "$GITHUB_SHA" --title "Ink Prospector ${TAG#ink-prospector-v}" --notes-file notes.md
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then          # run again for a version: refresh its notes and archive
+            gh release edit "$TAG" --notes-file notes.md && gh release upload "$TAG" "$TAG.tar.gz" --clobber
+          else
+            gh release create "$TAG" "$TAG.tar.gz" --target "$GITHUB_SHA" --title "Ink Prospector ${TAG#ink-prospector-v}" --notes-file notes.md
+          fi

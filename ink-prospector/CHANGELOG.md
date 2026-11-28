@@ -7,6 +7,8 @@ publishes that section as the release notes (`python3 release_notes.py X.Y.Z` pr
 
 ## Unreleased
 
+- Release notes join wrapped changelog lines, and re-running the release workflow for a version refreshes its notes.
+
 ## 0.1.0 (2026-11-28)
 
 First tagged release: everything from the November 2026 public release up to #65.
