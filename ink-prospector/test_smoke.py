@@ -64,6 +64,8 @@ def test_patches_best_first(tmp_path):
 def test_release_notes_cut_one_version_from_the_changelog(tmp_path):
     import release_notes, pytest
     text = "# Log\n\n## Unreleased\n\n## 0.2.0 (d)\n- b\n\n## 0.1.0 (d)\n- a\n"
+    wrapped = "Intro that\nwraps.\n\n### Part\n- one\n  two\n- three\n"
+    assert release_notes.unwrap(wrapped) == "Intro that wraps.\n\n### Part\n- one two\n- three\n"
     assert release_notes.notes(text, "0.2.0") == "- b\n" and release_notes.notes(text, "0.1.0") == "- a\n"
     for v in ("0.3.0", "Unreleased", "0.1"):
         with pytest.raises(SystemExit): release_notes.notes(text, v)

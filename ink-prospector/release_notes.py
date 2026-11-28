@@ -6,7 +6,18 @@ def notes(text, version):
     """The lines under '## <version>' up to the next '## ' heading; SystemExit if that version has no section."""
     m = re.search(rf"^## {re.escape(version)}(?=[ \t]|$).*?$\n(.*?)(?=^## |\Z)", text, re.M | re.S)
     if not m or not m.group(1).strip(): raise SystemExit(f"CHANGELOG.md has no notes under '## {version}'")
-    return m.group(1).strip() + "\n"
+    return unwrap(m.group(1).strip()) + "\n"
+
+
+def unwrap(md):
+    """Join wrapped lines (an indented continuation of a bullet, or the next line of a paragraph) onto the line they
+    continue: GitHub release notes show every newline as a line break, so 120-column wrapping would show up."""
+    out = []
+    for line in md.split("\n"):
+        cont = out and out[-1].strip() and line.strip() and not line.lstrip().startswith(("- ", "* ", "#")) and not out[-1].startswith("#")
+        if cont: out[-1] += " " + line.strip()
+        else: out.append(line)
+    return "\n".join(out)
 
 
 if __name__ == "__main__":
