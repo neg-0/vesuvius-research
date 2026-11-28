@@ -366,3 +366,6 @@ def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path, capsys):
         for f in ("prob_v3_fwd.npy", "prob_v3_rev.npy"): (tmp_path / s / "w" / f).write_bytes((tmp_path / f).read_bytes())
     letterscore.main(["--dirs", str(tmp_path / "a" / "w"), str(tmp_path / "b" / "w") + "/", "--um", str(um)])
     assert sorted(l.split("\t")[0] for l in capsys.readouterr().out.splitlines()[1:]) == ["a/w", "b/w"]
+    (tmp_path / "runs").mkdir(); os.rename(tmp_path / "a", tmp_path / "runs" / "a"); os.rename(tmp_path / "b", tmp_path / "runs" / "b")
+    letterscore.main(["--dirs", str(tmp_path / "runs"), "--um", str(um)])                # a parent folder ranks every follow-up under it
+    assert sorted(l.split("\t")[0] for l in capsys.readouterr().out.splitlines()[1:]) == ["a/w", "b/w"]
