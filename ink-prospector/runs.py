@@ -10,6 +10,20 @@ def shard(s):
     except ValueError: raise SystemExit(f"--shard {s}: give i/n, e.g. 0/4")
     if not 0 <= i < n: raise SystemExit(f"--shard {s}: need 0 <= i < n")
     return i, n
+
+
+def lattice(box, spacing):
+    """--box z0 z1 y0 y1 x0 x1 and --spacing S -> the z, y and x seed ranges scan.py walks (S//2 in from each low edge,
+    then every S), or SystemExit naming the problem. Checked before anything is written, so a swapped corner or a box
+    narrower than half the spacing stops the run instead of loading the reader and scoring no seeds."""
+    if spacing < 1: raise SystemExit(f"--spacing {spacing}: need at least 1")
+    axes = []
+    for name, lo, hi in zip("zyx", box[0::2], box[1::2]):
+        if hi <= lo: raise SystemExit(f"--box {name}: {lo} {hi} is empty; give each axis low then high")
+        r = range(lo + spacing // 2, hi, spacing)
+        if not r: raise SystemExit(f"--box {name} {lo}..{hi} is narrower than half of --spacing {spacing}: no seeds; widen the box or lower --spacing")
+        axes.append(r)
+    return axes
 def scan_dirs(paths):
     out = []
     for p in paths:

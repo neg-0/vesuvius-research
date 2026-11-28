@@ -21,12 +21,11 @@ ap.add_argument("--min-tracked", type=float, default=0.15); ap.add_argument("--s
 ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip")
 ap.add_argument("--cache", default=None); ap.add_argument("--max-cache-gb", type=float, default=None, help="cap on CT/m7 chunks held in memory (least recently used are dropped)"); ap.add_argument("--device", default="cpu"); ap.add_argument("--ct-level", type=int, default=0); ap.add_argument("--um", type=float, default=0.0); ap.add_argument("--batch", type=int, default=4); ap.add_argument("--fuse", action="store_true", help="average 4 turned/mirrored reads per face (4x read time, cleaner maps)")
 a = ap.parse_args()
-import runs; si, sn = runs.shard(a.shard); os.makedirs(a.out, exist_ok=True)
+import runs; si, sn = runs.shard(a.shard); Z, Y, X = runs.lattice(a.box, a.spacing); os.makedirs(a.out, exist_ok=True)
 t0 = time.time(); log = lambda s: print(f"[{time.time() - t0:7.0f}s] {s}", flush=True)
 ct = LazyVol(a.ct, level=a.ct_level, cache_dir=a.cache and a.cache + "/ct", max_cache_gb=a.max_cache_gb); m7 = LazyVol(a.m7, cache_dir=a.cache and a.cache + "/m7", max_cache_gb=a.max_cache_gb)
 cm = reader.load_reader(a.weights, a.villa)
-z0, z1, y0, y1, x0, x1 = a.box; S = a.spacing
-lat = np.array([(z, y, x) for z in range(z0 + S // 2, z1, S) for y in range(y0 + S // 2, y1, S) for x in range(x0 + S // 2, x1, S)], float)
+lat = np.array([(z, y, x) for z in Z for y in Y for x in X], float)
 rng = np.random.default_rng(a.seed); lat = lat[rng.permutation(len(lat))]          # same order on every machine
 mine = [i for i in range(len(lat)) if i % sn == si]
 log(f"{len(lat)} lattice seeds, {len(mine)} in shard {a.shard}")

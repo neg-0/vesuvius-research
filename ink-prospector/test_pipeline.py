@@ -428,3 +428,17 @@ def test_patches_rescore_only_changed_faces(tmp_path, monkeypatch):
     L1[0]["score"] = -1                                                            # callers get their own copy
     assert [runs.letters(p) for p in first] != L1 and len(m) == 3                  # letterscore remembered too
     os.utime(f, ns=(st.st_atime_ns, st.st_mtime_ns + 2 * 10**9)); [runs.letters(p) for p in first]; assert len(m) == 4
+
+
+def test_bad_box_or_spacing_exits_before_any_file_is_written(tmp_path):
+    import runs, subprocess
+    assert [list(r) for r in runs.lattice([0, 500, 0, 250, 100, 400], 250)] == [[125, 375], [125], [225]]
+    for box, s, msg in (([0, 500, 0, 500, 400, 100], 250, "--box x"), ([0, 100, 0, 500, 0, 500], 250, "narrower"), ([0, 9, 0, 9, 0, 9], 0, "--spacing")):
+        with pytest.raises(SystemExit, match=msg): runs.lattice(box, s)
+    here = os.path.dirname(os.path.abspath(__file__))
+    for script, extra in (("prospect.py", ["scan"]),):      # scan.py itself needs torch, which CI lacks; it builds seeds with runs.lattice
+        out = tmp_path / script; out.mkdir(); (out / "run.json").write_text('{"keep": 1}')
+        r = subprocess.run([sys.executable, os.path.join(here, script), *extra, "--ct", "c", "--m7", "m", "--box", "0", "100", "0", "500", "0", "500",
+                            "--out", str(out)], capture_output=True, text=True, cwd=str(tmp_path))
+        assert r.returncode != 0 and "narrower than half of --spacing 250" in r.stderr, r.stderr
+        assert sorted(os.listdir(out)) == ["run.json"] and (out / "run.json").read_text() == '{"keep": 1}'
