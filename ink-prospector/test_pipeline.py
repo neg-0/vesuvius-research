@@ -408,3 +408,16 @@ def test_rank_and_status_name_a_folder_that_is_not_a_run(tmp_path):
     for cmd in ("viewer", "stitch"):                                                         # same for the commands that write
         r = subprocess.run([sys.executable, pr, cmd, typo, "--out", str(tmp_path / ("o-" + cmd))], capture_output=True, text=True)
         assert r.returncode != 0 and "not a scan run" in r.stderr and "Traceback" not in r.stderr and not (tmp_path / ("o-" + cmd)).exists()
+
+
+def test_patches_rescore_only_changed_faces(tmp_path, monkeypatch):
+    # A long-lived caller (the app) re-reads a run while it is written: unchanged patches are not rescored.
+    import runs, textscore
+    d = str(tmp_path / "run")
+    for pid in (1, 2, 3): _fake_run(d, pid, 100 + pid, [(64, 64), (64, 192), (192, 64), (192, 192)][:pid + 1])
+    real, n = textscore.score, []
+    monkeypatch.setattr(textscore, "score", lambda *a: n.append(a[0]) or real(*a))
+    first = runs.patches([d]); assert len(n) == 3
+    assert runs.patches([d]) == first and len(n) == 3                              # nothing changed: no rescoring
+    f = os.path.join(d, "p0002_a.png"); st = os.stat(f); os.utime(f, ns=(st.st_atime_ns, st.st_mtime_ns + 10**9))
+    assert runs.patches([d]) == first and n[3:] == [f]                             # one face rewritten: only that patch
