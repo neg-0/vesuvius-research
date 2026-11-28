@@ -10,8 +10,9 @@ def meta(d):
     for f in (os.path.join(d, "run.json"), os.path.join(os.path.dirname(d.rstrip("/")), "run.json")):
         if os.path.exists(f): return json.load(open(f))
     return {}
-def patches(paths, um=None):
-    """Usable patches of all folders, best text score first. Each: dict with id, dir, base path, scores."""
+def patches(paths, um=None, min_area=0.0):
+    """Usable patches of all folders, best text score first. Each: dict with id, dir, base path, scores.
+    min_area (cm2) drops patches with less read surface, such as slivers at a sheet's edge, whose scores are noisy."""
     rows = []; dirs = scan_dirs(paths)
     multi = len({os.path.dirname(d.rstrip("/")) for d in dirs if os.path.basename(d.rstrip("/")).startswith("shard-")}) > 1
     for d in dirs:
@@ -28,7 +29,7 @@ def patches(paths, um=None):
             rows.append(dict(id=f"{tag}-{int(r['id'])}", dir=d, base=base, um=u, seed=[int(float(r[k])) for k in ("seed_z", "seed_y", "seed_x")],
                              tracked=float(r["tracked"]), area=float(r["area_cm2"]), fa=float(r["frac_a"]), fb=float(r["frac_b"]), ts=abs(s), side="a" if s > 0 else "b",
                              src=src.get(r["id"], "")))
-    return sorted(rows, key=lambda r: -r["ts"])
+    return sorted((r for r in rows if r["area"] >= min_area), key=lambda r: -r["ts"])
 def letters(p, faces=None):
     """letterscore.py on a patch's saved maps: the ink face against the other. The PNGs are ds4 reads stored as
     (prob - 0.25) / 0.5 x 255, with 0 where the patch is not tracked, so a pixel is 4 voxels. faces names the two

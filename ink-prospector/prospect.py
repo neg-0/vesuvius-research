@@ -27,7 +27,7 @@ def main():
     p = sub.add_parser("scan"); common(p); p.add_argument("--box", type=int, nargs=6, required=True); p.add_argument("--spacing", type=int, default=250)
     p.add_argument("--half-nodes", type=int, default=128); p.add_argument("--shard", default="0/1"); p.add_argument("--device", default="cpu"); p.add_argument("--max-patches", type=int); p.add_argument("--fuse", action="store_true")
     p.add_argument("--max-cache-gb", type=float, help="cap on CT/m7 chunks held in memory per scan (uncapped, a scan can pass 6 GB)")
-    p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet"); p.add_argument("--tsv", help="write every usable patch, best first, to this table"); p.add_argument("--letters", action="store_true", help="with --tsv: add letterscore.py columns (letter_score, letters, fails)")
+    p = sub.add_parser("rank"); p.add_argument("run", nargs="+"); p.add_argument("-n", type=int, default=20); p.add_argument("--sheet"); p.add_argument("--tsv", help="write every usable patch, best first, to this table"); p.add_argument("--letters", action="store_true", help="with --tsv: add letterscore.py columns (letter_score, letters, fails)"); p.add_argument("--min-area", type=float, default=0.0, help="leave out patches with less than this many cm2 read")
     p = sub.add_parser("spread"); common(p); p.add_argument("--seed", type=float, nargs=3, required=True); p.add_argument("--side", choices="ab", default="a"); p.add_argument("--half-nodes", type=int, default=320)
     p = sub.add_parser("status"); p.add_argument("run", nargs="+")
     p = sub.add_parser("stitch"); p.add_argument("run", nargs="+"); p.add_argument("--out", required=True); p.add_argument("--top", type=int, default=30)
@@ -49,7 +49,7 @@ def main():
                      *(["--max-cache-gb", a.max_cache_gb] if a.max_cache_gb else [])))
     if a.cmd == "rank":
         sys.path.insert(0, HERE); import runs
-        P = runs.patches([ab(r) for r in a.run]); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")
+        P = runs.patches([ab(r) for r in a.run], min_area=a.min_area); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")
         for i, p in enumerate(P[:a.n]): print(f"{i + 1:3d}  {p['id']:>10}  text {p['ts']:.4f} side {p['side']}  bright a/b {p['fa']:.3f}/{p['fb']:.3f}  seed z y x {p['seed'][0]} {p['seed'][1]} {p['seed'][2]}" + (f"  {p['src']}" if p.get("src") else ""))
         if a.tsv:
             runs.write_tsv(P, a.tsv, a.letters); print(f"table of {len(P)} patches: {a.tsv}")
