@@ -106,6 +106,10 @@ def main(argv=None):
     ap.add_argument("--limit", type=int, help="score at most this many patches, then stop; run again with --resume for the next ones (time-boxed chunks)")
     ap.add_argument("--weights", default="data/weights/reader-v3.pth"); ap.add_argument("--villa", default="ext/villa-mip"); ap.add_argument("--batch", type=int, default=4)
     a = ap.parse_args(argv)
+    try: si, sn = (int(v) for v in a.shard.split("/"))                 # bad options exit before --out is touched
+    except ValueError: sys.exit(f"--shard {a.shard}: give i/n, e.g. 0/4")
+    if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
+    if a.limit is not None and a.limit < 1: sys.exit(f"--limit {a.limit}: need at least 1")
     if a.scroll:
         reg = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scrolls.json")))[a.scroll]
         a.ct = a.ct or reg["ct"]; a.um = a.um or reg.get("um")
@@ -132,8 +136,6 @@ def main(argv=None):
         bad = [i for i in done if i >= len(jobs) or not same_job(done[i][1], jobs[i])]
         if bad: sys.exit(f"--resume: {a.out} was made from other surfaces or tiles (patch {bad[0]} differs); use a new --out")
         print(f"--resume: {len(done)} of {len(jobs)} patches already scored, skipping them", flush=True)
-    si, sn = (int(v) for v in a.shard.split("/"))
-    if not 0 <= si < sn: sys.exit(f"--shard {a.shard}: need 0 <= i < n")
     info["jobs"] = len(jobs); json.dump(info, open(os.path.join(a.out, "run.json"), "w"), indent=1)   # lets prospect.py status count what is left
     if sn > 1: print(f"shard {a.shard}: {sum(1 for i in range(len(jobs)) if i % sn == si)} of {len(jobs)} patches", flush=True)
     def one(i, path, win):

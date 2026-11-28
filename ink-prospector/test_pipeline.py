@@ -321,6 +321,10 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, 
     assert got == {"0", "2", "3"} and runs.status([bad])[0][0]["missing"] == [1]
     score_tifxyz.main(args[:2] + [bad] + args[3:] + ["--resume"])                # --resume retries only the failed one
     assert [l.split("\t")[:13] for l in sorted(open(bad + "/scores.tsv").readlines()[1:])] == [l.split("\t")[:13] for l in sorted(first[1:])]
+    keep = open(out + "/scores.tsv").read()                                      # a mistyped option leaves a finished run alone
+    for extra in (["--shard", "2/2"], ["--shard", "x"], ["--limit", "0"]):
+        with pytest.raises(SystemExit): score_tifxyz.main(args + extra)
+        assert open(out + "/scores.tsv").read() == keep
 
 def test_letterscore_passes_a_row_and_rejects_haze_blobs_bars(tmp_path, capsys):
     from PIL import Image, ImageDraw
