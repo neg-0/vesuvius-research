@@ -169,6 +169,24 @@ def test_judge_whole_rule(tmp_path):
     assert "HITS" in out and "p0001" in out and "p0002" not in out and "p0003" not in out and "'no_sheet': 1" in out
 
 
+def test_judge_and_sheet_read_a_one_shard_run_and_refuse_a_typo(tmp_path):
+    from PIL import Image
+    d = tmp_path / "one"; d.mkdir()                                                 # prospect.py scan with one shard: no shard-*/
+    head = "id\tseed_z\tseed_y\tseed_x\tstatus\ttracked\tarea_cm2\tfrac_a\tfrac_b\tp995_a\tp995_b\tstroke_a\tstroke_b\tsecs\n"
+    rows = ["1\t10\t20\t30\tok\t0.9\t0.5\t0.1\t0.1\t1\t1\t0.0300\t0.0050\t9",
+            "5\t14\t24\t34\tok\t0.9\t0.1\t0.1\t0.1\t1\t1\t0.0010\t0.0400\t9"]    # a hit, but only 0.1 cm2
+    (d / "scores.tsv").write_text(head + "\n".join(rows) + "\n")
+    for i, side in ((1, "a"), (5, "b")): Image.new("L", (64, 64), 128).save(d / f"p{i:04d}_{side}.png")
+    run = lambda *a: subprocess.run([sys.executable, *a], capture_output=True, text=True)
+    r = run(os.path.join(HERE, "judge_whole.py"), str(d))
+    assert r.returncode == 0 and "HITS" in r.stdout and "p0001" in r.stdout and "p0005" in r.stdout and "'ok': 2" in r.stdout
+    r = run(os.path.join(HERE, "sheet_whole.py"), str(d), "6", str(tmp_path / "s.png"))
+    assert r.returncode == 0 and "p0001" in r.stdout and "p0005" not in r.stdout and "1 candidates" in r.stdout and (tmp_path / "s.png").exists()
+    for script, extra in (("judge_whole.py", []), ("sheet_whole.py", ["6", str(tmp_path / "t.png")])):
+        r = run(os.path.join(HERE, script), str(tmp_path / "eno"), *extra)
+        assert r.returncode != 0 and "not a scan run" in r.stderr and not (tmp_path / "t.png").exists()
+
+
 def _fake_run(folder, pid, z0, ts_blobs):
     """A scan folder with one ok patch: a flat 41x41 node grid on z = z0 and face images from test_smoke's blobs."""
     from test_smoke import blobs, blank, save

@@ -32,6 +32,21 @@ def scan_dirs(paths):
 def not_runs(paths):
     """The paths with no scores.tsv in them or in a shard-*/ below, such as a mistyped run folder."""
     return [p for p in paths if not scan_dirs([p])]
+def candidates(paths):
+    """The whole-scroll candidate rule (judge_whole.py, sheet_whole.py): an ok patch with at least 2% confident one-sided
+    ink (stroke_a / stroke_b) and the other face under a third of that. Reads a run folder's shard-*/ or, for a one-shard
+    scan, its own scores.tsv. Returns (count of every status, candidates best first)."""
+    import collections
+    st, C = collections.Counter(), []
+    for d in scan_dirs(paths):
+        for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t"):
+            st[r["status"]] += 1
+            if r["status"] != "ok": continue
+            a, b = float(r["stroke_a"]), float(r["stroke_b"]); hi, lo = max(a, b), min(a, b)
+            if hi >= 0.02 and lo < hi / 3:
+                C.append(dict(hi=hi, lo=lo, side="a" if a >= b else "b", dir=d, id=int(r["id"]), seed=(r["seed_z"], r["seed_y"], r["seed_x"]), area=float(r["area_cm2"])))
+    C.sort(key=lambda c: (c["hi"], c["lo"], os.path.basename(c["dir"]), c["id"]), reverse=True)
+    return st, C
 def meta(d):
     for f in (os.path.join(d, "run.json"), os.path.join(os.path.dirname(d.rstrip("/")), "run.json")):
         if os.path.exists(f): return json.load(open(f))
