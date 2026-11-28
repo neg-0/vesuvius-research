@@ -27,7 +27,11 @@ def check_runs(runs, paths):
     for b in bad: print(f"no scores.tsv in {b} or its shard-*/ folders: not a scan run", file=sys.stderr)
     if bad and len(bad) == len(paths): sys.exit(f"nothing to read in {len(bad)} folder(s)")
 def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter); sub = ap.add_subparsers(dest="cmd", required=True)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sys.path.insert(0, HERE); import release_notes
+    cl = os.path.join(HERE, "CHANGELOG.md")                               # setup.sh / run_*.sh copy only *.py into code/
+    ap.add_argument("--version", action="version", version="ink-prospector " + (release_notes.version(open(cl).read()) if os.path.exists(cl) else "(version unknown: no CHANGELOG.md next to prospect.py)"))
+    sub = ap.add_subparsers(dest="cmd", required=True)
     def common(p): p.add_argument("--scroll"); p.add_argument("--ct"); p.add_argument("--m7"); p.add_argument("--um", type=float); p.add_argument("--out", required=True)
     p = sub.add_parser("scan"); common(p); p.add_argument("--box", type=int, nargs=6, required=True); p.add_argument("--spacing", type=int, default=250)
     p.add_argument("--half-nodes", type=int, default=128); p.add_argument("--shard", default="0/1"); p.add_argument("--device", default="cpu"); p.add_argument("--max-patches", type=int); p.add_argument("--fuse", action="store_true")
