@@ -1,0 +1,22 @@
+name: ink-prospector release
+on:
+  push:
+    tags: ["ink-prospector-v*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Notes from CHANGELOG.md
+        run: python3 ink-prospector/release_notes.py "$GITHUB_REF_NAME" > notes.md
+      - name: Folder archive
+        run: git archive --format=tar.gz --prefix="$GITHUB_REF_NAME/" -o "$GITHUB_REF_NAME.tar.gz" "$GITHUB_REF_NAME" ink-prospector
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$GITHUB_REF_NAME.tar.gz" --title "Ink Prospector ${GITHUB_REF_NAME#ink-prospector-v}" --notes-file notes.md --verify-tag
