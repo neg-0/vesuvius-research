@@ -124,6 +124,12 @@ def score_dir(d, um=None, block=4, **kw):
     r = score_maps(ink, back, v, um, **kw); r["face"] = face; return r
 
 
+def _one(args):
+    d, um, block, kw = args
+    try: return d, score_dir(d, um, block, **kw), None
+    except Exception as e: return d, None, f"{type(e).__name__}: {e}"
+
+
 def find_dirs(dirs):
     """A folder given to --dirs that holds no prob_v3_fwd.npy itself stands for every folder under it that does
     (sorted), so a whole run's follow-ups can be ranked by naming its parent. Folders with neither are kept as given,
@@ -150,14 +156,20 @@ def names(dirs):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("maps", nargs="*"); ap.add_argument("--dirs", nargs="+"); ap.add_argument("--um", type=float)
+    ap.add_argument("--jobs", type=int, default=1, help="with --dirs: score this many folders at once (processes)")
     ap.add_argument("--block", type=int, default=4, help="with --dirs and no --um: map pixel = voxel_um x block")
     for k, v in DEFAULTS.items(): ap.add_argument("--" + k.replace("_", "-"), dest=k, type=float, default=v)
     a = ap.parse_args(argv); kw = {k: getattr(a, k) for k in DEFAULTS}; kw["min_row"] = int(kw["min_row"])
     if a.dirs:
         a.dirs = find_dirs(a.dirs); rows, bad = [], []; label = dict(zip(a.dirs, names(a.dirs)))
-        for d in a.dirs:                                                  # one broken folder must not stop a batch of many
-            try: rows.append((d, score_dir(d, a.um, a.block, **kw)))
-            except Exception as e: bad.append(d); print(f"skipped {d}: {type(e).__name__}: {e}", file=sys.stderr)
+        jobs = [(d, a.um, a.block, kw) for d in a.dirs]
+        if a.jobs > 1 and len(jobs) > 1:                                  # folders are independent; results keep input order
+            from concurrent.futures import ProcessPoolExecutor
+            with ProcessPoolExecutor(min(a.jobs, len(jobs))) as ex: done = list(ex.map(_one, jobs))
+        else: done = [_one(j) for j in jobs]
+        for d, r, err in done:                                            # one broken folder must not stop a batch of many
+            if err is None: rows.append((d, r))
+            else: bad.append(d); print(f"skipped {d}: {err}", file=sys.stderr)
         rows.sort(key=lambda t: -t[1]["score"])
         cols = ["letters", "fails", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
         print("dir\t" + "\t".join(cols))
