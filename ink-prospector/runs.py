@@ -40,7 +40,8 @@ def letters(p, faces=None):
     if a.shape != b.shape: return None
     return letterscore.score_maps(0.25 + a / 510, 0.25 + b / 510, (a > 0) | (b > 0), p["um"] * 4)
 def status(paths):
-    """Progress of score_tifxyz folders: per folder done/expected and missing ids, then per set of shards
+    """Progress of score_tifxyz folders: per folder done/expected, missing ids and how many rows of each status
+    (ok read, noct off the scan, small, ...), then per set of shards
     made from the same surfaces, the ids no folder has (a shard never run, or cut off). Folders without a
     job count in run.json (older runs, scan.py runs) report done only. `prospect.py scan` runs count their lattice seeds
     (from box and spacing in run.json, as scan.py lays them) and take the shard from the shard-i folder name."""
@@ -53,10 +54,12 @@ def status(paths):
             b = os.path.basename(d.rstrip("/")); sh = b.startswith("shard-") and b[6:].isdigit()
             sn = int(m.get("shards") or (0 if sh else 1)); si = int(b[6:]) if sh else 0
             if not 0 <= si < sn: n, si, sn = None, 0, 1                    # older run.json without a shard count
-        ids = {int(r["id"]) for r in csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t")}
+        T = list(csv.DictReader(open(os.path.join(d, "scores.tsv")), delimiter="\t")); ids = {int(r["id"]) for r in T}
+        kinds = {}
+        for r in T: k = (r.get("status") or "?").strip(); kinds[k] = kinds.get(k, 0) + 1     # ok / noct / small / no_sheet ...
         want = {i for i in range(n) if i % sn == si} if n is not None else None
         rows.append(dict(dir=d, done=len(ids & want) if want is not None else len(ids), expected=None if want is None else len(want),
-                         missing=None if want is None else sorted(want - ids), shard=f"{si}/{sn}"))
+                         missing=None if want is None else sorted(want - ids), shard=f"{si}/{sn}", kinds=dict(sorted(kinds.items(), key=lambda t: -t[1]))))
         if n is not None:
             k = json.dumps([m.get("surfaces"), m.get("crop"), m.get("tile"), m.get("box"), m.get("spacing"), n, sn]); s = sets.setdefault(k, dict(jobs=n, n=sn, ids=set(), shards=set(), dirs=[]))
             s["ids"] |= ids; s["shards"].add(si); s["dirs"].append(d)

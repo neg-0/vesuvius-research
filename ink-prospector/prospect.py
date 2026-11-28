@@ -64,7 +64,8 @@ def main():
         sys.path.insert(0, HERE); import runs
         rows, groups = runs.status([ab(r) for r in a.run]); short = lambda m: ", ".join(map(str, m[:10])) + (" ..." if len(m) > 10 else "")
         for r in rows:
-            print(f"{r['dir']}: {r['done']}" + (f" of {r['expected']} done" + (f", missing {short(r['missing'])}" if r["missing"] else ", complete") if r["expected"] is not None else " scored (no job count in run.json)"))
+            print(f"{r['dir']}: {r['done']}" + (f" of {r['expected']} done" + (f", missing {short(r['missing'])}" if r["missing"] else ", complete") if r["expected"] is not None else " scored (no job count in run.json)")
+                  + (" [" + ", ".join(f"{k} {v}" for k, v in r["kinds"].items()) + "]" if r["kinds"] else ""))
         for g in groups:
             gone = sorted(set(range(g["shards"])) - set(g["have"]))
             print(f"set of {g['jobs']} patches in {g['shards']} shard(s): " + ("complete" if not g["missing"] else f"{len(g['missing'])} missing ({short(g['missing'])})")
