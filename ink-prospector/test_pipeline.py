@@ -304,6 +304,7 @@ def test_score_tifxyz_resume_scores_only_missing_patches(tmp_path, monkeypatch, 
     rows_far = [l.split("\t") for l in open(out + "-far/scores.tsv").readlines()[1:]]
     assert not calls and len(rows_far) == n and all(r[4].strip() == "noct" for r in rows_far)   # skipped without a reader call
     assert runs.status([out + "-far"])[0][0]["missing"] == [] and runs.patches([out + "-far"]) == []
+    assert runs.status([out + "-far"])[0][0]["kinds"] == {"noct": n} and runs.status([out + "-s0"])[0][0]["kinds"] == {"ok": R[0]["done"]}
     boom = {"n": 0}                                                              # a patch that throws does not end the run
     def flaky(cm, st, **kw):
         boom["n"] += 1
