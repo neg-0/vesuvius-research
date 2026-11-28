@@ -124,6 +124,18 @@ def score_dir(d, um=None, block=4, **kw):
     r = score_maps(ink, back, v, um, **kw); r["face"] = face; return r
 
 
+def find_dirs(dirs):
+    """A folder given to --dirs that holds no prob_v3_fwd.npy itself stands for every folder under it that does
+    (sorted), so a whole run's follow-ups can be ranked by naming its parent. Folders with neither are kept as given,
+    and fail later with a note."""
+    out = []
+    for d in dirs:
+        if os.path.exists(os.path.join(d, "prob_v3_fwd.npy")) or not os.path.isdir(d): out.append(d); continue
+        sub = sorted(r for r, _, fs in os.walk(d) if "prob_v3_fwd.npy" in fs)
+        out.extend(sub or [d])
+    return list(dict.fromkeys(out))
+
+
 def names(dirs):
     """Shortest trailing part of each folder path that tells it apart from the others, so a/w084 and b/w084 do not
     both print as w084 in a ranked table."""
@@ -142,7 +154,7 @@ def main(argv=None):
     for k, v in DEFAULTS.items(): ap.add_argument("--" + k.replace("_", "-"), dest=k, type=float, default=v)
     a = ap.parse_args(argv); kw = {k: getattr(a, k) for k in DEFAULTS}; kw["min_row"] = int(kw["min_row"])
     if a.dirs:
-        rows, bad = [], []; label = dict(zip(a.dirs, names(a.dirs)))
+        a.dirs = find_dirs(a.dirs); rows, bad = [], []; label = dict(zip(a.dirs, names(a.dirs)))
         for d in a.dirs:                                                  # one broken folder must not stop a batch of many
             try: rows.append((d, score_dir(d, a.um, a.block, **kw)))
             except Exception as e: bad.append(d); print(f"skipped {d}: {type(e).__name__}: {e}", file=sys.stderr)
