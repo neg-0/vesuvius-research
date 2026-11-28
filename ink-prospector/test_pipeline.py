@@ -405,3 +405,6 @@ def test_rank_and_status_name_a_folder_that_is_not_a_run(tmp_path):
         assert r.returncode != 0 and "rnu" in r.stderr and "not a scan run" in r.stderr      # only a typo: stop
         r = subprocess.run([sys.executable, pr, cmd, str(ok), typo], capture_output=True, text=True)
         assert r.returncode == 0 and "rnu" in r.stderr                                       # a typo among real runs: named, rest read
+    for cmd in ("viewer", "stitch"):                                                         # same for the commands that write
+        r = subprocess.run([sys.executable, pr, cmd, typo, "--out", str(tmp_path / ("o-" + cmd))], capture_output=True, text=True)
+        assert r.returncode != 0 and "not a scan run" in r.stderr and "Traceback" not in r.stderr and not (tmp_path / ("o-" + cmd)).exists()

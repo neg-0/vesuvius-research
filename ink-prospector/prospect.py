@@ -82,7 +82,9 @@ def main():
     if a.cmd == "spread":
         s = scroll(a); sys.exit(run("spread.py", s["ct"], s["m7"], ab(a.out), *a.seed, a.half_nodes, "fwd" if a.side == "a" else "rev", s.get("ct_level", 0)))
     if a.cmd == "stitch":
+        sys.path.insert(0, HERE); import runs; check_runs(runs, [ab(r) for r in a.run])
         sys.exit(run("stitch.py", ab(a.out), *[ab(r) for r in a.run], "--top", a.top))
     if a.cmd == "viewer":
+        sys.path.insert(0, HERE); import runs; check_runs(runs, [ab(r) for r in a.run])
         sys.exit(run("build_viewer.py", ab(a.out), a.title or "scan", *[ab(r) for r in a.run], "--full", a.full, "--min-area", a.min_area, *(["--known"] + [ab(x) if x.endswith(".tif") else x for x in a.known] if a.known else [])))
 if __name__ == "__main__": main()
