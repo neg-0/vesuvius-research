@@ -21,6 +21,11 @@ def scroll(a):
     if "ct" not in s or "m7" not in s: sys.exit(f"unknown scroll {a.scroll!r}: name one from scrolls.json or pass --ct and --m7")
     return s
 def run(script, *args): return subprocess.call([sys.executable, os.path.join(HERE, script), *map(str, args)], cwd=HOME)
+def check_runs(runs, paths):
+    """A run folder that holds no scan is named on stderr; if none of them does, stop (a typo, not an empty run)."""
+    bad = runs.not_runs(paths)
+    for b in bad: print(f"no scores.tsv in {b} or its shard-*/ folders: not a scan run", file=sys.stderr)
+    if bad and len(bad) == len(paths): sys.exit(f"nothing to read in {len(bad)} folder(s)")
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter); sub = ap.add_subparsers(dest="cmd", required=True)
     def common(p): p.add_argument("--scroll"); p.add_argument("--ct"); p.add_argument("--m7"); p.add_argument("--um", type=float); p.add_argument("--out", required=True)
@@ -50,6 +55,7 @@ def main():
                      *(["--max-cache-gb", a.max_cache_gb] if a.max_cache_gb else [])))
     if a.cmd == "rank":
         sys.path.insert(0, HERE); import runs
+        check_runs(runs, [ab(r) for r in a.run])
         P = runs.patches([ab(r) for r in a.run], min_area=a.min_area); print(f"{len(P)} usable patches, {sum(p['area'] for p in P):.1f} cm2 read")
         for i, p in enumerate(P[:a.n]): print(f"{i + 1:3d}  {p['id']:>10}  text {p['ts']:.4f} side {p['side']}  bright a/b {p['fa']:.3f}/{p['fb']:.3f}  seed z y x {p['seed'][0]} {p['seed'][1]} {p['seed'][2]}" + (f"  {p['src']}" if p.get("src") else ""))
         if a.tsv:
@@ -63,6 +69,7 @@ def main():
         return
     if a.cmd == "status":
         sys.path.insert(0, HERE); import runs
+        check_runs(runs, [ab(r) for r in a.run])
         rows, groups = runs.status([ab(r) for r in a.run]); short = lambda m: ", ".join(map(str, m[:10])) + (" ..." if len(m) > 10 else "")
         for r in rows:
             print(f"{r['dir']}: {r['done']}" + (f" of {r['expected']} done" + (f", missing {short(r['missing'])}" if r["missing"] else ", complete") if r["expected"] is not None else " scored (no job count in run.json)")
