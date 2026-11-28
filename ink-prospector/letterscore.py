@@ -124,6 +124,17 @@ def score_dir(d, um=None, block=4, **kw):
     r = score_maps(ink, back, v, um, **kw); r["face"] = face; return r
 
 
+def names(dirs):
+    """Shortest trailing part of each folder path that tells it apart from the others, so a/w084 and b/w084 do not
+    both print as w084 in a ranked table."""
+    parts = [os.path.normpath(os.path.abspath(d)).split(os.sep) for d in dirs]; out = []
+    for p in parts:
+        k = 1
+        while k < len(p) and sum(q[-k:] == p[-k:] for q in parts) > 1: k += 1
+        out.append("/".join(p[-k:]))
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("maps", nargs="*"); ap.add_argument("--dirs", nargs="+"); ap.add_argument("--um", type=float)
@@ -131,14 +142,14 @@ def main(argv=None):
     for k, v in DEFAULTS.items(): ap.add_argument("--" + k.replace("_", "-"), dest=k, type=float, default=v)
     a = ap.parse_args(argv); kw = {k: getattr(a, k) for k in DEFAULTS}; kw["min_row"] = int(kw["min_row"])
     if a.dirs:
-        rows, bad = [], []
+        rows, bad = [], []; label = dict(zip(a.dirs, names(a.dirs)))
         for d in a.dirs:                                                  # one broken folder must not stop a batch of many
             try: rows.append((d, score_dir(d, a.um, a.block, **kw)))
             except Exception as e: bad.append(d); print(f"skipped {d}: {type(e).__name__}: {e}", file=sys.stderr)
         rows.sort(key=lambda t: -t[1]["score"])
         cols = ["letters", "fails", "score", "row", "halo", "letter_forms", "forms", "form_share", "ink_share", "back_ratio", "face"]
         print("dir\t" + "\t".join(cols))
-        for d, r in rows: print(os.path.basename(os.path.normpath(d)) + "\t" + "\t".join(str(r[c]) for c in cols))
+        for d, r in rows: print(label[d] + "\t" + "\t".join(str(r[c]) for c in cols))
         if bad: sys.exit(f"{len(bad)} folder(s) skipped: " + " ".join(bad))
         return
     if len(a.maps) < 2 or a.um is None: sys.exit("give <prob_ink.npy> <prob_back.npy> [valid.npy] --um U, or --dirs")
