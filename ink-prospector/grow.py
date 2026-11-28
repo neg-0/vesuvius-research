@@ -117,16 +117,21 @@ def render(ct, D, Nd, layers=33, log=None):
     return out
 
 def render_fast(ct, D, Nd, layers=17, tile=256, valid=None):
-    """Tile-wise render using dense bounding blocks. Tiles with no valid pixel are skipped."""
+    """Tile-wise render using dense bounding blocks. Tiles with no valid pixel are skipped; in a partly valid tile only
+    the valid pixels are sampled (invalid ones stay 0), so the hole-filled edge does not widen the block that is read."""
     H, W, _ = D.shape; out = np.zeros((layers, H, W), np.uint8); ds = np.arange(-(layers // 2), layers // 2 + 1, dtype=np.float32)
     for y in range(0, H, tile):
         for x in range(0, W, tile):
-            if valid is not None and not valid[y:y + tile, x:x + tile].any(): continue
+            m = None if valid is None else valid[y:y + tile, x:x + tile]
+            if m is not None and not m.any(): continue
             d = D[y:y + tile, x:x + tile]; n = Nd[y:y + tile, x:x + tile]
-            pts = (d[None] + ds[:, None, None, None] * n[None]).reshape(-1, 3).T
+            if m is not None and not m.all(): d, n = d[m], n[m]                         # (k,3): valid pixels only
+            pts = (d[None] + ds.reshape((-1,) + (1,) * d.ndim) * n[None]).reshape(-1, 3).T
             if np.prod(np.ceil(pts.max(1)) - np.floor(pts.min(1)) + 3) > 1.2e9:      # degenerate tile, fall back
                 v = ct.sample(pts)
             else:
                 v = ct.sample_dense(pts)
-            out[:, y:y + tile, x:x + tile] = np.clip(v, 0, 255).reshape(len(ds), d.shape[0], d.shape[1])
+            v = np.clip(v, 0, 255).reshape((len(ds),) + d.shape[:-1])
+            if d.ndim == 2: out[:, y:y + tile, x:x + tile][:, m] = v
+            else: out[:, y:y + tile, x:x + tile] = v
     return out
